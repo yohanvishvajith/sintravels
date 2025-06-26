@@ -219,7 +219,7 @@ export function DocumentsStep({ data, onNext, onPrev, onUpdate }: DocumentsStepP
   const handleRemoveAdditionalFile = (index: number) => {
     setFiles(prev => ({
       ...prev,
-      additionalDocuments: prev.additionalDocuments.filter((_: any, i) => i !== index),
+      additionalDocuments: prev.additionalDocuments.filter((_: any, i:any) => i !== index),
     }));
   };
 
