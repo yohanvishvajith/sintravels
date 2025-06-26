@@ -292,7 +292,7 @@ export function DocumentsStep({ data, onNext, onPrev, onUpdate }: DocumentsStepP
 
             {files.additionalDocuments.length > 0 && (
               <div className="mt-4 space-y-2">
-                {files.additionalDocuments.map((file, index) => (
+                {files.additionalDocuments.map((file: File, index: number) => (
                   <Card key={index} className="border-blue-200 bg-blue-50">
                     <CardContent className="p-3">
                       <div className="flex items-center justify-between">
