@@ -45,7 +45,7 @@ export function CTASection() {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-blue-600 text-lg px-8 py-6 min-w-[200px]"
+              className="border-white text-zinc-700 hover:bg-white hover:text-blue-600 text-lg px-8 py-6 min-w-[200px]"
               asChild
             >
               <Link href="/contact">

@@ -1,11 +1,20 @@
-import Link from 'next/link';
-import { Building2, Phone, Mail, MapPin, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import Link from "next/link";
+import {
+  Building2,
+  Phone,
+  Mail,
+  MapPin,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Instagram,
+} from "lucide-react";
 
 export function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
@@ -13,7 +22,8 @@ export function Footer() {
               <span className="text-xl font-bold">SIN Manpower</span>
             </div>
             <p className="text-gray-300 leading-relaxed">
-              Leading job placement agency connecting talented professionals with top employers worldwide.
+              Leading job placement agency connecting talented professionals
+              with top employers worldwide.
             </p>
             <div className="flex space-x-4">
               <Facebook className="h-5 w-5 text-gray-400 hover:text-blue-400 cursor-pointer transition-colors" />
@@ -27,11 +37,46 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <ul className="space-y-2">
-              <li><Link href="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
-              <li><Link href="/jobs" className="text-gray-300 hover:text-white transition-colors">Browse Jobs</Link></li>
-              <li><Link href="/services" className="text-gray-300 hover:text-white transition-colors">Our Services</Link></li>
-              <li><Link href="/about" className="text-gray-300 hover:text-white transition-colors">About Us</Link></li>
-              <li><Link href="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
+              <li>
+                <Link
+                  href="/"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/jobs"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Browse Jobs
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Our Services
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Contact
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -39,30 +84,69 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Services</h3>
             <ul className="space-y-2">
-              <li><span className="text-gray-300">Recruitment Solutions</span></li>
-              <li><span className="text-gray-300">Career Counseling</span></li>
-              <li><span className="text-gray-300">Skills Training</span></li>
-              <li><span className="text-gray-300">International Placements</span></li>
-              <li><span className="text-gray-300">Corporate Solutions</span></li>
+              <li>
+                <span className="text-gray-300">Recruitment Solutions</span>
+              </li>
+              <li>
+                <span className="text-gray-300">Career Counseling</span>
+              </li>
+              <li>
+                <span className="text-gray-300">Skills Training</span>
+              </li>
+              <li>
+                <span className="text-gray-300">International Placements</span>
+              </li>
+              <li>
+                <span className="text-gray-300">Corporate Solutions</span>
+              </li>
             </ul>
           </div>
 
           {/* Contact Info */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Contact Info</h3>
-            <div className="space-y-3">
+            <div className="space-y-4">
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 text-blue-400 mt-1 flex-shrink-0" />
-                <span className="text-gray-300">123 Business District, City Center, State 12345</span>
+                <span className="text-gray-300">
+                  162/6 chilaw road,kochchikade
+                </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-blue-400" />
-                <span className="text-gray-300">+1 (555) 123-4567</span>
+                <a
+                  href="tel:+94334200240"
+                  className="text-gray-300 hover:text-blue-400 transition-colors cursor-pointer"
+                >
+                  +94 334 200 240
+                </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-blue-400" />
-                <span className="text-gray-300">info@sinmanpower.com</span>
+                <a
+                  href="mailto:sintravelsandmanpower@gmail.com"
+                  className="text-gray-300 hover:text-blue-400 transition-colors cursor-pointer"
+                >
+                  sintravelsandmanpower@gmail.com
+                </a>
               </div>
+            </div>
+          </div>
+
+          {/* Google Maps */}
+          <div className="space-y-4 lg:ml-12">
+            <h3 className="text-lg font-semibold">Find Us</h3>
+            <div className="w-full">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126648.16814890831!2d79.71021589726561!3d7.268668500000008!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2e9ce44ff29f5%3A0x8a4d9aa5522b98aa!2sSIN%20Travels%20%26%20Manpower%20(PVT)%20LTD!5e0!3m2!1sen!2slk!4v1755592598242!5m2!1sen!2slk"
+                width="100%"
+                height="200"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="rounded-lg"
+              />
             </div>
           </div>
         </div>
@@ -76,10 +160,16 @@ export function Footer() {
               © 2024 SIN Manpower. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link href="/privacy" className="text-gray-300 hover:text-white text-sm transition-colors">
+              <Link
+                href="/privacy"
+                className="text-gray-300 hover:text-white text-sm transition-colors"
+              >
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="text-gray-300 hover:text-white text-sm transition-colors">
+              <Link
+                href="/terms"
+                className="text-gray-300 hover:text-white text-sm transition-colors"
+              >
                 Terms of Service
               </Link>
             </div>

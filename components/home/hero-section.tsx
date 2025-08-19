@@ -43,7 +43,7 @@ export function HeroSection() {
               </Link>
             </Button>
             
-            <Button size="lg" variant="outline" className="text-lg px-8 py-6 border-white text-white hover:bg-white hover:text-blue-900">
+            <Button size="lg" variant="outline" className="text-lg px-8 py-6 border-white text-neutral-600 hover:bg-white hover:text-blue-900">
               <Play className="mr-2 h-5 w-5" />
               Watch Our Story
             </Button>

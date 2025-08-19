@@ -1,19 +1,20 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { useRef } from 'react';
-import { useInView } from 'framer-motion';
-import { Badge } from '@/components/ui/badge';
+import { motion } from "framer-motion";
+import { useRef } from "react";
+import { useInView } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
 
 const countries = [
-  { name: 'United States', jobs: 2500, flag: '🇺🇸' },
-  { name: 'Canada', jobs: 1800, flag: '🇨🇦' },
-  { name: 'United Kingdom', jobs: 1500, flag: '🇬🇧' },
-  { name: 'Australia', jobs: 1200, flag: '🇦🇺' },
-  { name: 'Germany', jobs: 1100, flag: '🇩🇪' },
-  { name: 'Singapore', jobs: 950, flag: '🇸🇬' },
-  { name: 'UAE', jobs: 900, flag: '🇦🇪' },
-  { name: 'Japan', jobs: 800, flag: '🇯🇵' },
+  {
+    name: "Maldives",jobs: 100,  flag:"🇲🇻" },
+  { name: "UAE", jobs: 900, flag: "🇦🇪" },
+  { name: "Japan", jobs: 800, flag: "🇯🇵" },
+  { name: "Canada", jobs: 1800, flag: "🇨🇦" },
+  { name: "United Kingdom", jobs: 1500, flag: "🇬🇧" },
+  { name: "Australia", jobs: 1200, flag: "🇦🇺" },
+  { name: "Germany", jobs: 1100, flag: "🇩🇪" },
+  { name: "Singapore", jobs: 950, flag: "🇸🇬" },
 ];
 
 export function WorldMapSection() {
@@ -34,8 +35,8 @@ export function WorldMapSection() {
             Global Opportunities Await
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Explore job opportunities across 25+ countries. Our international network 
-            connects you with employers worldwide.
+            Explore job opportunities across 25+ countries. Our international
+            network connects you with employers worldwide.
           </p>
         </motion.div>
 
@@ -50,17 +51,21 @@ export function WorldMapSection() {
             <div className="aspect-video bg-gradient-to-br from-blue-100 to-teal-100 rounded-xl flex items-center justify-center relative overflow-hidden">
               <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/335393/pexels-photo-335393.jpeg')] bg-cover bg-center opacity-20" />
               <div className="relative z-10 text-center">
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">Interactive World Map</h3>
-                <p className="text-gray-600">Click on countries to explore opportunities</p>
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  Interactive World Map
+                </h3>
+                <p className="text-gray-600">
+                  Click on countries to explore opportunities
+                </p>
               </div>
-              
+
               {/* Animated Dots */}
               {[...Array(8)].map((_, i) => (
                 <motion.div
                   key={i}
                   className="absolute w-3 h-3 bg-blue-500 rounded-full"
                   style={{
-                    left: `${20 + (i * 10)}%`,
+                    left: `${20 + i * 10}%`,
                     top: `${30 + (i % 3) * 20}%`,
                   }}
                   animate={{
@@ -89,7 +94,10 @@ export function WorldMapSection() {
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-2xl">{country.flag}</span>
-                  <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  <Badge
+                    variant="secondary"
+                    className="bg-blue-100 text-blue-800"
+                  >
                     {country.jobs} jobs
                   </Badge>
                 </div>
