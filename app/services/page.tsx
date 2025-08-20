@@ -1,177 +1,203 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { useRef } from 'react';
-import { useInView } from 'framer-motion';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { 
-  Search, 
-  Users, 
-  GraduationCap, 
-  Building, 
-  Globe, 
+import { motion } from "framer-motion";
+import { useRef } from "react";
+import { useInView } from "framer-motion";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
+  Search,
+  Users,
+  GraduationCap,
+  Building,
+  Globe,
   FileText,
   ArrowRight,
   CheckCircle,
   Star,
   Phone,
-  Mail
-} from 'lucide-react';
-import Link from 'next/link';
+  Mail,
+} from "lucide-react";
+import Link from "next/link";
 
 const services = [
   {
     icon: Search,
-    title: 'Job Placement Services',
-    description: 'Connect with top employers across various industries and secure your dream job with our personalized matching system.',
+    title: "Job Placement Services",
+    description:
+      "Connect with top employers across various industries and secure your dream job with our personalized matching system.",
     features: [
-      'Personalized job matching based on skills and preferences',
-      'Interview preparation and coaching sessions',
-      'Salary negotiation support and guidance',
-      'Career transition assistance',
-      'Industry-specific expertise and insights'
+      "Personalized job matching based on skills and preferences",
+      "Interview preparation and coaching sessions",
+      "Salary negotiation support and guidance",
+      "Career transition assistance",
+      "Industry-specific expertise and insights",
     ],
-    pricing: 'Free for job seekers',
-    color: 'blue',
+    pricing: "Free for job seekers",
+    color: "blue",
   },
   {
     icon: Users,
-    title: 'Recruitment Solutions',
-    description: 'Comprehensive recruitment services for businesses seeking top talent across all levels and industries.',
+    title: "Recruitment Solutions",
+    description:
+      "Comprehensive recruitment services for businesses seeking top talent across all levels and industries.",
     features: [
-      'Executive search and headhunting services',
-      'Bulk hiring and mass recruitment campaigns',
-      'Talent sourcing and candidate screening',
-      'Background verification and reference checks',
-      'Onboarding support and integration assistance'
+      "Executive search and headhunting services",
+      "Bulk hiring and mass recruitment campaigns",
+      "Talent sourcing and candidate screening",
+      "Background verification and reference checks",
+      "Onboarding support and integration assistance",
     ],
-    pricing: 'Custom packages available',
-    color: 'teal',
+    pricing: "Custom packages available",
+    color: "teal",
   },
   {
     icon: GraduationCap,
-    title: 'Skills Training & Development',
-    description: 'Professional development programs designed to enhance your career prospects and marketability.',
+    title: "Skills Training & Development",
+    description:
+      "Professional development programs designed to enhance your career prospects and marketability.",
     features: [
-      'Technical skills training in high-demand areas',
-      'Soft skills development workshops',
-      'Industry certifications and credentials',
-      'Leadership and management training',
-      'Digital literacy and technology skills'
+      "Technical skills training in high-demand areas",
+      "Soft skills development workshops",
+      "Industry certifications and credentials",
+      "Leadership and management training",
+      "Digital literacy and technology skills",
     ],
-    pricing: 'Starting from $299',
-    color: 'orange',
+    pricing: "Starting from $299",
+    color: "orange",
   },
   {
     icon: Globe,
-    title: 'International Placement',
-    description: 'Global job opportunities with comprehensive visa and relocation assistance for international careers.',
+    title: "International Placement",
+    description:
+      "Global job opportunities with comprehensive visa and relocation assistance for international careers.",
     features: [
-      'Visa processing and documentation support',
-      'Relocation assistance and logistics',
-      'Cultural orientation and adaptation programs',
-      'International job market insights',
-      'Post-placement support and follow-up'
+      "Visa processing and documentation support",
+      "Relocation assistance and logistics",
+      "Cultural orientation and adaptation programs",
+      "International job market insights",
+      "Post-placement support and follow-up",
     ],
-    pricing: 'Consultation required',
-    color: 'purple',
+    pricing: "Consultation required",
+    color: "purple",
   },
   {
     icon: FileText,
-    title: 'Career Counseling',
-    description: 'Expert guidance to help you make informed career decisions and achieve your professional goals.',
+    title: "Career Counseling",
+    description:
+      "Expert guidance to help you make informed career decisions and achieve your professional goals.",
     features: [
-      'Comprehensive career assessment and analysis',
-      'Goal setting and action planning',
-      'Resume and LinkedIn profile optimization',
-      'Personal branding and professional image',
-      'Career change strategy and planning'
+      "Comprehensive career assessment and analysis",
+      "Goal setting and action planning",
+      "Resume and LinkedIn profile optimization",
+      "Personal branding and professional image",
+      "Career change strategy and planning",
     ],
-    pricing: 'Starting from $149',
-    color: 'green',
+    pricing: "Starting from $149",
+    color: "green",
   },
   {
     icon: Building,
-    title: 'Corporate Solutions',
-    description: 'Tailored workforce solutions for enterprises and organizations of all sizes.',
+    title: "Corporate Solutions",
+    description:
+      "Tailored workforce solutions for enterprises and organizations of all sizes.",
     features: [
-      'Workforce planning and strategy consulting',
-      'Contract staffing and temporary placements',
-      'HR consulting and process optimization',
-      'Talent management and retention strategies',
-      'Organizational development and restructuring'
+      "Workforce planning and strategy consulting",
+      "Contract staffing and temporary placements",
+      "HR consulting and process optimization",
+      "Talent management and retention strategies",
+      "Organizational development and restructuring",
     ],
-    pricing: 'Enterprise pricing',
-    color: 'red',
+    pricing: "Enterprise pricing",
+    color: "red",
   },
 ];
 
 const processSteps = [
   {
-    step: '01',
-    title: 'Initial Consultation',
-    description: 'We start with a comprehensive consultation to understand your needs, goals, and preferences.',
+    step: "01",
+    title: "Initial Consultation",
+    description:
+      "We begin with a one-on-one consultation to understand your career goals, skills, and preferred countries for employment.",
   },
   {
-    step: '02',
-    title: 'Strategy Development',
-    description: 'Our experts develop a customized strategy tailored to your specific requirements and objectives.',
+    step: "02",
+    title: "Career Strategy & Job Matching",
+    description:
+      "Our experts create a personalized job search strategy, matching your qualifications with the best opportunities abroad.",
   },
   {
-    step: '03',
-    title: 'Implementation',
-    description: 'We execute the plan with precision, keeping you informed throughout the entire process.',
+    step: "03",
+    title: "Application & Visa Assistance",
+    description:
+      "We guide you through every step of the application process, including CV preparation, interview support, and visa documentation.",
   },
   {
-    step: '04',
-    title: 'Follow-up & Support',
-    description: 'Continuous support and follow-up to ensure successful outcomes and long-term satisfaction.',
+    step: "04",
+    title: "Placement & Ongoing Support",
+    description:
+      "Once placed, we continue to provide guidance and support to help you settle into your new role or change careers and adapt to life overseas.",
   },
 ];
 
 const testimonials = [
   {
-    name: 'Jennifer Martinez',
-    role: 'HR Director',
-    company: 'Global Tech Solutions',
-    testimonial: 'SIN Manpower transformed our recruitment process. Their expertise in finding the right talent has been invaluable to our growth.',
+    name: "Jennifer Martinez",
+    role: "HR Director",
+    company: "Global Tech Solutions",
+    testimonial:
+      "SIN Manpower transformed our recruitment process. Their expertise in finding the right talent has been invaluable to our growth.",
     rating: 5,
   },
   {
-    name: 'Robert Chen',
-    role: 'Software Engineer',
-    company: 'Innovation Labs',
-    testimonial: 'The career counseling service helped me transition from finance to tech. The guidance was professional and results-oriented.',
+    name: "Robert Chen",
+    role: "Software Engineer",
+    company: "Innovation Labs",
+    testimonial:
+      "The career counseling service helped me transition from finance to tech. The guidance was professional and results-oriented.",
     rating: 5,
   },
   {
-    name: 'Sarah Johnson',
-    role: 'Marketing Manager',
-    company: 'Creative Agency',
-    testimonial: 'International placement service was exceptional. They handled everything from visa processing to relocation support.',
+    name: "Sarah Johnson",
+    role: "Marketing Manager",
+    company: "Creative Agency",
+    testimonial:
+      "International placement service was exceptional. They handled everything from visa processing to relocation support.",
     rating: 5,
   },
 ];
 
 const colorClasses = {
-  blue: 'group-hover:bg-blue-50 group-hover:border-blue-200',
-  teal: 'group-hover:bg-teal-50 group-hover:border-teal-200',
-  orange: 'group-hover:bg-orange-50 group-hover:border-orange-200',
-  purple: 'group-hover:bg-purple-50 group-hover:border-purple-200',
-  green: 'group-hover:bg-green-50 group-hover:border-green-200',
-  red: 'group-hover:bg-red-50 group-hover:border-red-200',
+  blue: "group-hover:bg-blue-50 group-hover:border-blue-200",
+  teal: "group-hover:bg-teal-50 group-hover:border-teal-200",
+  orange: "group-hover:bg-orange-50 group-hover:border-orange-200",
+  purple: "group-hover:bg-purple-50 group-hover:border-purple-200",
+  green: "group-hover:bg-green-50 group-hover:border-green-200",
+  red: "group-hover:bg-red-50 group-hover:border-red-200",
 };
 
 const iconColorClasses = {
-  blue: 'text-blue-600',
-  teal: 'text-teal-600',
-  orange: 'text-orange-600',
-  purple: 'text-purple-600',
-  green: 'text-green-600',
-  red: 'text-red-600',
+  blue: "text-blue-600",
+  teal: "text-teal-600",
+  orange: "text-orange-600",
+  purple: "text-purple-600",
+  green: "text-green-600",
+  red: "text-red-600",
 };
 
 export default function ServicesPage() {
@@ -194,11 +220,12 @@ export default function ServicesPage() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          
+
           <div className="mt-4">
             <h1 className="text-3xl font-bold text-gray-900">Our Services</h1>
             <p className="text-gray-600 mt-2">
-              Comprehensive career and recruitment solutions tailored to your needs
+              Comprehensive career and recruitment solutions tailored to your
+              needs
             </p>
           </div>
         </div>
@@ -217,19 +244,142 @@ export default function ServicesPage() {
               Empowering Careers, Enabling Success
             </h2>
             <p className="text-xl text-blue-100 mb-8">
-              From job placement to career development, we offer comprehensive solutions 
-              to help individuals and organizations achieve their goals.
+              From job placement to career development, we offer comprehensive
+              solutions to help individuals and organizations achieve their
+              goals.
             </p>
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
-              <Phone className="mr-2 h-5 w-5" />
-              Schedule Consultation
+            <Button
+              size="lg"
+              className="bg-white text-blue-600 hover:bg-gray-100"
+              asChild
+            >
+              <Link href="/contact">
+                <Phone className="mr-2 h-5 w-5" />
+                Schedule Consultation
+              </Link>
             </Button>
           </motion.div>
         </div>
       </section>
 
-      {/* Services Grid */}
+      {/* About Section */}
       <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                About SIN Manpower
+              </h2>
+              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                With over 15 years of experience in international recruitment,
+                SIN Manpower has established itself as a trusted partner for
+                both job seekers and employers worldwide. Our expertise spans
+                across multiple industries and countries, making us your gateway
+                to global career opportunities.
+              </p>
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                We specialize in connecting talented professionals with leading
+                organizations across 25+ countries, ensuring perfect matches
+                that benefit both parties. Our comprehensive approach covers
+                everything from initial consultation to post-placement support.
+              </p>
+
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-blue-600 mb-2">
+                    15+
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    Years of Experience
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-teal-600 mb-2">
+                    25+
+                  </div>
+                  <div className="text-sm text-gray-600">Partner Countries</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-orange-600 mb-2">
+                    15K+
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    Successful Placements
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-purple-600 mb-2">
+                    98%
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    Client Satisfaction
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="space-y-6"
+            >
+              <div className="bg-gradient-to-br from-blue-50 to-teal-50 p-6 rounded-lg">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  Our Mission
+                </h3>
+                <p className="text-gray-600">
+                  To bridge the gap between talent and opportunity by providing
+                  world-class recruitment services that transform careers and
+                  businesses globally.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-teal-50 to-blue-50 p-6 rounded-lg">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  Our Vision
+                </h3>
+                <p className="text-gray-600">
+                  To be the leading international manpower solution provider,
+                  recognized for our excellence, integrity, and commitment to
+                  client success.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-orange-50 to-yellow-50 p-6 rounded-lg">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  Our Values
+                </h3>
+                <ul className="space-y-2 text-gray-600">
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    Professional Excellence
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    Integrity & Transparency
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    Client-Centric Approach
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    Global Perspective
+                  </li>
+                </ul>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Grid */}
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <motion.div
             ref={ref}
@@ -242,7 +392,8 @@ export default function ServicesPage() {
               Comprehensive Service Portfolio
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We provide end-to-end solutions for all your career and recruitment needs
+              We provide end-to-end solutions for all your career and
+              recruitment needs
             </p>
           </motion.div>
 
@@ -255,10 +406,22 @@ export default function ServicesPage() {
                 transition={{ duration: 0.8, delay: index * 0.1 }}
                 className="group"
               >
-                <Card className={`h-full border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${colorClasses[service.color as keyof typeof colorClasses]}`}>
+                <Card
+                  className={`h-full border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+                    colorClasses[service.color as keyof typeof colorClasses]
+                  }`}
+                >
                   <CardHeader>
-                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gray-50 mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <service.icon className={`h-6 w-6 ${iconColorClasses[service.color as keyof typeof iconColorClasses]}`} />
+                    <div
+                      className={`inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gray-50 mb-4 group-hover:scale-110 transition-transform duration-300`}
+                    >
+                      <service.icon
+                        className={`h-6 w-6 ${
+                          iconColorClasses[
+                            service.color as keyof typeof iconColorClasses
+                          ]
+                        }`}
+                      />
                     </div>
                     <CardTitle className="text-xl">{service.title}</CardTitle>
                     <CardDescription className="text-gray-600">
@@ -268,7 +431,10 @@ export default function ServicesPage() {
                   <CardContent className="space-y-4">
                     <ul className="space-y-2">
                       {service.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-start text-sm text-gray-600">
+                        <li
+                          key={featureIndex}
+                          className="flex items-start text-sm text-gray-600"
+                        >
                           <CheckCircle className="h-4 w-4 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
                           {feature}
                         </li>
@@ -325,9 +491,7 @@ export default function ServicesPage() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">
                   {step.title}
                 </h3>
-                <p className="text-gray-600">
-                  {step.description}
-                </p>
+                <p className="text-gray-600">{step.description}</p>
               </motion.div>
             ))}
           </div>
@@ -342,7 +506,8 @@ export default function ServicesPage() {
               Client Success Stories
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Hear from our satisfied clients about their experience with our services
+              Hear from our satisfied clients about their experience with our
+              services
             </p>
           </div>
 
@@ -358,14 +523,19 @@ export default function ServicesPage() {
                   <CardContent className="p-6">
                     <div className="flex items-center mb-4">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                        <Star
+                          key={i}
+                          className="h-5 w-5 fill-yellow-400 text-yellow-400"
+                        />
                       ))}
                     </div>
                     <blockquote className="text-gray-600 mb-4">
                       "{testimonial.testimonial}"
                     </blockquote>
                     <div>
-                      <p className="font-semibold text-gray-900">{testimonial.name}</p>
+                      <p className="font-semibold text-gray-900">
+                        {testimonial.name}
+                      </p>
                       <p className="text-sm text-gray-600">
                         {testimonial.role} at {testimonial.company}
                       </p>
@@ -391,16 +561,30 @@ export default function ServicesPage() {
               Ready to Get Started?
             </h2>
             <p className="text-xl text-blue-100 mb-8">
-              Contact us today to discuss how our services can help you achieve your goals.
+              Contact us today to discuss how our services can help you achieve
+              your goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
-                <Phone className="mr-2 h-5 w-5" />
-                Schedule Consultation
+              <Button
+                size="lg"
+                className="bg-white text-blue-600 hover:bg-gray-100"
+                asChild
+              >
+                <Link href="/contact">
+                  <Phone className="mr-2 h-5 w-5" />
+                  Schedule Consultation
+                </Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
-                <Mail className="mr-2 h-5 w-5" />
-                Contact Us
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white text-blue-600 bg-white hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                asChild
+              >
+                <Link href="/contact">
+                  <Mail className="mr-2 h-5 w-5" />
+                  Contact Us
+                </Link>
               </Button>
             </div>
           </motion.div>

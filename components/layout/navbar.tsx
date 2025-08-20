@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Phone, Mail } from "lucide-react";
@@ -9,6 +10,7 @@ import Image from "next/image";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -18,28 +20,16 @@ export function Navbar() {
     { name: "Contact", href: "/contact" },
   ];
 
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(href);
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      {/* Top Bar */}
-      <div className="bg-blue-900 text-white py-2">
-        <div className="container mx-auto px-4 flex justify-between items-center text-sm">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-1">
-              <Phone className="h-3 w-3" />
-              <span>+94 334 200 240</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <Mail className="h-3 w-3" />
-              <span>sintravelsandmanpower@gmail.com</span>
-            </div>
-          </div>
-          <div className="hidden md:block">
-            <span>24/7 Support Available</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Navigation */}
+      {/*  Navigation */}
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center space-x-2">
@@ -61,7 +51,11 @@ export function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
+                className={`transition-colors duration-200 font-medium ${
+                  isActive(item.href)
+                    ? "text-blue-600 border-b-2 border-blue-600 pb-1"
+                    : "text-gray-700 hover:text-blue-600"
+                }`}
               >
                 {item.name}
               </Link>
@@ -69,7 +63,6 @@ export function Navbar() {
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
-          
             <Button asChild>
               <Link href="/jobs">Find Jobs</Link>
             </Button>
@@ -88,7 +81,11 @@ export function Navbar() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="text-lg font-medium text-gray-700 hover:text-blue-600 transition-colors"
+                    className={`text-lg font-medium transition-colors ${
+                      isActive(item.href)
+                        ? "text-blue-600 bg-blue-50 px-3 py-2 rounded-md"
+                        : "text-gray-700 hover:text-blue-600"
+                    }`}
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}

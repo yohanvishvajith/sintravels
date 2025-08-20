@@ -63,11 +63,13 @@ export function GoogleReview() {
   }
 
   return (
-    <section className="container mx-auto px-4 py-12">
-      <div
-        className="elfsight-app-593aeb78-8a47-488c-b6ca-4762c0bf12e1"
-        data-elfsight-app-lazy
-      />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div className="flex items-center justify-center w-full">
+        <div
+          className="elfsight-app-593aeb78-8a47-488c-b6ca-4762c0bf12e1"
+          data-elfsight-app-lazy
+        ></div>
+      </div>
     </section>
   );
 }
