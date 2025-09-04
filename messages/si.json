@@ -5,24 +5,24 @@
   "Navbar": {
     "home": "මුල් පිටුව",
     "jobs": "රැකියා",
-    "services": "සේවා",
+    "services": "අපගේ සේවාවන්",
     "about": "අප ගැන",
     "contact": "සම්බන්ධ වන්න",
-    "searchjobs": "රැකියා සොයන්න"
+    "searchjobs": "රැකියාවක් සොයන්න"
   },
   "HeroSection": {
     "connect": "Connect Your",
     "career": "Career",
     "withGlobalOpportunities": "with Global Opportunities",
     "description": "Leading job placement agency with over 15 years of experience connecting talented professionals with top employers across 25+ countries worldwide.",
-    "browseJobs": "Browse Jobs",
-    "watchOurStory": "Watch Our Story",
+    "browseJobs": "රැකියා සොයන්න",
+    "watchOurStory": "අප ගැන",
     "placementsCount": "15K+",
-    "successfulPlacements": "Successful Placements",
+    "successfulPlacements": "සාර්තක සේවා ලාභීන්",
     "countriesCount": "25+",
-    "countriesWorldwide": "Countries Worldwide",
+    "countriesWorldwide": "ලොවපුරා රටවල්",
     "successRate": "98%",
-    "successRateLabel": "Success Rate",
+    "successRateLabel": "සාර්තකත්වයක්",
     "videoCaption": "How to find a foreign job the easy way"
   },
   "StatsSection": {
