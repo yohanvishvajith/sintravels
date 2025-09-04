@@ -1,5 +1,5 @@
 "use client";
-
+import {useTranslations} from 'next-intl';
 import { HeroSection } from "@/components/home/hero-section";
 import { StatsSection } from "@/components/home/stats-section";
 import { ServicesSection } from "@/components/home/services-section";
@@ -10,9 +10,11 @@ import { GoogleReview } from "@/components/home/google-review";
 import YoutubeTravelSection from "@/components/home/youtube";
 import WhatsappButton from "@/components/home/whatsapp";
 export default function Home() {
+  const t = useTranslations('Home');
   return (
     <div className="flex flex-col">
       <HeroSection />
+      <h1>{t('title')}</h1>
       <StatsSection />
       <ServicesSection />
 

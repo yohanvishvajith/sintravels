@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations } from "next-intl";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -201,6 +201,7 @@ const iconColorClasses = {
 };
 
 export default function ServicesPage() {
+  const t = useTranslations("ServicesPage");
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
@@ -212,21 +213,20 @@ export default function ServicesPage() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                <BreadcrumbLink href="/">{t("home")}</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Services</BreadcrumbPage>
+                <BreadcrumbPage>{t("services")}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
           <div className="mt-4">
-            <h1 className="text-3xl font-bold text-gray-900">Our Services</h1>
-            <p className="text-gray-600 mt-2">
-              Comprehensive career and recruitment solutions tailored to your
-              needs
-            </p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              {t("headerTitle")}
+            </h1>
+            <p className="text-gray-600 mt-2">{t("headerSubtitle")}</p>
           </div>
         </div>
       </div>
@@ -241,13 +241,9 @@ export default function ServicesPage() {
             className="max-w-3xl mx-auto"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Empowering Careers, Enabling Success
+              {t("heroTitle")}
             </h2>
-            <p className="text-xl text-blue-100 mb-8">
-              From job placement to career development, we offer comprehensive
-              solutions to help individuals and organizations achieve their
-              goals.
-            </p>
+            <p className="text-xl text-blue-100 mb-8">{t("heroSubtitle")}</p>
             <Button
               size="lg"
               className="bg-white text-blue-600 hover:bg-gray-100"
@@ -255,7 +251,7 @@ export default function ServicesPage() {
             >
               <Link href="/contact">
                 <Phone className="mr-2 h-5 w-5" />
-                Schedule Consultation
+                {t("scheduleConsultation")}
               </Link>
             </Button>
           </motion.div>
@@ -272,20 +268,13 @@ export default function ServicesPage() {
               transition={{ duration: 0.8 }}
             >
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                About SIN Manpower
+                {t("aboutTitle")}
               </h2>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                With over 15 years of experience in international recruitment,
-                SIN Manpower has established itself as a trusted partner for
-                both job seekers and employers worldwide. Our expertise spans
-                across multiple industries and countries, making us your gateway
-                to global career opportunities.
+                {t("aboutParagraph1")}
               </p>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                We specialize in connecting talented professionals with leading
-                organizations across 25+ countries, ensuring perfect matches
-                that benefit both parties. Our comprehensive approach covers
-                everything from initial consultation to post-placement support.
+                {t("aboutParagraph2")}
               </p>
 
               <div className="grid grid-cols-2 gap-6">
@@ -294,21 +283,23 @@ export default function ServicesPage() {
                     15+
                   </div>
                   <div className="text-sm text-gray-600">
-                    Years of Experience
+                    {t("yearsOfExperience")}
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-teal-600 mb-2">
                     25+
                   </div>
-                  <div className="text-sm text-gray-600">Partner Countries</div>
+                  <div className="text-sm text-gray-600">
+                    {t("partnerCountries")}
+                  </div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-orange-600 mb-2">
                     15K+
                   </div>
                   <div className="text-sm text-gray-600">
-                    Successful Placements
+                    {t("successfulPlacements")}
                   </div>
                 </div>
                 <div className="text-center">
@@ -316,7 +307,7 @@ export default function ServicesPage() {
                     98%
                   </div>
                   <div className="text-sm text-gray-600">
-                    Client Satisfaction
+                    {t("clientSatisfaction")}
                   </div>
                 </div>
               </div>
@@ -330,46 +321,38 @@ export default function ServicesPage() {
             >
               <div className="bg-gradient-to-br from-blue-50 to-teal-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  Our Mission
+                  {t("missionTitle")}
                 </h3>
-                <p className="text-gray-600">
-                  To bridge the gap between talent and opportunity by providing
-                  world-class recruitment services that transform careers and
-                  businesses globally.
-                </p>
+                <p className="text-gray-600">{t("missionText")}</p>
               </div>
 
               <div className="bg-gradient-to-br from-teal-50 to-blue-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  Our Vision
+                  {t("visionTitle")}
                 </h3>
-                <p className="text-gray-600">
-                  To be the leading international manpower solution provider,
-                  recognized for our excellence, integrity, and commitment to
-                  client success.
-                </p>
+                <p className="text-gray-600">{t("visionText")}</p>
               </div>
 
               <div className="bg-gradient-to-br from-orange-50 to-yellow-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  Our Values
+                  {t("valuesTitle")}
                 </h3>
                 <ul className="space-y-2 text-gray-600">
                   <li className="flex items-center">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    Professional Excellence
+                    {t("valueProfessionalExcellence")}
                   </li>
                   <li className="flex items-center">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    Integrity & Transparency
+                    {t("valueIntegrityTransparency")}
                   </li>
                   <li className="flex items-center">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    Client-Centric Approach
+                    {t("valueClientCentric")}
                   </li>
                   <li className="flex items-center">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    Global Perspective
+                    {t("valueGlobalPerspective")}
                   </li>
                 </ul>
               </div>
@@ -389,11 +372,10 @@ export default function ServicesPage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Comprehensive Service Portfolio
+              {t("servicesPortfolioTitle")}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We provide end-to-end solutions for all your career and
-              recruitment needs
+              {t("servicesPortfolioSubtitle")}
             </p>
           </motion.div>
 
@@ -447,7 +429,7 @@ export default function ServicesPage() {
                         </Badge>
                       </div>
                       <Button variant="outline" className="w-full group/btn">
-                        Learn More
+                        {t("learnMore")}
                         <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                       </Button>
                     </div>
@@ -464,10 +446,10 @@ export default function ServicesPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Our Process
+              {t("processTitle")}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              A systematic approach to delivering exceptional results
+              {t("processSubtitle")}
             </p>
           </div>
 
@@ -503,11 +485,10 @@ export default function ServicesPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Client Success Stories
+              {t("testimonialsTitle")}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Hear from our satisfied clients about their experience with our
-              services
+              {t("testimonialsSubtitle")}
             </p>
           </div>
 
@@ -558,12 +539,9 @@ export default function ServicesPage() {
             className="max-w-3xl mx-auto"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ready to Get Started?
+              {t("ctaTitle")}
             </h2>
-            <p className="text-xl text-blue-100 mb-8">
-              Contact us today to discuss how our services can help you achieve
-              your goals.
-            </p>
+            <p className="text-xl text-blue-100 mb-8">{t("ctaSubtitle")}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
@@ -572,7 +550,7 @@ export default function ServicesPage() {
               >
                 <Link href="/contact">
                   <Phone className="mr-2 h-5 w-5" />
-                  Schedule Consultation
+                  {t("scheduleConsultation")}
                 </Link>
               </Button>
               <Button
@@ -583,7 +561,7 @@ export default function ServicesPage() {
               >
                 <Link href="/contact">
                   <Mail className="mr-2 h-5 w-5" />
-                  Contact Us
+                  {t("contactUs")}
                 </Link>
               </Button>
             </div>

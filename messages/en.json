@@ -1,0 +1,261 @@
+{
+  "Home": {
+    "title": "Hello world!"
+  },
+  "Navbar": {
+    "home": "Home",
+    "jobs": "Jobs",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "searchjobs": "Find Jobs"
+  },
+  "HeroSection": {
+    "connect": "Connect Your",
+    "career": "Career",
+    "withGlobalOpportunities": "with Global Opportunities",
+    "description": "Leading job placement agency with over 15 years of experience connecting talented professionals with top employers across 25+ countries worldwide.",
+    "browseJobs": "Browse Jobs",
+    "watchOurStory": "Watch Our Story",
+    "placementsCount": "15K+",
+    "successfulPlacements": "Successful Placements",
+    "countriesCount": "25+",
+    "countriesWorldwide": "Countries Worldwide",
+    "successRate": "98%",
+    "successRateLabel": "Success Rate",
+    "videoCaption": "How to find a foreign job the easy way"
+  },
+  "StatsSection": {
+    "title": "Our Track Record Speaks",
+    "subtitle": "Numbers that reflect our commitment to excellence and success in connecting careers with opportunities.",
+    "jobPlacements": "Job Placements",
+    "countries": "Countries",
+    "successRate": "Success Rate",
+    "yearsExperience": "Years Experience"
+  },
+  "ServicesSection": {
+    "title": "Comprehensive Career Solutions",
+    "subtitle": "From job placement to career development, we offer end-to-end services to help you achieve your professional goals.",
+    "jobPlacementTitle": "Job Placement",
+    "jobPlacementDescription": "Connect with top employers across various industries and secure your dream job.",
+    "jobPlacementFeatures": [
+      "Personalized matching",
+      "Interview preparation",
+      "Salary negotiation"
+    ],
+    "recruitmentTitle": "Recruitment Solutions",
+    "recruitmentDescription": "Comprehensive recruitment services for businesses seeking top talent.",
+    "recruitmentFeatures": [
+      "Talent sourcing",
+      "Screening process",
+      "Onboarding support"
+    ],
+    "skillsTrainingTitle": "Skills Training",
+    "skillsTrainingDescription": "Professional development programs to enhance your career prospects.",
+    "skillsTrainingFeatures": [
+      "Technical skills",
+      "Soft skills",
+      "Industry certifications"
+    ],
+    "internationalPlacementTitle": "International Placement",
+    "internationalPlacementDescription": "Global job opportunities with visa and relocation assistance.",
+    "internationalPlacementFeatures": [
+      "Visa processing",
+      "Relocation support",
+      "Cultural orientation"
+    ],
+    "careerCounselingTitle": "Career Counseling",
+    "careerCounselingDescription": "Expert guidance to help you make informed career decisions.",
+    "careerCounselingFeatures": [
+      "Career assessment",
+      "Goal setting",
+      "Action planning"
+    ],
+    "corporateSolutionsTitle": "Corporate Solutions",
+    "corporateSolutionsDescription": "Tailored workforce solutions for enterprises and organizations.",
+    "corporateSolutionsFeatures": [
+      "Bulk hiring",
+      "Contract staffing",
+      "Workforce planning"
+    ],
+    "learnMore": "Learn More"
+  },
+  "CTASection": {
+    "title": "Ready to Transform Your Career?",
+    "subtitle": "Join thousands of professionals who have successfully advanced their careers with our expert guidance and global network.",
+    "browseJobs": "Browse Jobs",
+    "getInTouch": "Get In Touch",
+    "footer": "✓ Free consultation • ✓ Expert career guidance • ✓ Global opportunities"
+  },
+  "Footer": {
+    "companyName": "SIN Manpower",
+    "description": "Leading job placement agency connecting talented professionals with top employers worldwide.",
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "browseJobs": "Browse Jobs",
+    "ourServices": "Our Services",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "services": "Services",
+    "recruitmentSolutions": "Recruitment Solutions",
+    "careerCounseling": "Career Counseling",
+    "skillsTraining": "Skills Training",
+    "internationalPlacements": "International Placements",
+    "corporateSolutions": "Corporate Solutions",
+    "contactInfo": "Contact Info",
+    "address": "162/6 chilaw road,kochchikade",
+    "phone": "+94 334 200 240",
+    "email": "sintravelsandmanpower@gmail.com",
+    "findUs": "Find Us",
+    "copyright": "© 2024 SIN Manpower. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  },
+  "ServicesPage": {
+    "home": "Home",
+    "services": "Services",
+
+    "headerTitle": "Our Services",
+    "headerSubtitle": "Comprehensive career and recruitment solutions tailored to your needs",
+    "heroTitle": "Empowering Careers, Enabling Success",
+    "heroSubtitle": "From job placement to career development, we offer comprehensive solutions to help individuals and organizations achieve their goals.",
+    "scheduleConsultation": "Schedule Consultation",
+    "aboutTitle": "About SIN Manpower",
+    "aboutParagraph1": "With over 15 years of experience in international recruitment, SIN Manpower has established itself as a trusted partner for both job seekers and employers worldwide. Our expertise spans across multiple industries and countries, making us your gateway to global career opportunities.",
+    "aboutParagraph2": "We specialize in connecting talented professionals with leading organizations across 25+ countries, ensuring perfect matches that benefit both parties. Our comprehensive approach covers everything from initial consultation to post-placement support.",
+    "yearsOfExperience": "Years of Experience",
+    "partnerCountries": "Partner Countries",
+    "successfulPlacements": "Successful Placements",
+    "clientSatisfaction": "Client Satisfaction",
+    "missionTitle": "Our Mission",
+    "missionText": "To bridge the gap between talent and opportunity by providing world-class recruitment services that transform careers and businesses globally.",
+    "visionTitle": "Our Vision",
+    "visionText": "To be the leading international manpower solution provider, recognized for our excellence, integrity, and commitment to client success.",
+    "valuesTitle": "Our Values",
+    "valueProfessionalExcellence": "Professional Excellence",
+    "valueIntegrityTransparency": "Integrity & Transparency",
+    "valueClientCentric": "Client-Centric Approach",
+    "valueGlobalPerspective": "Global Perspective",
+    "servicesPortfolioTitle": "Comprehensive Service Portfolio",
+    "servicesPortfolioSubtitle": "We provide end-to-end solutions for all your career and recruitment needs",
+    "learnMore": "Learn More",
+    "processTitle": "Our Process",
+    "processSubtitle": "A systematic approach to delivering exceptional results",
+    "testimonialsTitle": "Client Success Stories",
+    "testimonialsSubtitle": "Hear from our satisfied clients about their experience with our services",
+    "ctaTitle": "Ready to Get Started?",
+    "ctaSubtitle": "Contact us today to discuss how our services can help you achieve your goals.",
+    "contactUs": "Contact Us"
+  },
+  "AboutPage": {
+    "home": "Home",
+    "aboutTitle": "About Us",
+    "aboutSubtitle": "Your trusted partner in international recruitment and career development",
+    "heroTitle": "Connecting Talent with Global Opportunities",
+    "heroParagraph1": "Since 2009, SIN Manpower has been at the forefront of international recruitment, helping thousands of professionals find their dream careers while assisting organizations in building world-class teams.",
+    "heroParagraph2": "We specialize in connecting talented professionals with leading organizations across 25+ countries, ensuring perfect matches that benefit both parties. Our comprehensive approach covers everything from initial consultation to post-placement support.",
+    "yearsOfExperience": "Years of Experience",
+    "partnerCountries": "Partner Countries",
+    "successfulPlacements": "Successful Placements",
+    "clientSatisfaction": "Client Satisfaction",
+    "missionTitle": "Our Mission",
+    "missionText": "To bridge the gap between talent and opportunity by providing world-class recruitment services that transform careers and businesses globally. We are committed to excellence, integrity, and creating lasting value for all stakeholders in the recruitment ecosystem.",
+    "visionTitle": "Our Vision",
+    "visionText": "To be the leading international manpower solution provider, recognized for our excellence, innovation, and commitment to client success. We envision a world where geographical boundaries don't limit career aspirations and business growth.",
+    "valuesTitle": "Our Core Values",
+    "valueProfessionalExcellence": "Professional Excellence",
+    "valueProfessionalExcellenceDesc": "We maintain the highest standards in all our services, ensuring quality outcomes for every client.",
+    "valueIntegrityTransparency": "Integrity & Transparency",
+    "valueIntegrityTransparencyDesc": "Honest communication and ethical practices form the foundation of all our relationships.",
+    "valueClientCentric": "Client-Centric Approach",
+    "valueClientCentricDesc": "Your success is our priority. We tailor our services to meet your unique needs and goals.",
+    "valueGlobalPerspective": "Global Perspective",
+    "valueGlobalPerspectiveDesc": "With international expertise, we connect talent across borders and cultures seamlessly.",
+    "ourJourneyTitle": "Our Journey",
+    "ourJourneySubtitle": "Key milestones in our growth and evolution",
+    "ctaTitle": "Ready to Start Your Journey?",
+    "ctaSubtitle": "Join thousands of professionals who have trusted us with their career aspirations.",
+    "browseJobs": "Browse Jobs",
+    "getInTouch": "Get In Touch"
+  },
+  "JobsPage": {
+    "home": "Home",
+    "jobs": "Jobs",
+    "headerTitle": "Find Your Dream Job",
+    "headerSubtitle": "Discover opportunities from top employers worldwide",
+    "loading": "Loading...",
+    "jobsFound": "{count} jobs found",
+    "pageLabel": "Page {current} of {total}",
+    "previous": "Previous",
+    "next": "Next",
+    "noJobsTitle": "No jobs found",
+    "noJobsHint": "Try adjusting your filters to see more results"
+  },
+  "ContactPage": {
+    "home": "Home",
+    "contact": "Contact",
+    "headerTitle": "Contact Us",
+    "headerSubtitle": "Get in touch with our expert team for personalized assistance",
+    "heroTitle": "Let's Start Your Journey Together",
+    "heroSubtitle": "Whether you're seeking international career opportunities or looking to hire top talent, our team is here to help you achieve your goals.",
+    "quickResponse": "Quick Response",
+    "globalExpertise": "Global Expertise",
+    "provenResults": "Proven Results",
+    "contactSectionTitle": "Get In Touch",
+    "contactSectionSubtitle": "Multiple ways to reach us for your convenience",
+
+    "phoneTitle": "Phone",
+    "phoneDescription": "Call us during business hours",
+    "emailTitle": "Email",
+    "emailDescription": "Send us an email anytime",
+    "addressTitle": "Address",
+    "addressDescription": "Visit our office",
+    "hoursTitle": "Business Hours",
+    "hoursDescription": "We are available during these hours",
+
+    "form": {
+      "title": "Send us a Message",
+      "description": "Fill out the form below and we'll get back to you within 24 hours",
+      "successTitle": "Message Sent Successfully!",
+      "successBody": "Thank you for contacting us. We'll respond within 24 hours.",
+      "nameLabel": "Full Name *",
+      "namePlaceholder": "Enter your full name",
+      "emailLabel": "Email Address *",
+      "emailPlaceholder": "Enter your email",
+      "phoneLabel": "Phone Number",
+      "phonePlaceholder": "Enter your phone number",
+      "companyLabel": "Company (Optional)",
+      "companyPlaceholder": "Enter company name",
+      "serviceLabel": "Service Interested In *",
+      "servicePlaceholder": "Select a service",
+      "messageLabel": "Message *",
+      "messagePlaceholder": "Tell us about your requirements...",
+      "sending": "Sending...",
+      "sendMessage": "Send Message"
+    },
+
+    "mapTitle": "Find Our Office",
+    "mapDescription": "Visit us at our headquarters in Kochchikade",
+
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Quick answers to common questions",
+      "q1": {
+        "question": "How long does the placement process take?",
+        "answer": "The placement process typically takes 2-8 weeks depending on the position and visa requirements. We keep you updated throughout the entire process."
+      },
+      "q2": {
+        "question": "Do you charge job seekers for your services?",
+        "answer": "No, our job placement services are completely free for job seekers. We are compensated by the employers who hire our candidates."
+      },
+      "q3": {
+        "question": "Which countries do you place candidates in?",
+        "answer": "We have partnerships in 25+ countries including UAE, Saudi Arabia, Kuwait, Singapore, Canada, Australia, UK, and many more."
+      },
+      "q4": {
+        "question": "Do you provide visa assistance?",
+        "answer": "Yes, we provide comprehensive visa assistance including documentation support, application guidance, and interview preparation."
+      }
+    }
+  }
+}

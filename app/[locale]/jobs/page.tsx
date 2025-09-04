@@ -12,6 +12,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -78,6 +79,7 @@ const mockJobs = [
 ];
 
 export default function JobsPage() {
+  const t = useTranslations("JobsPage");
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -213,11 +215,9 @@ export default function JobsPage() {
 
           <div className="mt-4">
             <h1 className="text-3xl font-bold text-gray-900">
-              Find Your Dream Job
+              {t("headerTitle")}
             </h1>
-            <p className="text-gray-600 mt-2">
-              Discover opportunities from top employers worldwide
-            </p>
+            <p className="text-gray-600 mt-2">{t("headerSubtitle")}</p>
           </div>
         </div>
       </div>
@@ -233,7 +233,9 @@ export default function JobsPage() {
           <div className="lg:w-3/4" id="jobs-section">
             <div className="mb-6 flex justify-between items-center">
               <p className="text-gray-600">
-                {loading ? "Loading..." : `${filteredJobs.length} jobs found`}
+                {loading
+                  ? t("loading")
+                  : t.rich("jobsFound", { count: String(filteredJobs.length) })}
               </p>
               {!loading && filteredJobs.length > 0 && (
                 <p className="text-sm text-gray-500">
@@ -281,7 +283,7 @@ export default function JobsPage() {
                         }`}
                       >
                         <ChevronLeft className="w-4 h-4 mr-1" />
-                        Previous
+                        {t("previous")}
                       </button>
 
                       {/* Page Numbers */}
@@ -316,7 +318,7 @@ export default function JobsPage() {
                             : "text-gray-700 hover:bg-gray-100"
                         }`}
                       >
-                        Next
+                        {t("next")}
                         <ChevronRight className="w-4 h-4 ml-1" />
                       </button>
                     </nav>
@@ -328,11 +330,9 @@ export default function JobsPage() {
               <div className="text-center py-12">
                 <div className="text-gray-400 text-6xl mb-4">🔍</div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  No jobs found
+                  {t("noJobsTitle")}
                 </h3>
-                <p className="text-gray-600">
-                  Try adjusting your filters to see more results
-                </p>
+                <p className="text-gray-600">{t("noJobsHint")}</p>
               </div>
             )}
           </div>

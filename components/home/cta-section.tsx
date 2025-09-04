@@ -1,13 +1,16 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Send } from 'lucide-react';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { useRef } from 'react';
-import { useInView } from 'framer-motion';
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Send } from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { useRef } from "react";
+import { useInView } from "framer-motion";
+
+import { useTranslations } from "next-intl";
 
 export function CTASection() {
+  const t = useTranslations("CTASection");
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
@@ -21,36 +24,32 @@ export function CTASection() {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-white"
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-6">
-            Ready to Transform Your Career?
-          </h2>
-          
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">{t("title")}</h2>
           <p className="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed">
-            Join thousands of professionals who have successfully advanced their careers 
-            with our expert guidance and global network.
+            {t("subtitle")}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-6 min-w-[200px]"
               asChild
             >
               <Link href="/jobs">
-                Browse Jobs
+                {t("browseJobs")}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            
-            <Button 
-              size="lg" 
-              variant="outline" 
+
+            <Button
+              size="lg"
+              variant="outline"
               className="border-white text-zinc-700 hover:bg-white hover:text-blue-600 text-lg px-8 py-6 min-w-[200px]"
               asChild
             >
               <Link href="/contact">
                 <Send className="mr-2 h-5 w-5" />
-                Get In Touch
+                {t("getInTouch")}
               </Link>
             </Button>
           </div>
@@ -61,9 +60,7 @@ export function CTASection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-blue-100"
           >
-            <p className="text-sm">
-              ✓ Free consultation • ✓ Expert career guidance • ✓ Global opportunities
-            </p>
+            <p className="text-sm">{t("footer")}</p>
           </motion.div>
         </motion.div>
       </div>

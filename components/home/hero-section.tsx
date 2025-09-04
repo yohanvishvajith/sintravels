@@ -4,9 +4,12 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, X } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 export function HeroSection() {
+  const t = useTranslations("HeroSection");
   const [isVideoOpen, setIsVideoOpen] = useState(false);
 
   const openVideo = () => {
@@ -35,18 +38,16 @@ export function HeroSection() {
             className="max-w-4xl mx-auto"
           >
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              Connect Your
+              {t("connect")}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">
                 {" "}
-                Career{" "}
+                {t("career")}{" "}
               </span>
-              with Global Opportunities
+              {t("withGlobalOpportunities")}
             </h1>
 
             <p className="text-xl md:text-2xl mb-8 text-gray-200 leading-relaxed">
-              Leading job placement agency with over 15 years of experience
-              connecting talented professionals with top employers across 25+
-              countries worldwide.
+              {t("description")}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
@@ -56,7 +57,7 @@ export function HeroSection() {
                 asChild
               >
                 <Link href="/jobs">
-                  Browse Jobs
+                  {t("browseJobs")}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -68,7 +69,7 @@ export function HeroSection() {
                 onClick={openVideo}
               >
                 <Play className="mr-2 h-5 w-5" />
-                Watch Our Story
+                {t("watchOurStory")}
               </Button>
             </div>
 
@@ -80,27 +81,25 @@ export function HeroSection() {
             >
               <div>
                 <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-2">
-                  15K+
+                  {t("placementsCount")}
                 </div>
-                <div className="text-gray-300">Successful Placements</div>
+                <div className="text-gray-300">{t("successfulPlacements")}</div>
               </div>
               <div>
                 <div className="text-3xl md:text-4xl font-bold text-teal-400 mb-2">
-                  25+
+                  {t("countriesCount")}
                 </div>
-                <div className="text-gray-300">Countries Worldwide</div>
+                <div className="text-gray-300">{t("countriesWorldwide")}</div>
               </div>
               <div>
                 <div className="text-3xl md:text-4xl font-bold text-orange-400 mb-2">
-                  98%
+                  {t("successRate")}
                 </div>
-                <div className="text-gray-300">Success Rate</div>
+                <div className="text-gray-300">{t("successRateLabel")}</div>
               </div>
             </motion.div>
           </motion.div>
         </div>
-
-      
       </section>
 
       {/* Video Modal */}
@@ -128,9 +127,8 @@ export function HeroSection() {
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
-             
               <p className="text-gray-300">
-               How to find a foreign job the easy way
+                {t("videoCaption")}
               </p>
             </div>
           </div>

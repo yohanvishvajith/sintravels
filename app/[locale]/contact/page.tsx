@@ -42,6 +42,7 @@ import {
   FileText,
   CheckCircle,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const contactInfo = [
   {
@@ -96,6 +97,7 @@ const colorClasses = {
 };
 
 export default function ContactPage() {
+  const t = useTranslations("ContactPage");
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const [formData, setFormData] = useState({
@@ -155,10 +157,10 @@ export default function ContactPage() {
           </Breadcrumb>
 
           <div className="mt-4">
-            <h1 className="text-3xl font-bold text-gray-900">Contact Us</h1>
-            <p className="text-gray-600 mt-2">
-              Get in touch with our expert team for personalized assistance
-            </p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              {t("headerTitle")}
+            </h1>
+            <p className="text-gray-600 mt-2">{t("headerSubtitle")}</p>
           </div>
         </div>
       </div>
@@ -173,25 +175,21 @@ export default function ContactPage() {
             className="max-w-3xl mx-auto"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Let's Start Your Journey Together
+              {t("heroTitle")}
             </h2>
-            <p className="text-xl text-blue-100 mb-8">
-              Whether you're seeking international career opportunities or
-              looking to hire top talent, our team is here to help you achieve
-              your goals.
-            </p>
+            <p className="text-xl text-blue-100 mb-8">{t("heroSubtitle")}</p>
             <div className="flex items-center justify-center gap-8 text-sm">
               <div className="flex items-center gap-2">
                 <MessageCircle className="h-5 w-5" />
-                <span>Quick Response</span>
+                <span>{t("quickResponse")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Globe className="h-5 w-5" />
-                <span>Global Expertise</span>
+                <span>{t("globalExpertise")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-5 w-5" />
-                <span>Proven Results</span>
+                <span>{t("provenResults")}</span>
               </div>
             </div>
           </motion.div>
@@ -209,10 +207,10 @@ export default function ContactPage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Get In Touch
+              {t("contactSectionTitle")}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Multiple ways to reach us for your convenience
+              {t("contactSectionSubtitle")}
             </p>
           </motion.div>
 
@@ -240,8 +238,13 @@ export default function ContactPage() {
                     >
                       <info.icon className="h-6 w-6" />
                     </div>
-                    <CardTitle className="text-xl">{info.title}</CardTitle>
-                    <CardDescription>{info.description}</CardDescription>
+                    <CardTitle className="text-xl">
+                      {t(info.title.toLowerCase() + "Title") ?? info.title}
+                    </CardTitle>
+                    <CardDescription>
+                      {t(info.title.toLowerCase() + "Description") ??
+                        info.description}
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     {info.details.map((detail, detailIndex) => (
@@ -274,12 +277,9 @@ export default function ContactPage() {
                 <CardHeader>
                   <CardTitle className="text-2xl flex items-center gap-2">
                     <Send className="h-6 w-6 text-blue-600" />
-                    Send us a Message
+                    {t("form.title")}
                   </CardTitle>
-                  <CardDescription>
-                    Fill out the form below and we'll get back to you within 24
-                    hours
-                  </CardDescription>
+                  <CardDescription>{t("form.description")}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {isSubmitted ? (
@@ -303,7 +303,7 @@ export default function ContactPage() {
                         <div className="space-y-2">
                           <Label htmlFor="name">
                             <User className="h-4 w-4 inline mr-1" />
-                            Full Name *
+                            {t("form.nameLabel")}
                           </Label>
                           <Input
                             id="name"
@@ -311,14 +311,14 @@ export default function ContactPage() {
                             onChange={(e) =>
                               handleInputChange("name", e.target.value)
                             }
-                            placeholder="Enter your full name"
+                            placeholder={t("form.namePlaceholder")}
                             required
                           />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="email">
                             <Mail className="h-4 w-4 inline mr-1" />
-                            Email Address *
+                            {t("form.emailLabel")}
                           </Label>
                           <Input
                             id="email"
@@ -327,7 +327,7 @@ export default function ContactPage() {
                             onChange={(e) =>
                               handleInputChange("email", e.target.value)
                             }
-                            placeholder="Enter your email"
+                            placeholder={t("form.emailPlaceholder")}
                             required
                           />
                         </div>
@@ -337,7 +337,7 @@ export default function ContactPage() {
                         <div className="space-y-2">
                           <Label htmlFor="phone">
                             <Phone className="h-4 w-4 inline mr-1" />
-                            Phone Number
+                            {t("form.phoneLabel")}
                           </Label>
                           <Input
                             id="phone"
@@ -345,13 +345,13 @@ export default function ContactPage() {
                             onChange={(e) =>
                               handleInputChange("phone", e.target.value)
                             }
-                            placeholder="Enter your phone number"
+                            placeholder={t("form.phonePlaceholder")}
                           />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="company">
                             <Building className="h-4 w-4 inline mr-1" />
-                            Company (Optional)
+                            {t("form.companyLabel")}
                           </Label>
                           <Input
                             id="company"
@@ -359,7 +359,7 @@ export default function ContactPage() {
                             onChange={(e) =>
                               handleInputChange("company", e.target.value)
                             }
-                            placeholder="Enter company name"
+                            placeholder={t("form.companyPlaceholder")}
                           />
                         </div>
                       </div>
@@ -367,7 +367,7 @@ export default function ContactPage() {
                       <div className="space-y-2">
                         <Label htmlFor="service">
                           <FileText className="h-4 w-4 inline mr-1" />
-                          Service Interested In *
+                          {t("form.serviceLabel")}
                         </Label>
                         <Select
                           value={formData.service}
@@ -376,7 +376,9 @@ export default function ContactPage() {
                           }
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a service" />
+                            <SelectValue
+                              placeholder={t("form.servicePlaceholder")}
+                            />
                           </SelectTrigger>
                           <SelectContent>
                             {services.map((service) => (
@@ -391,7 +393,7 @@ export default function ContactPage() {
                       <div className="space-y-2">
                         <Label htmlFor="message">
                           <MessageCircle className="h-4 w-4 inline mr-1" />
-                          Message *
+                          {t("form.messageLabel")}
                         </Label>
                         <Textarea
                           id="message"
@@ -399,7 +401,7 @@ export default function ContactPage() {
                           onChange={(e) =>
                             handleInputChange("message", e.target.value)
                           }
-                          placeholder="Tell us about your requirements..."
+                          placeholder={t("form.messagePlaceholder")}
                           rows={5}
                           required
                         />
@@ -414,12 +416,12 @@ export default function ContactPage() {
                         {isSubmitting ? (
                           <>
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                            Sending...
+                            {t("form.sending")}
                           </>
                         ) : (
                           <>
                             <Send className="mr-2 h-4 w-4" />
-                            Send Message
+                            {t("form.sendMessage")}
                           </>
                         )}
                       </Button>
@@ -439,11 +441,9 @@ export default function ContactPage() {
                 <CardHeader>
                   <CardTitle className="text-2xl flex items-center gap-2">
                     <MapPin className="h-6 w-6 text-blue-600" />
-                    Find Our Office
+                    {t("mapTitle")}
                   </CardTitle>
-                  <CardDescription>
-                    Visit us at our headquarters in Kochchikade
-                  </CardDescription>
+                  <CardDescription>{t("mapDescription")}</CardDescription>
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="aspect-square bg-gray-100 rounded-b-lg overflow-hidden">
@@ -470,10 +470,10 @@ export default function ContactPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Frequently Asked Questions
+              {t("faq.title")}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Quick answers to common questions
+              {t("faq.subtitle")}
             </p>
           </div>
 
@@ -481,60 +481,44 @@ export default function ContactPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">
-                  How long does the placement process take?
+                  {t("faq.q1.question")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">
-                  The placement process typically takes 2-8 weeks depending on
-                  the position and visa requirements. We keep you updated
-                  throughout the entire process.
-                </p>
+                <p className="text-gray-600">{t("faq.q1.answer")}</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">
-                  Do you charge job seekers for your services?
+                  {t("faq.q2.question")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">
-                  No, our job placement services are completely free for job
-                  seekers. We are compensated by the employers who hire our
-                  candidates.
-                </p>
+                <p className="text-gray-600">{t("faq.q2.answer")}</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">
-                  Which countries do you place candidates in?
+                  {t("faq.q3.question")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">
-                  We have partnerships in 25+ countries including UAE, Saudi
-                  Arabia, Kuwait, Singapore, Canada, Australia, UK, and many
-                  more.
-                </p>
+                <p className="text-gray-600">{t("faq.q3.answer")}</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">
-                  Do you provide visa assistance?
+                  {t("faq.q4.question")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">
-                  Yes, we provide comprehensive visa assistance including
-                  documentation support, application guidance, and interview
-                  preparation.
-                </p>
+                <p className="text-gray-600">{t("faq.q4.answer")}</p>
               </CardContent>
             </Card>
           </div>

@@ -1,36 +1,37 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+
+import { useEffect, useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
 import { Users, Globe, Award, TrendingUp } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 const stats = [
   {
     icon: Users,
     value: 15000,
-    label: 'Job Placements',
+    labelKey: 'jobPlacements',
     suffix: '+',
     color: 'text-blue-600',
   },
   {
     icon: Globe,
     value: 25,
-    label: 'Countries',
+    labelKey: 'countries',
     suffix: '+',
     color: 'text-teal-600',
   },
   {
     icon: Award,
     value: 98,
-    label: 'Success Rate',
+    labelKey: 'successRate',
     suffix: '%',
     color: 'text-orange-600',
   },
   {
     icon: TrendingUp,
     value: 15,
-    label: 'Years Experience',
+    labelKey: 'yearsExperience',
     suffix: '+',
     color: 'text-purple-600',
   },
@@ -69,6 +70,7 @@ function AnimatedCounter({ value, duration = 2000 }: { value: number; duration?:
 }
 
 export function StatsSection() {
+  const t = useTranslations('StatsSection');
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
@@ -83,10 +85,10 @@ export function StatsSection() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Our Track Record Speaks
+            {t('title')}
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Numbers that reflect our commitment to excellence and success in connecting careers with opportunities.
+            {t('subtitle')}
           </p>
         </motion.div>
 
@@ -110,7 +112,7 @@ export function StatsSection() {
                 </div>
                 
                 <p className="text-gray-600 font-medium text-lg">
-                  {stat.label}
+                  {t(stat.labelKey)}
                 </p>
               </div>
             </motion.div>

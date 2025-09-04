@@ -1,5 +1,5 @@
 "use client";
-
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,15 +9,16 @@ import { Menu, Phone, Mail } from "lucide-react";
 import Image from "next/image";
 
 export function Navbar() {
+  const t = useTranslations("Navbar");
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
   const navigation = [
-    { name: "Home", href: "/" },
-    { name: "Jobs", href: "/jobs" },
-    { name: "Services", href: "/services" },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
+    { name: t("home"), href: "/" },
+    { name: t("jobs"), href: "/jobs" },
+    { name: t("services"), href: "/services" },
+    { name: t("about"), href: "/about" },
+    { name: t("contact"), href: "/contact" },
   ];
 
   const isActive = (href: string) => {
@@ -64,7 +65,7 @@ export function Navbar() {
 
           <div className="hidden md:flex items-center space-x-4">
             <Button asChild>
-              <Link href="/jobs">Find Jobs</Link>
+              <Link href="/jobs">{t("searchjobs")}</Link>
             </Button>
           </div>
 

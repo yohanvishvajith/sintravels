@@ -6,6 +6,10 @@ import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/sonner';
 import { QueryProvider } from '@/providers/query-provider';
 
+ import {NextIntlClientProvider, hasLocale} from 'next-intl';
+import {notFound} from 'next/navigation';
+import {routing} from '@/i18n/routing';
+ 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -19,14 +23,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function LocaleLayout({
   children,
+  params
 }: {
   children: React.ReactNode;
+   params: Promise<{locale: string}>;
 }) {
+   const {locale} = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html >
       <body className={inter.className}>
+         <NextIntlClientProvider>
         <QueryProvider>
           <div className="min-h-screen flex flex-col">
             <Navbar />
@@ -35,6 +46,7 @@ export default function RootLayout({
           </div>
           <Toaster />
         </QueryProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
