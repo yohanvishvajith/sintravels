@@ -10,9 +10,20 @@ datasource db {
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
-password String
+  username  String   @unique
+  password  String
+  phone     String?
+  profilePhoto String?
+  address   String?
   name      String?
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
+  applicants Applicant[]
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 // Jobs table added to match front-end job structure
@@ -25,17 +36,34 @@ model Job {
   flag        String?
   salaryMin   Int
   salaryMax   Int
+  ageMin   Int
+  ageMax   Int
   currency    String
   type        String
   industry    String?
   experience  String?
-  postedAt    DateTime @default(now())
   description String
   // requirements is stored as JSON (array of strings)
   requirements Json
-  remote      Boolean  @default(false)
-  applicants  Int      @default(0)
-
+  applicantsCount  Int      @default(0)
+  // benefits stored as JSON array of strings
+  benefits     Json?
+  closingDate DateTime 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  applicants Applicant[]
+}
+
+model Applicant {
+  id         String   @id @default(cuid())
+  // link to the user who applied
+  userId     Int?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // optional resume file path
+  resumePath String?
+  coverNote  String?
+  jobId      String
+  job        Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  @@unique([userId, jobId])
 }

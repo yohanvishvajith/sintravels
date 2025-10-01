@@ -16,67 +16,7 @@ import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-// Mock job data
-const mockJobs = [
-  {
-    id: "1",
-    title: "Senior Software Engineer",
-    company: "TechCorp Solutions",
-    location: "Singapore",
-    country: "Singapore",
-    flag: "🇸🇬",
-    salary: { min: 80000, max: 120000, currency: "SGD" },
-    type: "Full-time",
-    industry: "Technology",
-    experience: "Senior",
-    postedDate: "2024-01-15",
-    description:
-      "Join our innovative team to build cutting-edge software solutions...",
-    requirements: [
-      "5+ years React/Node.js",
-      "AWS experience",
-      "Team leadership",
-    ],
-    remote: false,
-  },
-  {
-    id: "2",
-    title: "Marketing Manager",
-    company: "Global Marketing Inc",
-    location: "Toronto",
-    country: "Canada",
-    flag: "🇨🇦",
-    salary: { min: 70000, max: 90000, currency: "CAD" },
-    type: "Full-time",
-    industry: "Marketing",
-    experience: "Mid-level",
-    postedDate: "2024-01-14",
-    description: "Lead marketing campaigns for international markets...",
-    requirements: [
-      "Digital marketing experience",
-      "Campaign management",
-      "Analytics",
-    ],
-    remote: true,
-  },
-  // Add more mock jobs to demonstrate pagination
-  ...Array.from({ length: 20 }, (_, i) => ({
-    id: `${i + 3}`,
-    title: `Job Title ${i + 3}`,
-    company: `Company ${i + 3}`,
-    location: "Remote",
-    country: "Global",
-    flag: "🌍",
-    salary: { min: 60000 + i * 5000, max: 90000 + i * 5000, currency: "USD" },
-    type: "Full-time",
-    industry: "Technology",
-    experience: "Mid-level",
-    postedDate: "2024-01-10",
-    description: `Exciting opportunity for job ${i + 3}...`,
-    requirements: ["React", "JavaScript", "CSS"],
-    remote: true,
-  })),
-];
+// The page now strictly relies on the API for job data. No mock data.
 
 export default function JobsPage() {
   const t = useTranslations("JobsPage");
@@ -94,14 +34,52 @@ export default function JobsPage() {
     remote: false,
   });
 
-  // Simulate loading jobs
+  // Load jobs from the API and map DB structure to UI structure
   useEffect(() => {
     const loadJobs = async () => {
       setLoading(true);
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setJobs(mockJobs);
-      setLoading(false);
+      try {
+        const res = await fetch("/api/jobs");
+        if (!res.ok) throw new Error("API error");
+        const data = await res.json();
+        if (data?.ok && Array.isArray(data.jobs)) {
+          const mapped = data.jobs.map((j: any) => ({
+            id: j.id,
+            title: j.title,
+            company: j.company,
+            location: j.location,
+            country: j.country,
+            flag: j.flag ?? "🌍",
+            salary: {
+              min: j.salaryMin,
+              max: j.salaryMax,
+              currency: j.currency,
+            },
+            type: j.type,
+            industry: j.industry,
+            experience: j.experience,
+            postedDate:
+              j.postedAt || j.createdAt
+                ? new Date(j.postedAt || j.createdAt)
+                    .toISOString()
+                    .split("T")[0]
+                : new Date().toISOString().split("T")[0],
+            description: j.description,
+            requirements: Array.isArray(j.requirements) ? j.requirements : [],
+            benefits: Array.isArray(j.benefits) ? j.benefits : [],
+            remote: j.remote ?? false,
+          }));
+          setJobs(mapped);
+        } else {
+          // no jobs returned
+          setJobs([]);
+        }
+      } catch (err) {
+        console.error("Failed to load jobs from API", err);
+        setJobs([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     loadJobs();

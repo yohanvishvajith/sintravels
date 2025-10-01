@@ -50,6 +50,7 @@ import {
   Building2,
   ExternalLink,
 } from "lucide-react";
+import ProfileBadge from "@/components/auth/profile-badge";
 
 type Job = {
   id: number;
@@ -120,31 +121,6 @@ export default function AdminJobsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-3">
-              <Building2 className="h-8 w-8 text-blue-600" />
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  Admin Dashboard
-                </h1>
-                <p className="text-sm text-gray-600">SIN Travels & Manpower</p>
-              </div>
-            </div>
-            <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-              <Users className="h-3 w-3 mr-1" />
-              {jobs.reduce(
-                (total, job) => total + job.applicants.length,
-                0
-              )}{" "}
-              Total Applicants
-            </Badge>
-          </div>
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Jobs List Section */}
         <Card>
