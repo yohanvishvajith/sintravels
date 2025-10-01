@@ -23,6 +23,7 @@ jobs:
           cd ${{ secrets.DO_PATH }}
           git pull origin main
           npm install --production
+          npx prisma db push
           npm run build
           pm2 restart sintravels
           EOF
