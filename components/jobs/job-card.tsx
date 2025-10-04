@@ -94,9 +94,19 @@ export function JobCard({ job }: JobCardProps) {
       <div className="bg-white rounded-xl w-full h-full overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
         <div className="bg-blue-600 p-4 text-white">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
-              <i className="fas fa-briefcase text-2xl text-blue-600"></i>
-            </div>
+            {job.flag ? (
+              <div className="w-12 h-12 bg-white rounded-lg overflow-hidden flex items-center justify-center">
+                <img
+                  src={job.flag}
+                  alt={`${job.country || job.location} flag`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
+                <i className="fas fa-briefcase text-2xl text-blue-600"></i>
+              </div>
+            )}
             <div>
               <h2 className="text-lg font-bold">{job.title}</h2>
               <p className="text-blue-100 text-sm">{job.company}</p>
@@ -134,8 +144,6 @@ export function JobCard({ job }: JobCardProps) {
             </span>
           </div>
 
-       
-
           {/* Additional details summary (brief) */}
           <div className="text-sm text-gray-700 mb-3">
             <div className="grid grid-cols-2 gap-2">
@@ -146,14 +154,14 @@ export function JobCard({ job }: JobCardProps) {
                   <span>{job.country || job.location || "Dubai"}</span>
                 </div>
               </div>
-               <div className="flex items-center">
+              <div className="flex items-center">
                 <span className="mr-2">🛂</span>
                 <div>
                   <strong>Visa :</strong>{" "}
                   <span>{job.visaCategory || "Not specified"}</span>
                 </div>
               </div>
-              
+
               <div className="flex items-center">
                 <span className="mr-2">🎂</span>
                 <div>
@@ -167,29 +175,27 @@ export function JobCard({ job }: JobCardProps) {
                   <strong>Gender:</strong> {job.gender ?? "Male"}
                 </div>
               </div>
-                <div className="flex items-center col-span-2">
+              <div className="flex items-center col-span-2">
                 <span className="mr-2">💰</span>
                 <div>
                   <strong>Salary:</strong>{" "}
                   {(() => {
-                  const min = job.salary?.min ?? job.salaryMin ?? 250;
-                  const max = job.salary?.max ?? job.salaryMax ?? null;
-                  const curr = job.salary?.currency ?? job.currency ?? "$";
-                  const fmt = (n: number) => n.toLocaleString();
-                  if (max == null || max === 0) {
-                    if (curr) return `${curr} ${fmt(min)} + OT`;
-                    return `$${fmt(min)} + OT`;
-                  }
-                  return `${curr} ${fmt(min)} – ${curr} ${fmt(max)}`;
+                    const min = job.salary?.min ?? job.salaryMin ?? 250;
+                    const max = job.salary?.max ?? job.salaryMax ?? null;
+                    const curr = job.salary?.currency ?? job.currency ?? "$";
+                    const fmt = (n: number) => n.toLocaleString();
+                    if (max == null || max === 0) {
+                      if (curr) return `${curr} ${fmt(min)} + OT`;
+                      return `$${fmt(min)} + OT`;
+                    }
+                    return `${curr} ${fmt(min)} – ${curr} ${fmt(max)}`;
                   })()}
                 </div>
-                </div>
+              </div>
             </div>
           </div>
 
-          <div className="mb-3">
-            
-          </div>
+          <div className="mb-3"></div>
 
           <div className="mt-auto">
             <div className="flex flex-col sm:flex-row gap-2">

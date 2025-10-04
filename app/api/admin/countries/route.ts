@@ -25,7 +25,10 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     const country = await (prisma as any).country.create({
-      data: { name: String(body.name) },
+      data: {
+        name: String(body.name),
+        flagimg: body.flagimg ? String(body.flagimg) : null,
+      },
     });
     return new Response(JSON.stringify({ ok: true, country }), { status: 201 });
   } catch (err) {
@@ -46,7 +49,10 @@ export async function PUT(req: Request) {
       );
     const country = await (prisma as any).country.update({
       where: { id: Number(body.id) },
-      data: { name: String(body.name || "") },
+      data: {
+        name: String(body.name || ""),
+        flagimg: body.flagimg ? String(body.flagimg) : null,
+      },
     });
     return new Response(JSON.stringify({ ok: true, country }), { status: 200 });
   } catch (err) {

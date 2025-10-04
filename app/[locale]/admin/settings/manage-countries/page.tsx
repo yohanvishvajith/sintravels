@@ -21,23 +21,30 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
-type Country = { id: number; name: string };
+type Country = { id: number; name: string; flagimg?: string };
 
 export default function LocaleAdminManageCountries() {
   const [items, setItems] = useState<Country[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [editing, setEditing] = useState<Country | null>(null);
   const [value, setValue] = useState("");
+  const [flag, setFlag] = useState("");
+  const [preview, setPreview] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const openAdd = () => {
     setEditing(null);
     setValue("");
+    setFlag("");
+    setPreview(null);
     setIsOpen(true);
   };
 
   const openEdit = (it: Country) => {
     setEditing(it);
     setValue(it.name);
+    setFlag(it.flagimg || "");
+    setPreview(it.flagimg || null);
     setIsOpen(true);
   };
 
@@ -48,7 +55,7 @@ export default function LocaleAdminManageCountries() {
         const res = await fetch("/api/admin/countries", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: editing.id, name: value }),
+          body: JSON.stringify({ id: editing.id, name: value, flagimg: flag }),
         });
         const data = await res.json();
         if (data.ok) {
@@ -60,7 +67,7 @@ export default function LocaleAdminManageCountries() {
         const res = await fetch("/api/admin/countries", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: value }),
+          body: JSON.stringify({ name: value, flagimg: flag }),
         });
         const data = await res.json();
         if (data.ok) {
@@ -70,6 +77,28 @@ export default function LocaleAdminManageCountries() {
       setIsOpen(false);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleFile = async (file?: File) => {
+    if (!file) return;
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/admin/uploads", {
+        method: "POST",
+        body: fd,
+      });
+      const data = await res.json();
+      if (data.ok && data.url) {
+        setFlag(data.url);
+        setPreview(data.url);
+      }
+    } catch (err) {
+      console.error("Upload failed", err);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -120,6 +149,7 @@ export default function LocaleAdminManageCountries() {
           <TableHeader>
             <TableRow>
               <TableHead>Country</TableHead>
+              <TableHead>Flag</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -127,6 +157,17 @@ export default function LocaleAdminManageCountries() {
             {items.map((b) => (
               <TableRow key={b.id}>
                 <TableCell>{b.name}</TableCell>
+                <TableCell>
+                  {b.flagimg ? (
+                    <img
+                      src={b.flagimg}
+                      alt={`${b.name} flag`}
+                      className="h-6"
+                    />
+                  ) : (
+                    <span className="text-sm text-gray-500">-</span>
+                  )}
+                </TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
                     <Button
@@ -166,6 +207,27 @@ export default function LocaleAdminManageCountries() {
               onChange={(e) => setValue(e.target.value)}
               placeholder="Country name"
             />
+            <div className="mt-2 space-y-2">
+              <div className="flex items-center space-x-2">
+                <input
+                  id="flag-file"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) handleFile(f);
+                  }}
+                />
+                {uploading && (
+                  <span className="text-sm text-gray-500">Uploading...</span>
+                )}
+              </div>
+              {preview ? (
+                <div className="mt-2">
+                  <img src={preview} alt="flag preview" className="h-8" />
+                </div>
+              ) : null}
+            </div>
           </div>
 
           <DialogFooter className="mt-4">

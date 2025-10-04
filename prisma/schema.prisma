@@ -34,7 +34,6 @@ model Job {
   company     String
   location    String
   country     String
-  flag        String?
   salaryMin   Int
   salaryMax   Int?
   vacancies   Int      @default(1)
@@ -97,6 +96,7 @@ model Benefit {
 model Country {
   id        Int      @id @default(autoincrement())
   name      String   @unique
+  flagimg   String?
   createdAt DateTime @default(now())
 }
 

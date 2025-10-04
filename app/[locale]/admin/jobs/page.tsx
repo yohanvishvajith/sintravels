@@ -89,6 +89,7 @@ export default function LocaleAdminJobs() {
   >([]);
   // Requirements (array of strings) for the job form
   const [requirements, setRequirements] = useState<string[]>([]);
+  const [step, setStep] = useState<number>(1);
 
   useEffect(() => {
     let mounted = true;
@@ -420,6 +421,7 @@ export default function LocaleAdminJobs() {
             setOpen(isOpen);
             if (!isOpen) {
               resetForm();
+              setStep(1);
             }
           }}
         >
@@ -430,340 +432,397 @@ export default function LocaleAdminJobs() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-2xl">
             <DialogHeader>
-              <DialogTitle>{editingId ? "Edit Job" : "Post a Job"}</DialogTitle>
+              <DialogTitle>
+                {editingId ? "Edit Job" : "Post a Job"} {""}
+                <span className="text-sm text-gray-500">
+                  (Step {step} of 2)
+                </span>
+              </DialogTitle>
             </DialogHeader>
 
             <form onSubmit={handleAdd} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                  <Label htmlFor="title">Job Title</Label>
-                  <Input
-                    id="title"
-                    name="title"
-                    value={form.title || ""}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="company">Company</Label>
-                  <Input
-                    id="company"
-                    name="company"
-                    value={form.company || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="country">Country</Label>
-                  <select
-                    id="country"
-                    name="country"
-                    value={form.country || ""}
-                    onChange={handleChange}
-                    className="w-full rounded border px-2 py-1"
-                  >
-                    <option value="">Select country</option>
-                    {countries.map((c) => (
-                      <option key={c.id} value={c.name}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-2 gap-3">
-                  <div>
-                    <Label htmlFor="industry">Industry</Label>
-                    <select
-                      id="industry"
-                      name="industry"
-                      value={(form as any).industry || ""}
-                      onChange={handleChange}
-                      className="w-full rounded border px-2 py-1"
-                    >
-                      <option value="">Select industry</option>
-                      {industriesList.map((i) => (
-                        <option key={i.id} value={i.name}>
-                          {i.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <Label htmlFor="closingDate">Closing Date</Label>
-                    <Input
-                      id="closingDate"
-                      name="closingDate"
-                      type="date"
-                      value={form.closingDate || ""}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-                <div>
-                  <Label htmlFor="vacancies">Vacancies</Label>
-                  <Input
-                    id="vacancies"
-                    name="vacancies"
-                    value={form.vacancies ?? ""}
-                    onChange={handleChange}
-                    type="number"
-                    placeholder="e.g. 1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="holidays">Holidays</Label>
-                  <select
-                    id="holidays"
-                    name="holidays"
-                    value={(form as any).holidays ?? "sunday"}
-                    onChange={handleChange}
-                    className="w-full rounded border px-2 py-1"
-                  >
-                    <option value="saturday">Saturday</option>
-                    <option value="sunday">Sunday</option>
-                    <option value="weekends">Weekends</option>
-                  </select>
-                </div>
-                <div>
-                  <Label htmlFor="type">Working Hours</Label>
-                  <Input
-                    id="type"
-                    name="type"
-                    placeholder="e.g. Full-time / Part-time"
-                    value={form.type || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="visaCategory">Visa Category</Label>
-                  <Input
-                    id="visaCategory"
-                    name="visaCategory"
-                    placeholder="e.g. Employment Visa"
-                    value={(form as any).visaCategory || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="contractPeriod">Contract Period</Label>
-                  <Input
-                    id="contractPeriod"
-                    name="contractPeriod"
-                    placeholder="e.g. 2 years"
-                    value={(form as any).contractPeriod || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="gender">Gender</Label>
-                  <select
-                    id="gender"
-                    name="gender"
-                    value={form.gender || "both"}
-                    onChange={handleChange}
-                    className="w-full rounded border px-2 py-1"
-                  >
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="both">Both</option>
-                  </select>
-                </div>
-
-                <div>
-                  <Label htmlFor="experience">Experience</Label>
-                  <select
-                    id="experience"
-                    name="experience"
-                    value={form.experience || "No experience"}
-                    onChange={handleChange}
-                    className="w-full rounded border px-2 py-1"
-                  >
-                    <option>No experience</option>
-                    <option>1 year</option>
-                    <option>2 year</option>
-                    <option>3 year</option>
-                    <option>4 year</option>
-                    <option>5 year</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-                <div>
-                  <Label htmlFor="ageMin">Min Age</Label>
-                  <Input
-                    id="ageMin"
-                    name="ageMin"
-                    type="number"
-                    value={form.ageMin ?? ""}
-                    onChange={handleChange}
-                    placeholder="e.g. 21"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="ageMax">Max Age</Label>
-                  <Input
-                    id="ageMax"
-                    name="ageMax"
-                    type="number"
-                    value={form.ageMax ?? ""}
-                    onChange={handleChange}
-                    placeholder="e.g. 45"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="currency">Currency</Label>
-                  <select
-                    id="currency"
-                    name="currency"
-                    value={form.currency || "Qatar riyal"}
-                    onChange={handleChange}
-                    className="w-full rounded border px-2 py-1"
-                  >
-                    <option value="LKR">LKR</option>
-                    <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="QAR">QAR</option>
-                    <option value="KWD">KWD</option>
-                    <option value="SAR">SAR</option>
-                    <option value="OMR">OMR</option>
-                    <option value="JPY">JPY</option>
-                    <option value="AED">AED</option>
-                  </select>
-                </div>
-                <div>
-                  <Label htmlFor="salaryMin">Salary Min</Label>
-                  <Input
-                    id="salaryMin"
-                    name="salaryMin"
-                    type="number"
-                    value={form.salaryMin ?? ""}
-                    onChange={handleChange}
-                    placeholder="e.g. 30000"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="salaryMax">Salary Max</Label>
-                  <Input
-                    id="salaryMax"
-                    name="salaryMax"
-                    type="number"
-                    value={form.salaryMax ?? ""}
-                    onChange={handleChange}
-                    placeholder="e.g. 60000"
-                  />
-                </div>
-              </div>
-
-              {/* Benefits Section */}
-              <div className="space-y-3">
-                <Label>Available Benefits</Label>
-                <div className="grid grid-cols-2 gap-2 max-h-32 overflow-auto border rounded p-3">
-                  {availableBenefits.length === 0 ? (
-                    <div className="col-span-2 text-sm text-gray-500 text-center py-2">
-                      No benefits available
-                    </div>
-                  ) : (
-                    availableBenefits.map((benefit) => (
-                      <div
-                        key={benefit.id}
-                        className="flex items-center space-x-2"
-                      >
-                        <Checkbox
-                          id={`benefit-${benefit.id}`}
-                          checked={selectedBenefits.includes(benefit.id)}
-                          onCheckedChange={(checked: boolean) => {
-                            if (checked) {
-                              setSelectedBenefits((prev) => [
-                                ...prev,
-                                benefit.id,
-                              ]);
-                            } else {
-                              setSelectedBenefits((prev) =>
-                                prev.filter((id) => id !== benefit.id)
-                              );
-                            }
-                          }}
-                        />
-                        <Label
-                          htmlFor={`benefit-${benefit.id}`}
-                          className="text-sm font-normal cursor-pointer"
-                        >
-                          {benefit.name}
-                        </Label>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <Label>Requirements</Label>
-                <div className="space-y-2 mb-3">
-                  {requirements.map((req, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
+              {step === 1 && (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <Label htmlFor="title">Job Title</Label>
                       <Input
-                        value={req}
-                        onChange={(e) => {
-                          const v = e.target.value;
-                          setRequirements((prev) => {
-                            const copy = [...prev];
-                            copy[idx] = v;
-                            return copy;
-                          });
-                        }}
-                        placeholder={`Requirement ${idx + 1}`}
+                        id="title"
+                        name="title"
+                        value={form.title || ""}
+                        onChange={handleChange}
+                        required
                       />
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() =>
-                          setRequirements((prev) =>
-                            prev.filter((_, i) => i !== idx)
-                          )
-                        }
+                    </div>
+
+                    <div>
+                      <Label htmlFor="company">Company</Label>
+                      <Input
+                        id="company"
+                        name="company"
+                        value={form.company || ""}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="country">Country</Label>
+                      <select
+                        id="country"
+                        name="country"
+                        value={form.country || ""}
+                        onChange={handleChange}
+                        className="w-full rounded border px-2 py-1"
                       >
-                        Remove
+                        <option value="">Select country</option>
+                        {countries.map((c) => (
+                          <option key={c.id} value={c.name}>
+                            {c.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-2 gap-3">
+                      <div>
+                        <Label htmlFor="industry">Industry</Label>
+                        <select
+                          id="industry"
+                          name="industry"
+                          value={(form as any).industry || ""}
+                          onChange={handleChange}
+                          className="w-full rounded border px-2 py-1"
+                        >
+                          <option value="">Select industry</option>
+                          {industriesList.map((i) => (
+                            <option key={i.id} value={i.name}>
+                              {i.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <Label htmlFor="closingDate">Closing Date</Label>
+                        <Input
+                          id="closingDate"
+                          name="closingDate"
+                          type="date"
+                          value={form.closingDate || ""}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                    <div>
+                      <Label htmlFor="vacancies">Vacancies</Label>
+                      <Input
+                        id="vacancies"
+                        name="vacancies"
+                        value={form.vacancies ?? ""}
+                        onChange={handleChange}
+                        type="number"
+                        placeholder="e.g. 1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="holidays">Holidays</Label>
+                      <select
+                        id="holidays"
+                        name="holidays"
+                        value={(form as any).holidays ?? "sunday"}
+                        onChange={handleChange}
+                        className="w-full rounded border px-2 py-1"
+                      >
+                        <option value="saturday">Saturday</option>
+                        <option value="sunday">Sunday</option>
+                        <option value="weekends">Weekends</option>
+                      </select>
+                    </div>
+                    <div>
+                      <Label htmlFor="type">Working Hours</Label>
+                      <Input
+                        id="type"
+                        name="type"
+                        placeholder="e.g. Full-time / Part-time"
+                        value={form.type || ""}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="visaCategory">Visa Category</Label>
+                      <select
+                        id="visaCategory"
+                        name="visaCategory"
+                        value={(form as any).visaCategory || ""}
+                        onChange={handleChange}
+                        className="w-full rounded border px-2 py-1"
+                      >
+                        <option value="Job">Job Visa</option>
+                        <option value="Visit">Visit Visa</option>
+                      </select>
+                    </div>
+                    <div>
+                      <Label htmlFor="contractPeriod">Contract Period</Label>
+                      <select
+                        id="contractPeriod"
+                        name="contractPeriod"
+                        value={(form as any).contractPeriod || ""}
+                        onChange={handleChange}
+                        className="w-full rounded border px-2 py-1"
+                      >
+                        <option value="2 years">2 years</option>
+                        <option value="3 years">3 years</option>
+                        <option value="4 years">4 years</option>
+                        <option value="5 years">5 years</option>
+                      </select>
+                    </div>
+                    <div>
+                      <Label htmlFor="gender">Gender</Label>
+                      <select
+                        id="gender"
+                        name="gender"
+                        value={form.gender || "both"}
+                        onChange={handleChange}
+                        className="w-full rounded border px-2 py-1"
+                      >
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="both">Both</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="experience">Experience</Label>
+                      <select
+                        id="experience"
+                        name="experience"
+                        value={form.experience || "No experience"}
+                        onChange={handleChange}
+                        className="w-full rounded border px-2 py-1"
+                      >
+                        <option>No experience</option>
+                        <option>1 year</option>
+                        <option>2 year</option>
+                        <option>3 year</option>
+                        <option>4 year</option>
+                        <option>5 year</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                    <div>
+                      <Label htmlFor="ageMin">Min Age</Label>
+                      <Input
+                        id="ageMin"
+                        name="ageMin"
+                        type="number"
+                        value={form.ageMin ?? ""}
+                        onChange={handleChange}
+                        placeholder="e.g. 21"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="ageMax">Max Age</Label>
+                      <Input
+                        id="ageMax"
+                        name="ageMax"
+                        type="number"
+                        value={form.ageMax ?? ""}
+                        onChange={handleChange}
+                        placeholder="e.g. 45"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="currency">Currency</Label>
+                      <select
+                        id="currency"
+                        name="currency"
+                        value={form.currency || "Qatar riyal"}
+                        onChange={handleChange}
+                        className="w-full rounded border px-2 py-1"
+                      >
+                        <option value="LKR">LKR</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="QAR">QAR</option>
+                        <option value="KWD">KWD</option>
+                        <option value="SAR">SAR</option>
+                        <option value="OMR">OMR</option>
+                        <option value="JPY">JPY</option>
+                        <option value="AED">AED</option>
+                      </select>
+                    </div>
+                    <div>
+                      <Label htmlFor="salaryMin">Salary Min</Label>
+                      <Input
+                        id="salaryMin"
+                        name="salaryMin"
+                        type="number"
+                        value={form.salaryMin ?? ""}
+                        onChange={handleChange}
+                        placeholder="e.g. 30000"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="salaryMax">Salary Max</Label>
+                      <Input
+                        id="salaryMax"
+                        name="salaryMax"
+                        type="number"
+                        value={form.salaryMax ?? ""}
+                        onChange={handleChange}
+                        placeholder="e.g. 60000"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Benefits Section */}
+                  <div className="space-y-3">
+                    <Label>Available Benefits</Label>
+                    <div className="grid grid-cols-2 gap-2 max-h-32 overflow-auto border rounded p-3">
+                      {availableBenefits.length === 0 ? (
+                        <div className="col-span-2 text-sm text-gray-500 text-center py-2">
+                          No benefits available
+                        </div>
+                      ) : (
+                        availableBenefits.map((benefit) => (
+                          <div
+                            key={benefit.id}
+                            className="flex items-center space-x-2"
+                          >
+                            <Checkbox
+                              id={`benefit-${benefit.id}`}
+                              checked={selectedBenefits.includes(benefit.id)}
+                              onCheckedChange={(checked: boolean) => {
+                                if (checked) {
+                                  setSelectedBenefits((prev) => [
+                                    ...prev,
+                                    benefit.id,
+                                  ]);
+                                } else {
+                                  setSelectedBenefits((prev) =>
+                                    prev.filter((id) => id !== benefit.id)
+                                  );
+                                }
+                              }}
+                            />
+                            <Label
+                              htmlFor={`benefit-${benefit.id}`}
+                              className="text-sm font-normal cursor-pointer"
+                            >
+                              {benefit.name}
+                            </Label>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Step 2: Requirements + Description */}
+              {step === 2 && (
+                <div>
+                  <Label>Requirements</Label>
+                  <div className="space-y-2 mb-3">
+                    {requirements.map((req, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        <Input
+                          value={req}
+                          onChange={(e) => {
+                            const v = e.target.value;
+                            setRequirements((prev) => {
+                              const copy = [...prev];
+                              copy[idx] = v;
+                              return copy;
+                            });
+                          }}
+                          placeholder={`Requirement ${idx + 1}`}
+                        />
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() =>
+                            setRequirements((prev) =>
+                              prev.filter((_, i) => i !== idx)
+                            )
+                          }
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    ))}
+                    <div>
+                      <Button
+                        type="button"
+                        onClick={() => setRequirements((prev) => [...prev, ""])}
+                      >
+                        Add requirement
                       </Button>
                     </div>
-                  ))}
-                  <div>
-                    <Button
-                      type="button"
-                      onClick={() => setRequirements((prev) => [...prev, ""])}
-                    >
-                      Add requirement
-                    </Button>
                   </div>
-                </div>
 
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  value={form.description || ""}
-                  onChange={handleChange}
-                  className="min-h-[120px]"
-                />
-              </div>
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    name="description"
+                    value={form.description || ""}
+                    onChange={handleChange}
+                    className="min-h-[120px]"
+                  />
+                </div>
+              )}
 
               <div className="flex justify-end space-x-2 pt-2">
-                <Button
-                  variant="outline"
-                  type="button"
-                  onClick={() => setOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                  {editingId ? "Update Job" : "Post Job"}
-                </Button>
+                {step === 1 ? (
+                  <>
+                    <Button
+                      variant="outline"
+                      type="button"
+                      onClick={() => {
+                        setOpen(false);
+                        resetForm();
+                        setStep(1);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="button"
+                      className="bg-blue-600 hover:bg-blue-700"
+                      onClick={(e) => {
+                        // Basic validation before moving to step 2
+                        e.preventDefault();
+                        if (!form.title || String(form.title).trim() === "") {
+                          setError("Job title is required");
+                          return;
+                        }
+                        setError(null);
+                        setStep(2);
+                      }}
+                    >
+                      Next
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      variant="outline"
+                      type="button"
+                      onClick={() => setStep(1)}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      type="submit"
+                      className="bg-blue-600 hover:bg-blue-700"
+                    >
+                      {editingId ? "Update Job" : "Post Job"}
+                    </Button>
+                  </>
+                )}
               </div>
             </form>
           </DialogContent>

@@ -23,7 +23,7 @@ export default function JobsPage() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [jobsPerPage] = useState(9); // 3x3 grid
+  const [jobsPerPage] = useState(12); // 3x4 grid (3 rows of 4)
   const [filters, setFilters] = useState({
     search: "",
     country: "",
@@ -33,6 +33,7 @@ export default function JobsPage() {
     type: "",
     remote: false,
   });
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   // Load jobs from the API and map DB structure to UI structure
   useEffect(() => {
@@ -116,17 +117,24 @@ export default function JobsPage() {
       const matchesSearch =
         job.title.toLowerCase().includes(filters.search.toLowerCase()) ||
         job.company.toLowerCase().includes(filters.search.toLowerCase());
+      const norm = (s: any) =>
+        s === null || s === undefined ? "" : String(s).toLowerCase().trim();
       const matchesCountry =
-        !filters.country || job.country === filters.country;
+        !filters.country || norm(job.country) === norm(filters.country);
       const matchesIndustry =
-        !filters.industry || job.industry === filters.industry;
+        !filters.industry || norm(job.industry) === norm(filters.industry);
       const matchesExperience =
-        !filters.experience || job.experience === filters.experience;
+        !filters.experience ||
+        norm(job.experience) === norm(filters.experience);
       const matchesType = !filters.type || job.type === filters.type;
       const matchesRemote = !filters.remote || job.remote === filters.remote;
-      const matchesSalary =
-        job.salary.min >= filters.salary[0] &&
-        job.salary.max <= filters.salary[1];
+      // salary filter: treat missing min as 0 and missing max as Infinity,
+      // and check for overlap between job salary range and filter range
+      const jobMin = job.salary?.min ?? 0;
+      const jobMax = job.salary?.max ?? Number.POSITIVE_INFINITY;
+      const filterMin = filters.salary[0] ?? 0;
+      const filterMax = filters.salary[1] ?? Number.POSITIVE_INFINITY;
+      const matchesSalary = jobMin <= filterMax && jobMax >= filterMin;
 
       return (
         matchesSearch &&
@@ -221,38 +229,44 @@ export default function JobsPage() {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters Sidebar */}
-          <div className="lg:w-1/4">
-            <JobFilters filters={filters} onFiltersChange={setFilters} />
-          </div>
-
-          {/* Job Listings */}
-          <div className="lg:w-3/4" id="jobs-section">
+        <div className="flex flex-col gap-8">
+          {/* Job Listings (filters moved to modal) */}
+          <div className="w-full" id="jobs-section">
             <div className="mb-6 flex justify-between items-center">
               <p className="text-gray-600">
                 {loading
                   ? t("loading")
                   : t.rich("jobsFound", { count: String(filteredJobs.length) })}
               </p>
-              {!loading && filteredJobs.length > 0 && (
-                <p className="text-sm text-gray-500">
-                  Page {currentPage} of {totalPages}
-                </p>
-              )}
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={() => setFiltersOpen(true)}
+                  className="inline-flex items-center px-3 py-1.5 bg-white border rounded-lg text-sm text-gray-700 hover:bg-gray-50"
+                  aria-label="Open filters"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 mr-2"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M3 5a1 1 0 011-1h12a1 1 0 01.707 1.707L12 11.414V16a1 1 0 01-1.447.894L7 15.118V11.414L3.293 5.707A1 1 0 013 5z" />
+                  </svg>
+                  Filters
+                </button>
+              </div>
             </div>
 
             {loading ? (
-              // Loading skeletons in grid
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {[...Array(9)].map((_, index) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {[...Array(jobsPerPage)].map((_, index) => (
                   <JobSkeleton key={index} />
                 ))}
               </div>
             ) : currentJobs.length > 0 ? (
               <>
                 {/* Job cards in flex grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                   {currentJobs.map((job, index) => (
                     <motion.div
                       key={job.id}
@@ -268,7 +282,7 @@ export default function JobsPage() {
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                  <div className="mt-8 flex justify-center">
+                  <div className="mt-8 flex flex-col items-center">
                     <nav className="flex items-center space-x-2">
                       {/* Previous Button */}
                       <button
@@ -320,6 +334,9 @@ export default function JobsPage() {
                         <ChevronRight className="w-4 h-4 ml-1" />
                       </button>
                     </nav>
+                    <p className="text-sm text-gray-500 mt-2">
+                      Page {currentPage} of {totalPages}
+                    </p>
                   </div>
                 )}
               </>
@@ -336,6 +353,58 @@ export default function JobsPage() {
           </div>
         </div>
       </div>
+
+      {/* Filters modal for small screens / when user clicks Filters button */}
+      {filtersOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setFiltersOpen(false);
+          }}
+        >
+          <div className="bg-white rounded-lg w-full max-w-lg p-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Filters</h3>
+              <button
+                onClick={() => setFiltersOpen(false)}
+                className="text-gray-500"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="max-h-[60vh] overflow-auto">
+              <JobFilters
+                filters={filters}
+                onFiltersChange={(f) => setFilters(f)}
+              />
+            </div>
+            <div className="mt-4 flex justify-end space-x-2">
+              <button
+                onClick={() =>
+                  setFilters({
+                    search: "",
+                    country: "",
+                    industry: "",
+                    experience: "",
+                    salary: [0, 200000],
+                    type: "",
+                    remote: false,
+                  })
+                }
+                className="px-3 py-1.5 rounded-lg bg-gray-100 text-sm"
+              >
+                Reset
+              </button>
+              <button
+                onClick={() => setFiltersOpen(false)}
+                className="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-sm"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

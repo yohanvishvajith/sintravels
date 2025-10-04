@@ -9,7 +9,6 @@ import { Menu, Phone, Mail } from "lucide-react";
 import Image from "next/image";
 import SignIn from "@/components/auth/sign-in";
 import SignUp from "@/components/auth/sign-up";
-import ProfileBadge from "@/components/auth/profile-badge";
 
 export function Navbar() {
   const t = useTranslations("Navbar");
@@ -99,14 +98,7 @@ export function Navbar() {
               </Button>
               <div className="flex items-center space-x-2">
                 {authUser ? (
-                  <div className="flex items-center space-x-2">
-                    {authUser?.role === "ADMIN" && (
-                      <Button asChild variant="outline">
-                        <Link href="/admin">Admin</Link>
-                      </Button>
-                    )}
-                    <ProfileBadge />
-                  </div>
+                  <></>
                 ) : (
                   <div className="flex items-center space-x-2">
                     <SignIn />
@@ -115,7 +107,6 @@ export function Navbar() {
                 )}
               </div>
             </div>
-
             {/* Mobile Navigation */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild className="md:hidden">
@@ -140,11 +131,6 @@ export function Navbar() {
                     </Link>
                   ))}
                   <div className="pt-4 border-t flex flex-col space-y-2">
-                    {authUser?.role === "ADMIN" && (
-                      <Button variant="outline" asChild>
-                        <Link href="/admin">Admin Portal</Link>
-                      </Button>
-                    )}
                     <Button asChild>
                       <Link href="/jobs">Find Jobs</Link>
                     </Button>

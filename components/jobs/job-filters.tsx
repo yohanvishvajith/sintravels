@@ -32,7 +32,7 @@ interface JobFiltersProps {
   onFiltersChange: (filters: any) => void;
 }
 
-const countries = [
+const countriesFallback = [
   { value: "Singapore", label: "Singapore", flag: "🇸🇬" },
   { value: "Canada", label: "Canada", flag: "🇨🇦" },
   { value: "Australia", label: "Australia", flag: "🇦🇺" },
@@ -41,7 +41,7 @@ const countries = [
   { value: "USA", label: "United States", flag: "🇺🇸" },
 ];
 
-const industries = [
+const industriesFallback = [
   "Technology",
   "Finance",
   "Healthcare",
@@ -59,10 +59,56 @@ const jobTypes = ["Full-time", "Part-time", "Contract", "Freelance"];
 export function JobFilters({ filters, onFiltersChange }: JobFiltersProps) {
   const [localSearch, setLocalSearch] = useState(filters.search);
   const debouncedSearch = useDebounce(localSearch, 300);
+  const [countriesList, setCountriesList] = useState<
+    {
+      value: string;
+      label: string;
+      flag?: string | null;
+    }[]
+  >(countriesFallback);
+  const [industriesList, setIndustriesList] =
+    useState<string[]>(industriesFallback);
 
   useEffect(() => {
     onFiltersChange({ ...filters, search: debouncedSearch });
   }, [debouncedSearch]);
+
+  // Load real countries and industries from admin APIs
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/countries");
+        const data = await res.json();
+        if (mounted && data?.ok && Array.isArray(data.countries)) {
+          const mapped = data.countries.map((c: any) => ({
+            value: String(c.name),
+            label: String(c.name),
+            flag: c.flagimg || null,
+          }));
+          setCountriesList(mapped);
+        }
+      } catch (e) {
+        // ignore and use fallback
+      }
+    })();
+
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/industries");
+        const data = await res.json();
+        if (mounted && data?.ok && Array.isArray(data.industries)) {
+          setIndustriesList(data.industries.map((i: any) => String(i.name)));
+        }
+      } catch (e) {
+        // ignore and use fallback
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const updateFilter = (key: string, value: any) => {
     onFiltersChange({ ...filters, [key]: value });
@@ -133,10 +179,22 @@ export function JobFilters({ filters, onFiltersChange }: JobFiltersProps) {
               <SelectValue placeholder="Select country" />
             </SelectTrigger>
             <SelectContent>
-              {countries.map((country) => (
+              {countriesList.map((country) => (
                 <SelectItem key={country.value} value={country.value}>
                   <div className="flex items-center space-x-2">
-                    <span>{country.flag}</span>
+                    <span>
+                      {country.flag &&
+                      (country.flag.startsWith("http") ||
+                        country.flag.startsWith("/")) ? (
+                        <img
+                          src={country.flag}
+                          alt={`${country.label} flag`}
+                          className="h-4 w-6 object-cover"
+                        />
+                      ) : (
+                        country.flag ?? ""
+                      )}
+                    </span>
                     <span>{country.label}</span>
                   </div>
                 </SelectItem>
@@ -156,7 +214,7 @@ export function JobFilters({ filters, onFiltersChange }: JobFiltersProps) {
               <SelectValue placeholder="Select industry" />
             </SelectTrigger>
             <SelectContent>
-              {industries.map((industry) => (
+              {industriesList.map((industry) => (
                 <SelectItem key={industry} value={industry}>
                   {industry}
                 </SelectItem>
