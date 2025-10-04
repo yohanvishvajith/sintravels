@@ -19,6 +19,7 @@ model User {
   role      Role     @default(USER)
   createdAt DateTime @default(now())
   applicants Applicant[]
+  
 }
 
 enum Role {
@@ -35,23 +36,37 @@ model Job {
   country     String
   flag        String?
   salaryMin   Int
-  salaryMax   Int
+  salaryMax   Int?
+  vacancies   Int      @default(1)
   ageMin   Int
   ageMax   Int
+  holidays    String      @default("sunday")
   currency    String
   type        String
   industry    String?
   experience  String?
+  visaCategory String?
+  contractPeriod String?
+  benefitsAddc String?
   description String
-  // requirements is stored as JSON (array of strings)
   requirements Json
   applicantsCount  Int      @default(0)
-  // benefits stored as JSON array of strings
-  benefits     Json?
   closingDate DateTime 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   applicants Applicant[]
+  jobBenefits JobBenefit[]
+}
+
+model JobBenefit {
+  id        Int      @id @default(autoincrement())
+  jobId     String
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  benefitId Int
+  benefit   Benefit  @relation(fields: [benefitId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@map("job_benifits")
 }
 
 model Applicant {
@@ -66,4 +81,28 @@ model Applicant {
   job        Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())
   @@unique([userId, jobId])
+}
+
+// Benefits stored separately for admin manage screen
+model Benefit {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  jobBenefits JobBenefit[]
+
+  @@map("benifits")
+}
+
+// Countries table for admin-managed countries
+model Country {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+}
+
+// Industries table for admin-managed industries
+model Industry {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
 }

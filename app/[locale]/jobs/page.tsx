@@ -40,8 +40,19 @@ export default function JobsPage() {
       setLoading(true);
       try {
         const res = await fetch("/api/jobs");
-        if (!res.ok) throw new Error("API error");
-        const data = await res.json();
+        // try to parse JSON body even when res.ok is false so we can show server errors
+        let data: any = null;
+        try {
+          data = await res.json();
+        } catch (e) {
+          console.error("/api/jobs returned non-JSON response", e);
+        }
+        if (!res.ok) {
+          const msg =
+            data && data.error ? data.error : `API error (${res.status})`;
+          console.error("/api/jobs error:", res.status, data);
+          throw new Error(msg);
+        }
         if (data?.ok && Array.isArray(data.jobs)) {
           const mapped = data.jobs.map((j: any) => ({
             id: j.id,
@@ -56,6 +67,7 @@ export default function JobsPage() {
               currency: j.currency,
             },
             type: j.type,
+            vacancies: j.vacancies ?? 0,
             industry: j.industry,
             experience: j.experience,
             postedDate:
@@ -66,8 +78,16 @@ export default function JobsPage() {
                 : new Date().toISOString().split("T")[0],
             description: j.description,
             requirements: Array.isArray(j.requirements) ? j.requirements : [],
+            // benefits are provided by the API (derived from jobBenefits relation)
             benefits: Array.isArray(j.benefits) ? j.benefits : [],
             remote: j.remote ?? false,
+            ageMin: j.ageMin ?? null,
+            ageMax: j.ageMax ?? null,
+            gender: j.gender ?? null,
+            dayOff: j.dayOff ?? null,
+            holidays: j.holidays ?? null,
+            visaCategory: j.visaCategory ?? null,
+            contractPeriod: j.contractPeriod ?? null,
           }));
           setJobs(mapped);
         } else {

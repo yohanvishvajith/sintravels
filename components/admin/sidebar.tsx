@@ -3,20 +3,48 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Briefcase, Users, Menu } from "lucide-react";
+import { Home, Briefcase, Users, Menu, Gift, ChevronDown } from "lucide-react";
 
 export default function AdminSidebar() {
   const pathname = usePathname() || "";
   const [open, setOpen] = React.useState(true);
 
+  // normalized pathname without locale prefix (e.g. /en/admin/jobs -> /admin/jobs)
+  const normalizedPath = (() => {
+    const m = pathname.match(/^\/([a-z]{2})(\/.*|$)/i);
+    return m ? m[2] || "/" : pathname;
+  })();
+
+  const [settingsOpen, setSettingsOpen] = React.useState(
+    normalizedPath.startsWith("/admin/settings")
+  );
+
   const items = [
     { key: "dashboard", label: "Dashboard", href: "/admin", icon: Home },
     { key: "jobs", label: "Jobs", href: "/admin/jobs", icon: Briefcase },
     {
-      key: "applicants",
-      label: "Applicants",
-      href: "/admin/applicants",
+      key: "settings",
+      label: "Settings",
+      href: "/admin/settings",
       icon: Users,
+    },
+    {
+      key: "settings-manage-benefits",
+      label: "Manage Benefits",
+      href: "/admin/settings/manage-benefits",
+      icon: Gift,
+    },
+    {
+      key: "settings-manage-countries",
+      label: "Manage Countries",
+      href: "/admin/settings/manage-countries",
+      icon: Menu,
+    },
+    {
+      key: "settings-manage-industries",
+      label: "Manage Industries",
+      href: "/admin/settings/manage-industries",
+      icon: Menu,
     },
   ];
 
@@ -41,47 +69,134 @@ export default function AdminSidebar() {
 
         <nav className="flex-1 p-2">
           <ul className="space-y-1">
-            {items.map((it) => {
-              const Icon = it.icon;
+            {items
+              // top-level items: those that are not settings subpages
+              .filter(
+                (it) =>
+                  !it.href.startsWith("/admin/settings/") ||
+                  it.href === "/admin/settings"
+              )
+              .map((it) => {
+                const Icon = it.icon;
 
-              // remove optional two-letter locale prefix (e.g. /en/admin/jobs -> /admin/jobs)
-              const normalized = (() => {
-                const m = pathname.match(/^\/([a-z]{2})(\/.*|$)/i);
-                return m ? m[2] || "/" : pathname;
-              })();
+                // active calculation based on normalizedPath
+                let active = false;
+                if (it.href === "/admin") {
+                  active =
+                    normalizedPath === "/admin" || normalizedPath === "/admin/";
+                } else {
+                  active =
+                    normalizedPath === it.href ||
+                    normalizedPath.startsWith(it.href + "/");
+                }
 
-              let active = false;
-              if (it.href === "/admin") {
-                // dashboard should only be active on the exact /admin route
-                active = normalized === "/admin" || normalized === "/admin/";
-              } else {
-                active =
-                  normalized === it.href ||
-                  normalized.startsWith(it.href + "/");
-              }
+                // render Settings parent specially to allow collapsing
+                if (it.href === "/admin/settings") {
+                  const subItems = items.filter(
+                    (s) =>
+                      s.href.startsWith("/admin/settings/") &&
+                      s.href !== "/admin/settings"
+                  );
 
-              return (
-                <li key={it.key}>
-                  <Link
-                    href={it.href}
-                    className={`flex items-center gap-3 rounded-md p-2 hover:bg-gray-50 transition-colors ${
-                      active
-                        ? "bg-blue-50 text-blue-700 border-l-4 border-blue-600 pl-2"
-                        : "text-gray-700"
-                    }`}
-                  >
-                    <Icon
-                      className={`h-5 w-5 ${
-                        active ? "text-blue-600" : "text-gray-600"
+                  return (
+                    <li key={it.key}>
+                      <div
+                        className={`flex items-center justify-between rounded-md p-2 hover:bg-gray-50 transition-colors text-gray-700`}
+                      >
+                        {/* clicking the header toggles the submenu; it is not a navigation link */}
+                        <button
+                          aria-expanded={settingsOpen}
+                          aria-label="Toggle settings submenu"
+                          onClick={() => setSettingsOpen((v) => !v)}
+                          className="flex items-center gap-3 w-full text-left"
+                        >
+                          <Icon className={`h-5 w-5 text-gray-600`} />
+                          {open && (
+                            <span className="text-sm font-medium">
+                              {it.label}
+                            </span>
+                          )}
+                        </button>
+
+                        {open && (
+                          <button
+                            aria-label="Toggle settings submenu"
+                            onClick={() => setSettingsOpen((v) => !v)}
+                            className="p-1 rounded hover:bg-gray-100"
+                          >
+                            <ChevronDown
+                              className={`h-4 w-4 text-gray-600 transition-transform ${
+                                settingsOpen ? "rotate-180" : ""
+                              }`}
+                            />
+                          </button>
+                        )}
+                      </div>
+
+                      {/* subitems: include parent as first clickable link so only subitems get active styling when clicked */}
+                      {settingsOpen && (
+                        <ul className="mt-1 space-y-1">
+                          {subItems.map((sit) => {
+                            const SIcon = sit.icon;
+                            const isActive =
+                              normalizedPath === sit.href ||
+                              normalizedPath.startsWith(sit.href + "/");
+
+                            return (
+                              <li key={sit.key}>
+                                <Link
+                                  href={sit.href}
+                                  className={`flex items-center gap-3 rounded-md p-2 hover:bg-gray-50 transition-colors ${
+                                    isActive
+                                      ? "bg-blue-50 text-blue-700 border-l-4 border-blue-600 pl-2"
+                                      : "text-gray-700"
+                                  } pl-8 text-sm`}
+                                >
+                                  <SIcon
+                                    className={`h-4 w-4 ${
+                                      isActive
+                                        ? "text-blue-600"
+                                        : "text-gray-600"
+                                    }`}
+                                  />
+                                  {open && (
+                                    <span className="text-sm font-medium">
+                                      {sit.label}
+                                    </span>
+                                  )}
+                                </Link>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      )}
+                    </li>
+                  );
+                }
+
+                // default rendering for non-settings items
+                return (
+                  <li key={it.key}>
+                    <Link
+                      href={it.href}
+                      className={`flex items-center gap-3 rounded-md p-2 hover:bg-gray-50 transition-colors ${
+                        active
+                          ? "bg-blue-50 text-blue-700 border-l-4 border-blue-600 pl-2"
+                          : "text-gray-700"
                       }`}
-                    />
-                    {open && (
-                      <span className="text-sm font-medium">{it.label}</span>
-                    )}
-                  </Link>
-                </li>
-              );
-            })}
+                    >
+                      <Icon
+                        className={`h-5 w-5 ${
+                          active ? "text-blue-600" : "text-gray-600"
+                        }`}
+                      />
+                      {open && (
+                        <span className="text-sm font-medium">{it.label}</span>
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
           </ul>
         </nav>
 

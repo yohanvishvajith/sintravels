@@ -72,6 +72,13 @@ export default function AdminJobsPage() {
     null
   );
   const [newJob, setNewJob] = useState({ title: "", description: "" });
+  const [availableBenefits, setAvailableBenefits] = useState<
+    { id: number; name: string }[]
+  >([]);
+  const [benefitsLoading, setBenefitsLoading] = useState(false);
+  const [benefitsError, setBenefitsError] = useState<string | null>(null);
+  const [selectedBenefits, setSelectedBenefits] = useState<number[]>([]);
+  const [benefitsAddc, setBenefitsAddc] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 5; // Number of jobs per page
@@ -95,18 +102,83 @@ export default function AdminJobsPage() {
   const handleAddJob = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newJob.title.trim() || !newJob.description.trim()) return;
-    setJobs([
-      ...jobs,
-      {
-        id: Date.now(),
-        title: newJob.title,
-        description: newJob.description,
-        applicants: dummyApplicants, // Replace with empty array in production
-      },
-    ]);
-    setNewJob({ title: "", description: "" });
-    setIsDialogOpen(false); // Close dialog after adding job
+    // submit to API
+    (async () => {
+      try {
+        const body = {
+          title: newJob.title,
+          company: "",
+          salaryMin: 0,
+          salaryMax: 0,
+          currency: "",
+          type: "",
+          description: newJob.description,
+          closingDate: new Date().toISOString(),
+          benefits: selectedBenefits,
+          benefitsAddc,
+        };
+        const res = await fetch("/api/admin/jobs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          // append created job (simple shape) to local list
+          setJobs([
+            ...jobs,
+            {
+              id: Date.now(),
+              title: newJob.title,
+              description: newJob.description,
+              applicants: dummyApplicants,
+            },
+          ]);
+          setNewJob({ title: "", description: "" });
+          setSelectedBenefits([]);
+          setBenefitsAddc("");
+          setIsDialogOpen(false);
+        } else {
+          console.error("Failed to create job", data.error);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    })();
   };
+
+  // fetch available benefits for checkboxes
+  React.useEffect(() => {
+    let mounted = true;
+    setBenefitsLoading(true);
+    setBenefitsError(null);
+    fetch("/api/admin/benefits")
+      .then(async (r) => {
+        const text = await r.text();
+        let data: any;
+        try {
+          data = JSON.parse(text);
+        } catch (e) {
+          console.error("Failed to parse /api/admin/benefits response", text);
+          throw new Error("Invalid JSON from benefits API");
+        }
+        if (!r.ok || !data.ok) {
+          console.error("Benefits API error", r.status, data);
+          throw new Error(data?.error || `HTTP ${r.status}`);
+        }
+        if (mounted) setAvailableBenefits(data.benefits || []);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch benefits", err);
+        if (mounted) setBenefitsError(String(err));
+      })
+      .finally(() => {
+        if (mounted) setBenefitsLoading(false);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   // Pagination calculations
   const totalPages = Math.ceil(jobs.length / jobsPerPage);
@@ -178,6 +250,93 @@ export default function AdminJobsPage() {
                         className="h-11"
                       />
                     </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="dialog-benefits-addc">
+                        Benefits (additional)
+                      </Label>
+                      <Input
+                        id="dialog-benefits-addc"
+                        placeholder="e.g. Free snacks, Gym"
+                        value={benefitsAddc}
+                        onChange={(e) => setBenefitsAddc(e.target.value)}
+                        className="h-11"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Available Benefits</Label>
+                      <div className="grid grid-cols-1 gap-2 max-h-48 overflow-auto border rounded p-2">
+                        {benefitsLoading && (
+                          <div className="text-sm text-gray-500">
+                            Loading benefits...
+                          </div>
+                        )}
+
+                        {benefitsError && (
+                          <div className="text-sm text-red-600">
+                            Failed to load benefits: {benefitsError}
+                            <div>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  // retry fetch
+                                  setAvailableBenefits([]);
+                                  setBenefitsError(null);
+                                  setBenefitsLoading(true);
+                                  fetch("/api/admin/benefits")
+                                    .then(async (r) => {
+                                      const text = await r.text();
+                                      const data = JSON.parse(text);
+                                      if (!r.ok || !data.ok)
+                                        throw new Error(
+                                          data?.error || `HTTP ${r.status}`
+                                        );
+                                      setAvailableBenefits(data.benefits || []);
+                                    })
+                                    .catch((e) => setBenefitsError(String(e)))
+                                    .finally(() => setBenefitsLoading(false));
+                                }}
+                              >
+                                Retry
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+
+                        {!benefitsLoading && !benefitsError && (
+                          <>
+                            {availableBenefits.map((b) => (
+                              <label
+                                key={b.id}
+                                className="flex items-center space-x-2"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={selectedBenefits.includes(b.id)}
+                                  onChange={(e) => {
+                                    if (e.target.checked)
+                                      setSelectedBenefits((s) => [...s, b.id]);
+                                    else
+                                      setSelectedBenefits((s) =>
+                                        s.filter((id) => id !== b.id)
+                                      );
+                                  }}
+                                  className="h-4 w-4"
+                                />
+                                <span className="text-sm">{b.name}</span>
+                              </label>
+                            ))}
+                            {availableBenefits.length === 0 && (
+                              <div className="text-sm text-gray-500">
+                                No benefits available
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </div>
+
                     <div className="space-y-2">
                       <Label htmlFor="dialog-description">
                         Job Description

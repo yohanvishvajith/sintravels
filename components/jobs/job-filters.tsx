@@ -1,17 +1,23 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
-import { Search, Filter, X } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { useDebounce } from '@/hooks/use-debounce';
-import { useEffect } from 'react';
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Search, Filter, X } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { useDebounce } from "@/hooks/use-debounce";
+import { useEffect } from "react";
 
 interface JobFiltersProps {
   filters: {
@@ -27,38 +33,28 @@ interface JobFiltersProps {
 }
 
 const countries = [
-  { value: 'Singapore', label: 'Singapore', flag: '🇸🇬' },
-  { value: 'Canada', label: 'Canada', flag: '🇨🇦' },
-  { value: 'Australia', label: 'Australia', flag: '🇦🇺' },
-  { value: 'UAE', label: 'United Arab Emirates', flag: '🇦🇪' },
-  { value: 'UK', label: 'United Kingdom', flag: '🇬🇧' },
-  { value: 'USA', label: 'United States', flag: '🇺🇸' },
+  { value: "Singapore", label: "Singapore", flag: "🇸🇬" },
+  { value: "Canada", label: "Canada", flag: "🇨🇦" },
+  { value: "Australia", label: "Australia", flag: "🇦🇺" },
+  { value: "UAE", label: "United Arab Emirates", flag: "🇦🇪" },
+  { value: "UK", label: "United Kingdom", flag: "🇬🇧" },
+  { value: "USA", label: "United States", flag: "🇺🇸" },
 ];
 
 const industries = [
-  'Technology',
-  'Finance',
-  'Healthcare',
-  'Marketing',
-  'Engineering',
-  'Education',
-  'Retail',
-  'Manufacturing',
+  "Technology",
+  "Finance",
+  "Healthcare",
+  "Marketing",
+  "Engineering",
+  "Education",
+  "Retail",
+  "Manufacturing",
 ];
 
-const experiences = [
-  'Entry-level',
-  'Mid-level',
-  'Senior',
-  'Executive',
-];
+const experiences = ["Entry-level", "Mid-level", "Senior", "Executive"];
 
-const jobTypes = [
-  'Full-time',
-  'Part-time',
-  'Contract',
-  'Freelance',
-];
+const jobTypes = ["Full-time", "Part-time", "Contract", "Freelance"];
 
 export function JobFilters({ filters, onFiltersChange }: JobFiltersProps) {
   const [localSearch, setLocalSearch] = useState(filters.search);
@@ -73,21 +69,21 @@ export function JobFilters({ filters, onFiltersChange }: JobFiltersProps) {
   };
 
   const clearFilters = () => {
-    setLocalSearch('');
+    setLocalSearch("");
     onFiltersChange({
-      search: '',
-      country: '',
-      industry: '',
-      experience: '',
+      search: "",
+      country: "",
+      industry: "",
+      experience: "",
       salary: [0, 200000],
-      type: '',
+      type: "",
       remote: false,
     });
   };
 
-  const activeFiltersCount = Object.values(filters).filter(value => {
-    if (typeof value === 'string') return value !== '';
-    if (typeof value === 'boolean') return value;
+  const activeFiltersCount = Object.values(filters).filter((value) => {
+    if (typeof value === "string") return value !== "";
+    if (typeof value === "boolean") return value;
     if (Array.isArray(value)) return value[0] !== 0 || value[1] !== 200000;
     return false;
   }).length;
@@ -129,7 +125,10 @@ export function JobFilters({ filters, onFiltersChange }: JobFiltersProps) {
         {/* Country */}
         <div className="space-y-2">
           <Label>Country</Label>
-          <Select value={filters.country} onValueChange={(value) => updateFilter('country', value)}>
+          <Select
+            value={filters.country}
+            onValueChange={(value: string) => updateFilter("country", value)}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select country" />
             </SelectTrigger>
@@ -149,7 +148,10 @@ export function JobFilters({ filters, onFiltersChange }: JobFiltersProps) {
         {/* Industry */}
         <div className="space-y-2">
           <Label>Industry</Label>
-          <Select value={filters.industry} onValueChange={(value) => updateFilter('industry', value)}>
+          <Select
+            value={filters.industry}
+            onValueChange={(value: string) => updateFilter("industry", value)}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select industry" />
             </SelectTrigger>
@@ -161,69 +163,6 @@ export function JobFilters({ filters, onFiltersChange }: JobFiltersProps) {
               ))}
             </SelectContent>
           </Select>
-        </div>
-
-        {/* Experience Level */}
-        <div className="space-y-2">
-          <Label>Experience Level</Label>
-          <Select value={filters.experience} onValueChange={(value) => updateFilter('experience', value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select experience" />
-            </SelectTrigger>
-            <SelectContent>
-              {experiences.map((experience) => (
-                <SelectItem key={experience} value={experience}>
-                  {experience}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Job Type */}
-        <div className="space-y-2">
-          <Label>Job Type</Label>
-          <Select value={filters.type} onValueChange={(value) => updateFilter('type', value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select job type" />
-            </SelectTrigger>
-            <SelectContent>
-              {jobTypes.map((type) => (
-                <SelectItem key={type} value={type}>
-                  {type}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Salary Range */}
-        <div className="space-y-2">
-          <Label>Salary Range (USD)</Label>
-          <div className="px-2">
-            <Slider
-              value={filters.salary}
-              onValueChange={(value) => updateFilter('salary', value)}
-              max={200000}
-              min={0}
-              step={5000}
-              className="w-full"
-            />
-            <div className="flex justify-between text-sm text-gray-500 mt-2">
-              <span>${filters.salary[0].toLocaleString()}</span>
-              <span>${filters.salary[1].toLocaleString()}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Remote Work */}
-        <div className="flex items-center justify-between">
-          <Label htmlFor="remote">Remote Work Only</Label>
-          <Switch
-            id="remote"
-            checked={filters.remote}
-            onCheckedChange={(checked) => updateFilter('remote', checked)}
-          />
         </div>
       </CardContent>
     </Card>

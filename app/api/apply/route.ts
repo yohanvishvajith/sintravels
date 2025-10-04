@@ -39,12 +39,11 @@ export async function POST(req: Request) {
         where: { userId: userId, jobId },
       });
       if (existing) {
+        // If the same user has already applied, return success so the client
+        // doesn't show an error to the user. The application already exists.
         return new Response(
-          JSON.stringify({
-            ok: false,
-            error: "You have already applied to this job",
-          }),
-          { status: 400 }
+          JSON.stringify({ ok: true, note: "already_applied" }),
+          { status: 200 }
         );
       }
     }
