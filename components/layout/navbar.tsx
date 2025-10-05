@@ -9,12 +9,23 @@ import { Menu, Phone, Mail } from "lucide-react";
 import Image from "next/image";
 import SignIn from "@/components/auth/sign-in";
 import SignUp from "@/components/auth/sign-up";
+import { useRouter } from "next/navigation";
 
 export function Navbar() {
   const t = useTranslations("Navbar");
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const [authUser, setAuthUser] = useState<any | null>(null);
+  const router = useRouter();
+  const pathnameIntl = pathname || "/";
+  const locales = ["en", "si"];
+  const currentLocale = (() => {
+    if (!pathname) return "en";
+    const parts = pathname.split("/").filter(Boolean);
+    if (parts.length === 0) return "en";
+    const maybe = parts[0];
+    return locales.includes(maybe) ? maybe : "en";
+  })();
 
   // don't render the site navbar inside admin routes (both /admin and /{locale}/admin)
   const isAdminPath = (() => {
@@ -96,6 +107,30 @@ export function Navbar() {
               <Button asChild>
                 <Link href="/jobs">{t("searchjobs")}</Link>
               </Button>
+              {/* language select */}
+              <select
+                aria-label="Select language"
+                value={currentLocale}
+                onChange={(e) => {
+                  const next = e.target.value;
+                  // navigate to same pathname with new locale
+                  // build a new path with the selected locale.
+                  // if the current path already has a locale prefix, strip it.
+                  const parts = (pathname || "").split("/").filter(Boolean);
+                  let rest = "";
+                  if (parts.length > 0 && ["en", "si"].includes(parts[0])) {
+                    rest = "" + parts.slice(1).join("/");
+                  } else {
+                    rest = "" + parts.join("/");
+                  }
+                  const target = `/${next}${rest ? "/" + rest : ""}`;
+                  router.push(target);
+                }}
+                className="rounded border px-2 py-1"
+              >
+                <option value="en">EN</option>
+                <option value="si">SI</option>
+              </select>
               <div className="flex items-center space-x-2">
                 {authUser ? (
                   <></>

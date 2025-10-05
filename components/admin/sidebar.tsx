@@ -68,20 +68,25 @@ export default function AdminSidebar() {
 
   return (
     <aside
-      className={`bg-white border-r transition-all ${open ? "w-64" : "w-16"}`}
+      className={`fixed left-0 top-0 h-full bg-white border-r transition-all ${
+        open ? "w-64" : "w-16"
+      }`}
+      aria-hidden={!open}
     >
       <div className="h-full flex flex-col">
         <div className="flex items-center justify-between p-4 border-b">
-     
-            <Link href="/admin" aria-label="SIN Travels home" className="flex items-center">
-              <img
-                src="/images/img_logo.jpeg"
-                alt="SIN Travels logo"
-                className="h-8 w-8 flex-shrink-0 rounded object-cover"
-              />
-            </Link>
-            {open && <span className="font-medium"> SIN Travels & Manpower</span>}
-         
+          <Link
+            href="/admin"
+            aria-label="SIN Travels home"
+            className="flex items-center"
+          >
+            <img
+              src="/images/img_logo.jpeg"
+              alt="SIN Travels logo"
+              className="h-8 w-8 flex-shrink-0 rounded object-cover"
+            />
+          </Link>
+          {open && <span className="font-medium"> SIN Travels & Manpower</span>}
         </div>
 
         <nav className="flex-1 p-2">
