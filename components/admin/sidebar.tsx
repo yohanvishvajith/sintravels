@@ -9,6 +9,24 @@ export default function AdminSidebar() {
   const pathname = usePathname() || "";
   const [open, setOpen] = React.useState(true);
 
+  // listen for a global toggle event (header button will dispatch this)
+  React.useEffect(() => {
+    const handler = () => setOpen((v) => !v);
+    window.addEventListener("toggleSidebar", handler);
+    return () => window.removeEventListener("toggleSidebar", handler);
+  }, []);
+
+  // notify layout about current open state so header can react
+  React.useEffect(() => {
+    try {
+      window.dispatchEvent(
+        new CustomEvent("sidebarState", { detail: { open } })
+      );
+    } catch (e) {
+      // ignore in non-browser environments
+    }
+  }, [open]);
+
   // normalized pathname without locale prefix (e.g. /en/admin/jobs -> /admin/jobs)
   const normalizedPath = (() => {
     const m = pathname.match(/^\/([a-z]{2})(\/.*|$)/i);
@@ -53,18 +71,17 @@ export default function AdminSidebar() {
       className={`bg-white border-r transition-all ${open ? "w-64" : "w-16"}`}
     >
       <div className="h-full flex flex-col">
-        <div className="flex items-center justify-between p-3 border-b">
-          <div className="flex items-center space-x-2">
-            <Menu className="h-5 w-5 text-gray-600" />
-            {open && <span className="font-bold">Admin</span>}
-          </div>
-          <button
-            aria-label="Toggle sidebar"
-            className="p-1 rounded hover:bg-gray-100"
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? "«" : "»"}
-          </button>
+        <div className="flex items-center justify-between p-4 border-b">
+     
+            <Link href="/admin" aria-label="SIN Travels home" className="flex items-center">
+              <img
+                src="/images/img_logo.jpeg"
+                alt="SIN Travels logo"
+                className="h-8 w-8 flex-shrink-0 rounded object-cover"
+              />
+            </Link>
+            {open && <span className="font-medium"> SIN Travels & Manpower</span>}
+         
         </div>
 
         <nav className="flex-1 p-2">
