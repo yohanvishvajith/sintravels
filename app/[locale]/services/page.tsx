@@ -288,7 +288,7 @@ export default function ServicesPage() {
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-teal-600 mb-2">
-                    25+
+                    6+
                   </div>
                   <div className="text-sm text-gray-600">
                     {t("partnerCountries")}

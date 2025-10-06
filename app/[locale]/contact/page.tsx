@@ -110,6 +110,7 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -118,25 +119,48 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
+    try {
+      const payload = new FormData();
+      payload.append("name", formData.name);
+      payload.append("email", formData.email);
+      payload.append("phone", formData.phone);
+      payload.append("company", formData.company);
+      payload.append("service", formData.service);
+      payload.append("message", formData.message);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        company: "",
-        service: "",
-        message: "",
+      const res = await fetch(`/api/contact`, {
+        method: "POST",
+        body: payload,
       });
-    }, 3000);
+
+      const json = await res.json().catch(() => null);
+
+      if (!res.ok || !(json && json.ok)) {
+        const msg = (json && json.error) || `Server returned ${res.status}`;
+        setError(String(msg));
+        setIsSubmitted(false);
+      } else {
+        setIsSubmitted(true);
+
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+            company: "",
+            service: "",
+            message: "",
+          });
+        }, 3000);
+      }
+    } catch (err) {
+      setError(String(err));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -299,6 +323,11 @@ export default function ContactPage() {
                     </motion.div>
                   ) : (
                     <form onSubmit={handleSubmit} className="space-y-6">
+                      {error ? (
+                        <div className="p-3 bg-red-50 text-red-800 rounded-md">
+                          <strong>Error:</strong> {error}
+                        </div>
+                      ) : null}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="name">

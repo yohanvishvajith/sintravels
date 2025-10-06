@@ -97,11 +97,18 @@ export function JobCard({ job }: JobCardProps) {
           <div className="flex items-center space-x-3">
             {job.flag ? (
               <div className="w-12 h-12 bg-white rounded-lg overflow-hidden flex items-center justify-center">
-                <Image
-                  src={job.flag}
-                  alt={`${job.country || job.location} flag`}
-                  className="w-full h-full object-cover"
-                />
+                {typeof job.flag === "string" &&
+                (job.flag.startsWith("http") || job.flag.startsWith("/")) ? (
+                  <Image
+                    src={job.flag}
+                    alt={`${job.country || job.location} flag`}
+                    width={48}
+                    height={48}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-2xl">{job.flag}</span>
+                )}
               </div>
             ) : (
               <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">

@@ -9,14 +9,14 @@ import { useTranslations } from 'next-intl';
 const stats = [
   {
     icon: Users,
-    value: 15000,
+    value: 5000,
     labelKey: 'jobPlacements',
     suffix: '+',
     color: 'text-blue-600',
   },
   {
     icon: Globe,
-    value: 25,
+    value: 6,
     labelKey: 'countries',
     suffix: '+',
     color: 'text-teal-600',
@@ -30,7 +30,7 @@ const stats = [
   },
   {
     icon: TrendingUp,
-    value: 15,
+    value: 12,
     labelKey: 'yearsExperience',
     suffix: '+',
     color: 'text-purple-600',

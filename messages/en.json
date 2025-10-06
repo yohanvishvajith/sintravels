@@ -212,6 +212,8 @@
     "addressDescription": "Visit our office",
     "hoursTitle": "Business Hours",
     "hoursDescription": "We are available during these hours",
+    "business hoursTitle": "Business Hours",
+    "business hoursDescription": "We are available during these hours",
 
     "form": {
       "title": "Send us a Message",

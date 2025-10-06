@@ -13,14 +13,42 @@ declare global {
 }
 
 const countries = [
-  { name: "Maldives", jobs: 100, flag: "🇲🇻" },
-  { name: "UAE", jobs: 900, flag: "🇦🇪" },
-  { name: "Japan", jobs: 800, flag: "🇯🇵" },
-  { name: "Canada", jobs: 1800, flag: "🇨🇦" },
-  { name: "United Kingdom", jobs: 1500, flag: "🇬🇧" },
-  { name: "Australia", jobs: 1200, flag: "🇦🇺" },
-  { name: "Germany", jobs: 1100, flag: "🇩🇪" },
-  { name: "Singapore", jobs: 950, flag: "🇸🇬" },
+  {
+    name: "Dubai",
+    jobs: 100,
+    flag: "��",
+    flagImg: "https://flagcdn.com/w40/ae.png",
+  },
+  {
+    name: "Kuwait",
+    jobs: 900,
+    flag: "��",
+    flagImg: "https://flagcdn.com/w40/kw.png",
+  },
+  {
+    name: "Japan",
+    jobs: 800,
+    flag: "🇯🇵",
+    flagImg: "https://flagcdn.com/w40/jp.png",
+  },
+  {
+    name: "Saudi",
+    jobs: 1800,
+    flag: "�🇦",
+    flagImg: "https://flagcdn.com/w40/sa.png",
+  },
+  {
+    name: "Rumania",
+    jobs: 1200,
+    flag: "��",
+    flagImg: "https://flagcdn.com/w40/ro.png",
+  },
+  {
+    name: "Maldives",
+    jobs: 1100,
+    flag: "��",
+    flagImg: "https://flagcdn.com/w40/mv.png",
+  },
 ];
 
 const countryData = {
@@ -230,7 +258,7 @@ export function WorldMapSection() {
             Interactive World Map
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Explore job opportunities across 25+ countries. Click on any country
+            Explore job opportunities across 6+ countries. Click on any country
             to see available positions.
           </p>
         </motion.div>
@@ -319,7 +347,19 @@ export function WorldMapSection() {
                 onClick={() => setSelectedCountry(country.name)}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-2xl">{country.flag}</span>
+                  <span className="text-2xl">
+                    {country.flagImg ? (
+                      <img
+                        src={country.flagImg}
+                        alt={`${country.name} flag`}
+                        width={32}
+                        height={24}
+                        className="inline-block rounded object-cover"
+                      />
+                    ) : (
+                      country.flag
+                    )}
+                  </span>
                   <Badge
                     variant="secondary"
                     className="bg-blue-100 text-blue-800"
