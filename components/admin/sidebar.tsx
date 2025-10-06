@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Briefcase, Users, Menu, Gift, ChevronDown } from "lucide-react";
-import Image from "next/image"; 
+import Image from "next/image";
 export default function AdminSidebar() {
   const pathname = usePathname() || "";
   const [open, setOpen] = React.useState(true);
@@ -83,6 +83,8 @@ export default function AdminSidebar() {
             <Image
               src="/images/img_logo.jpeg"
               alt="SIN Travels logo"
+              width={32}
+              height={32}
               className="h-8 w-8 flex-shrink-0 rounded object-cover"
             />
           </Link>

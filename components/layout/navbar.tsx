@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Phone, Mail } from "lucide-react";
 import Image from "next/image";
-import SignIn from "@/components/auth/sign-in";
-import SignUp from "@/components/auth/sign-up";
+// SignIn/SignUp removed from header per request
 import { useRouter } from "next/navigation";
 
 export function Navbar() {
@@ -132,14 +131,7 @@ export function Navbar() {
                 <option value="si">SI</option>
               </select>
               <div className="flex items-center space-x-2">
-                {authUser ? (
-                  <></>
-                ) : (
-                  <div className="flex items-center space-x-2">
-                    <SignIn />
-                    <SignUp />
-                  </div>
-                )}
+                {/* Sign in / Sign up buttons intentionally removed from header */}
               </div>
             </div>
             {/* Mobile Navigation */}
