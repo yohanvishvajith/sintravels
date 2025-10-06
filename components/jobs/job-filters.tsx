@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Image from "next/image";
 import {
   Select,
   SelectContent,
@@ -71,7 +72,7 @@ export function JobFilters({ filters, onFiltersChange }: JobFiltersProps) {
 
   useEffect(() => {
     onFiltersChange({ ...filters, search: debouncedSearch });
-  }, [debouncedSearch]);
+  }, [debouncedSearch, filters, onFiltersChange]);
 
   // Load real countries and industries from admin APIs
   useEffect(() => {
@@ -186,7 +187,7 @@ export function JobFilters({ filters, onFiltersChange }: JobFiltersProps) {
                       {country.flag &&
                       (country.flag.startsWith("http") ||
                         country.flag.startsWith("/")) ? (
-                        <img
+                        <Image
                           src={country.flag}
                           alt={`${country.label} flag`}
                           className="h-4 w-6 object-cover"

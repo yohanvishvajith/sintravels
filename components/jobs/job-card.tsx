@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 interface JobCardProps {
   job: {
     id: string;
@@ -96,7 +97,7 @@ export function JobCard({ job }: JobCardProps) {
           <div className="flex items-center space-x-3">
             {job.flag ? (
               <div className="w-12 h-12 bg-white rounded-lg overflow-hidden flex items-center justify-center">
-                <img
+                <Image
                   src={job.flag}
                   alt={`${job.country || job.location} flag`}
                   className="w-full h-full object-cover"

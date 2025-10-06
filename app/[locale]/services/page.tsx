@@ -511,7 +511,7 @@ export default function ServicesPage() {
                       ))}
                     </div>
                     <blockquote className="text-gray-600 mb-4">
-                      "{testimonial.testimonial}"
+                      &quot;{testimonial.testimonial}&quot;
                     </blockquote>
                     <div>
                       <p className="font-semibold text-gray-900">

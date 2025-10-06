@@ -11,9 +11,9 @@
     "searchjobs": "රැකියාවක් සොයන්න"
   },
   "HeroSection": {
-    "connect": "Connect Your",
-    "career": "Career",
-    "withGlobalOpportunities": "with Global Opportunities",
+    "connect": "විදෙස් රැකියාවකින් ඔබේ හෙට දවස",
+    "career": "සාර්ථක",
+    "withGlobalOpportunities": "කරගන්න, අපි ඔබට මග පෙන්වමු!",
     "description": "15 වසරකට වැඩි අත්දැකීම් සහිත, ලොව පුරා රටවල් 25කට වැඩි ගණනක ඉහළම සේවායෝජකයින් සමඟ දක්ෂ වෘත්තිකයන් සම්බන්ධ කරන ශ්‍රී ලංකාවේ ප්‍රමුඛතම රැකියා ඒජන්සිය",
     "browseJobs": "රැකියා සොයන්න",
     "watchOurStory": "අප ගැන",
@@ -34,55 +34,55 @@
     "yearsExperience": "වසරක පලපුරරුද්ද"
   },
   "ServicesSection": {
-    "title": "Comprehensive Career Solutions",
-    "subtitle": "රැකියාවක් සොයා දීමේ සිට උසස්වීම් දක්වා, we offer end-to-end services to help you achieve your professional goals.",
+    "title": "අපගේ සේවාවන්",
+    "subtitle": "රැකියාවක් සොයා දීමේ සිට උසස්වීම් දක්වා, ඔබේ වෘත්තීය සිහින සැබෑ කරගැනීමට, අපි සම්පූර්ණ මගපෙන්වීම සහ සහාය ලබාදෙන්නෙමු!",
     "jobPlacementTitle": "රැකියා අනුයුක්ත කිරීම",
-    "jobPlacementDescription": "Connect with top employers across various industries and secure your dream job.",
+    "jobPlacementDescription": "ක්ෂේත්‍ර ගනනවක සේවායෝජකයින් සමගින් සහ ඔබගේ සිහින රැකියාව සුරක්ශිත කරගන්න.",
     "jobPlacementFeatures": [
       "පෞද්ගලික රැකියා සෙවීම",
       "සම්මුඛ පරීක්ෂණ සූදානම් කිරීම",
       "වැටුප් සාකච්ඡා කිරීම"
     ],
-    "recruitmentTitle": "Recruitment Solutions",
-    "recruitmentDescription": "Comprehensive recruitment services for businesses seeking top talent.",
+    "recruitmentTitle": "සේවක අවශ්‍යතා සපුරා දීම",
+    "recruitmentDescription": "ඔබේ ව්‍යාපාරයට ඉහළම දක්ෂතා එක් කිරීමට අපගේ සම්පූර්ණ හා ආකර්ෂණීය බඳවා ගැනීමේ සේවා!",
     "recruitmentFeatures": [
-      "Talent sourcing",
-      "Screening process",
-      "Onboarding support"
+      "දක්ෂතා සොයා ගැනීම",
+      "තෝරා බැලීමේ ක්‍රියාවලිය",
+      "රැකියා ආරම්භක සහාය"
     ],
     "skillsTrainingTitle": "කුසලතා වර්ධනය කිරීම",
-    "skillsTrainingDescription": "Professional development programs to enhance your career prospects.",
+    "skillsTrainingDescription": "ඔබේ වෘත්තීය අනාගතය ඉහළ නැංවීමට නිර්මාණය කළ වෘත්තීය සංවර්ධන වැඩසටහන්",
     "skillsTrainingFeatures": [
       "තාක්ෂණික පුහුණු",
       "මෘදු කුසලතා",
-      "පිලිගත් සහතික"
+      "අන්තර්ජාතිකව පිලිගත් සහතික"
     ],
     "internationalPlacementTitle": "අන්තර්ජාතික අනුයුක්ත කිරීම",
-    "internationalPlacementDescription": "Global job opportunities with visa and relocation assistance.",
+    "internationalPlacementDescription": "වීසා සමගින් අන්තර්ජාතික රැකියා අවස්ථා සපුරලීම සහ ස්තීර පදිංචිය",
     "internationalPlacementFeatures": [
-      "Visa processing",
-      "Relocation support",
-      "Cultural orientation"
+      "වීසා සැකසීම",
+      "ස්තීර පදිංචිය",
+      "සංස්කෘතික මාර්ගෝපදේශනය"
     ],
-    "careerCounselingTitle": "Career Counseling",
-    "careerCounselingDescription": "Expert guidance to help you make informed career decisions.",
+    "careerCounselingTitle": "වෘත්තීය උපදෙස්",
+    "careerCounselingDescription": "ඔබගේ වෘත්තීය ජීවිතයේ තීරණ ගැනීමට විශේෂඥ උපදෙස්",
     "careerCounselingFeatures": [
-      "Career assessment",
-      "Goal setting",
-      "Action planning"
+      "වෘත්තීය ඇගයීම",
+      "ඉලක්ක සකස් කිරීම",
+      "ක්‍රියාමාර්ග සැලසුම්"
     ],
-    "corporateSolutionsTitle": "Corporate Solutions",
-    "corporateSolutionsDescription": "Tailored workforce solutions for enterprises and organizations.",
+    "corporateSolutionsTitle": "ව්‍යාපාරික සේවා",
+    "corporateSolutionsDescription": "ආයතන හා ව්‍යාපාරික සංවිධාන සඳහා අභිරුචි කළ සේවක විසඳුම්.",
     "corporateSolutionsFeatures": [
-      "Bulk hiring",
-      "Contract staffing",
-      "Workforce planning"
+      "එකවර බඳවා ගැනීම",
+      "කොන්ත්‍රාත් පදනම මත සේවකයන් ලබා දීම",
+      "ශ්‍රම බලකාය සැලසුම් කිරීම"
     ],
     "learnMore": "තවදුරටත් දැනගන්න"
   },
   "CTASection": {
-    "title": "Ready to Transform Your Career?",
-    "subtitle": "Join thousands of professionals who have successfully advanced their careers with our expert guidance and global network.",
+    "title": "ඔබේ වෘත්තිය ජීවිතය දියුනු කරගැනීමට ඔබ සූදානම්ද",
+    "subtitle": "අපගේ විශේෂඥ මගපෙන්වීම සහ ගෝලීය ජාලය සමඟ තම වෘත්තීය ජීවිතය සාර්ථකව ඉදිරියට ගෙන ගිය දහස් ගණනක වෘත්තිකයන් සමඟ ඔබත් එක්වන්න.",
     "browseJobs": "රැකියා සොයන්න",
     "getInTouch": "අවදානයෙන් සිටින්න",
     "footer": "✓ නොමිලේ උපදේෂශනය • ✓ වෘත්තීය මගපෙන්වීම • ✓ ජාත්‍ය්න්තර අවස්තා"
@@ -120,13 +120,13 @@
     "heroTitle": "Empowering Careers, Enabling Success",
     "heroSubtitle": "From job placement to career development, we offer comprehensive solutions to help individuals and organizations achieve their goals.",
     "scheduleConsultation": "Schedule Consultation",
-    "aboutTitle": "About SIN Manpower",
+    "aboutTitle": "SIN Manpower ගැන",
     "aboutParagraph1": "With over 15 years of experience in international recruitment, SIN Manpower has established itself as a trusted partner for both job seekers and employers worldwide. Our expertise spans across multiple industries and countries, making us your gateway to global career opportunities.",
     "aboutParagraph2": "We specialize in connecting talented professionals with leading organizations across 25+ countries, ensuring perfect matches that benefit both parties. Our comprehensive approach covers everything from initial consultation to post-placement support.",
     "yearsOfExperience": "වසරක පලපුරරුද්ද",
-    "partnerCountries": "Partner Countries",
+    "partnerCountries": "සේවායෝජක රටවල්",
     "successfulPlacements": "සාර්තක සේවා ලාභීන්",
-    "clientSatisfaction": "Client Satisfaction",
+    "clientSatisfaction": "සේවා ලාභීන්ගේ කැමත්ත",
     "missionTitle": "අපගේ දැක්ම",
     "missionText": "To bridge the gap between talent and opportunity by providing world-class recruitment services that transform careers and businesses globally.",
     "visionTitle": "අපගේ මෙහෙවර",
@@ -196,7 +196,7 @@
     "contact": "සම්බන්ධ වන්න",
     "headerTitle": "අපව සම්බන්ද කරගන්න",
     "headerSubtitle": "Get in touch with our expert team for personalized assistance",
-    "heroTitle": "Let's Start Your Journey Together",
+    "heroTitle": "ඔබගේ ගමන අප සමග එක්ව පටන්ගමු",
     "heroSubtitle": "Whether you're seeking international career opportunities or looking to hire top talent, our team is here to help you achieve your goals.",
     "quickResponse": "ඉක්මන් ප්‍රතිචාර",
     "globalExpertise": "Global Expertise",

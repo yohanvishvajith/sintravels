@@ -293,8 +293,8 @@ export default function ContactPage() {
                         Message Sent Successfully!
                       </h3>
                       <p className="text-gray-600">
-                        Thank you for contacting us. We'll respond within 24
-                        hours.
+                        Thank you for contacting us. We&apos;ll respond within
+                        24 hours.
                       </p>
                     </motion.div>
                   ) : (

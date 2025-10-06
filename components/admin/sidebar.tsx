@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Briefcase, Users, Menu, Gift, ChevronDown } from "lucide-react";
-
+import Image from "next/image"; 
 export default function AdminSidebar() {
   const pathname = usePathname() || "";
   const [open, setOpen] = React.useState(true);
@@ -80,7 +80,7 @@ export default function AdminSidebar() {
             aria-label="SIN Travels home"
             className="flex items-center"
           >
-            <img
+            <Image
               src="/images/img_logo.jpeg"
               alt="SIN Travels logo"
               className="h-8 w-8 flex-shrink-0 rounded object-cover"

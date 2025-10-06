@@ -57,9 +57,9 @@ export default function ProfileBadge() {
             </span>
             {user.profilePhoto ? (
               // eslint-disable-next-line jsx-a11y/alt-text
-              <img
+              <Image
                 src={user.profilePhoto}
-                className="h-8 w-8 rounded-full object-cover"
+                className="h-8 w-8 rounded-full object-cover" alt="profile photo"
               />
             ) : (
               <div className="h-8 w-8 rounded-full bg-blue-600 text-white flex items-center justify-center">

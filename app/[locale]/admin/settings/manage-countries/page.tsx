@@ -20,6 +20,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
 
 type Country = { id: number; name: string; flagimg?: string };
 
@@ -159,7 +160,7 @@ export default function LocaleAdminManageCountries() {
                 <TableCell>{b.name}</TableCell>
                 <TableCell>
                   {b.flagimg ? (
-                    <img
+                    <Image
                       src={b.flagimg}
                       alt={`${b.name} flag`}
                       className="h-6"
@@ -224,7 +225,7 @@ export default function LocaleAdminManageCountries() {
               </div>
               {preview ? (
                 <div className="mt-2">
-                  <img src={preview} alt="flag preview" className="h-8" />
+                  <Image src={preview} alt="flag preview" className="h-8" />
                 </div>
               ) : null}
             </div>

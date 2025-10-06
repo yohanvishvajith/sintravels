@@ -1,13 +1,10 @@
 import prisma from "@/lib/prisma";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: Request, context: any) {
   try {
     // In the App Router context, `params` can be a promise-like value in some runtimes.
     // Await it before accessing properties to avoid the Next.js sync-dynamic-apis error.
-    const p = await (params as any);
+    const p = await (context?.params as any);
     const jobId = p?.id;
 
     if (!jobId) {

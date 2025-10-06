@@ -8,4 +8,6 @@ declare module "@radix-ui/react-dialog" {
   export const Content: React.ComponentType<any>;
   export const Title: React.ComponentType<any>;
   export const Description: React.ComponentType<any>;
+  // Minimal DialogProps type to satisfy imports in the codebase
+  export type DialogProps = any;
 }
