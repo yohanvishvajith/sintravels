@@ -73,19 +73,10 @@ export default function LocaleAdminLayout({
             <div className="max-w-7xl mx-auto mr-5">
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center space-x-3">
-                  <button
-                    aria-label="Toggle sidebar"
-                    className="p-2 ml-2 rounded hover:bg-gray-100"
-                    onClick={() =>
-                      window.dispatchEvent(new Event("toggleSidebar"))
-                    }
-                  >
-                    <Menu className="h-5 w-5 text-gray-600" />
-                  </button>{" "}
                   <Building2 className="h-8 w-8 text-blue-600" />
                   <div>
                     <h1 className="text-2xl font-bold text-gray-900">
-                      Admin Dashboard
+                      SIN Travels & Manpower
                     </h1>
                   </div>
                 </div>

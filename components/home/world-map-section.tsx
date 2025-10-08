@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { useInView } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 // Declare Leaflet types
 declare global {
@@ -349,7 +350,7 @@ export function WorldMapSection() {
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-2xl">
                     {country.flagImg ? (
-                      <img
+                      <Image
                         src={country.flagImg}
                         alt={`${country.name} flag`}
                         width={32}

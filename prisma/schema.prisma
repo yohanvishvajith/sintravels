@@ -12,14 +12,11 @@ model User {
   email     String   @unique
   username  String   @unique
   password  String
-  phone     String?
   profilePhoto String?
   address   String?
-  name      String?
   role      Role     @default(USER)
   createdAt DateTime @default(now())
-  applicants Applicant[]
-  
+
 }
 
 enum Role {

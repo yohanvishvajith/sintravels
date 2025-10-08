@@ -15,10 +15,8 @@ export async function PATCH(req: Request) {
 
     const updates: any = {};
     const username = form.get("username")?.toString();
-    const phone = form.get("phone")?.toString();
     const address = form.get("address")?.toString();
     if (username) updates.username = username;
-    if (phone) updates.phone = phone;
     if (address) updates.address = address;
 
     const file = form.get("profilePhoto") as File | null;

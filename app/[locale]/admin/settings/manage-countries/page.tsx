@@ -163,6 +163,8 @@ export default function LocaleAdminManageCountries() {
                     <Image
                       src={b.flagimg}
                       alt={`${b.name} flag`}
+                      width={24}
+                      height={16}
                       className="h-6"
                     />
                   ) : (
@@ -225,7 +227,13 @@ export default function LocaleAdminManageCountries() {
               </div>
               {preview ? (
                 <div className="mt-2">
-                  <Image src={preview} alt="flag preview" className="h-8" />
+                  <Image
+                    src={preview}
+                    alt="flag preview"
+                    width={32}
+                    height={24}
+                    className="h-8"
+                  />
                 </div>
               ) : null}
             </div>

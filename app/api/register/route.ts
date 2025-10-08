@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     const form = await req.formData();
     const username = form.get("username")?.toString() ?? "";
     const email = form.get("email")?.toString() ?? "";
-    const phone = form.get("phone")?.toString() ?? "";
+    // phone field removed from user model
     const password = form.get("password")?.toString() ?? "";
     const retype = form.get("retypePassword")?.toString() ?? "";
     const address = form.get("address")?.toString() ?? "";
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
         username,
         email,
         password: hashed,
-        phone: phone || null,
+        // phone removed
         profilePhoto: profilePath,
         address: address || null,
       },

@@ -67,14 +67,7 @@ export default function SignUp() {
               required
             />
           </div>
-          <div>
-            <input
-              name="phone"
-              placeholder="Phone number"
-              className="w-full border rounded px-2 py-1"
-              required
-            />
-          </div>
+          <div>{/* phone removed from registration form */}</div>
           <div>
             <input
               name="email"

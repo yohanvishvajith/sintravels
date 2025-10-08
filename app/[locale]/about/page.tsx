@@ -34,9 +34,9 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 const stats = [
-  { icon: Calendar, value: "15+", labelKey: "yearsOfExperience", color: "blue" },
-  { icon: Globe, value: "25+", labelKey: "partnerCountries", color: "teal" },
-  { icon: Users, value: "15K+", labelKey: "successfulPlacements", color: "orange" },
+  { icon: Calendar, value: "12+", labelKey: "yearsOfExperience", color: "blue" },
+  { icon: Globe, value: "6+", labelKey: "partnerCountries", color: "teal" },
+  { icon: Users, value: "5K+", labelKey: "successfulPlacements", color: "orange" },
   { icon: TrendingUp, value: "98%", labelKey: "clientSatisfaction", color: "purple" },
 ];
 

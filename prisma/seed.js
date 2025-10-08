@@ -14,20 +14,18 @@ async function main() {
     update: {
       username: "admin",
       password: hashed,
-      phone: "+0000000000",
       profilePhoto: null,
       address: "Head Office",
-      name: "Administrator",
+      // name field removed from schema
       role: "ADMIN",
     },
     create: {
       email: "admin@local",
       username: "admin",
       password: hashed,
-      phone: "+0000000000",
       profilePhoto: null,
       address: "Head Office",
-      name: "Administrator",
+      // name field removed from schema
       role: "ADMIN",
     },
   });
@@ -38,10 +36,8 @@ async function main() {
     id: user.id,
     email: user.email,
     username: user.username,
-    phone: user.phone,
     profilePhoto: user.profilePhoto,
     address: user.address,
-    name: user.name,
     role: user.role,
     createdAt: user.createdAt,
   });

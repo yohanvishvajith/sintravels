@@ -3,7 +3,15 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Briefcase, Users, Menu, Gift, ChevronDown } from "lucide-react";
+import {
+  Home,
+  Briefcase,
+  Users,
+  Menu,
+  Gift,
+  ChevronDown,
+  Hourglass,
+} from "lucide-react";
 import Image from "next/image";
 export default function AdminSidebar() {
   const pathname = usePathname() || "";
@@ -41,6 +49,12 @@ export default function AdminSidebar() {
     { key: "dashboard", label: "Dashboard", href: "/admin", icon: Home },
     { key: "jobs", label: "Jobs", href: "/admin/jobs", icon: Briefcase },
     {
+      key: "expired-jobs",
+      label: "Expired Jobs",
+      href: "/admin/jobs/expired",
+      icon: Hourglass,
+    },
+    {
       key: "settings",
       label: "Settings",
       href: "/admin/settings",
@@ -66,6 +80,24 @@ export default function AdminSidebar() {
     },
   ];
 
+  // compute specificity score for each item so we can prefer the most specific
+  // match (e.g. /admin/jobs/expired should activate expired-jobs, not jobs)
+  const scores = items.map((it) => {
+    try {
+      if (normalizedPath === it.href) return 100000 + it.href.length;
+      if (
+        it.href === "/admin" &&
+        (normalizedPath === "/admin" || normalizedPath === "/admin/")
+      )
+        return 100000 + it.href.length;
+      if (normalizedPath.startsWith(it.href + "/")) return it.href.length;
+    } catch (e) {
+      // defensive
+    }
+    return 0;
+  });
+  const bestScore = Math.max(...scores, 0);
+
   return (
     <aside
       className={`fixed left-0 top-0 h-full bg-white border-r transition-all ${
@@ -75,20 +107,31 @@ export default function AdminSidebar() {
     >
       <div className="h-full flex flex-col">
         <div className="flex items-center justify-between p-4 border-b">
-          <Link
-            href="/admin"
-            aria-label="SIN Travels home"
-            className="flex items-center"
-          >
-            <Image
-              src="/images/img_logo.jpeg"
-              alt="SIN Travels logo"
-              width={32}
-              height={32}
-              className="h-8 w-8 flex-shrink-0 rounded object-cover"
-            />
-          </Link>
-          {open && <span className="font-medium"> SIN Travels & Manpower</span>}
+          <div className="flex items-center gap-3">
+            <button
+              aria-label="Toggle sidebar"
+              className="p-2 rounded hover:bg-gray-100"
+              onClick={() => setOpen((v) => !v)}
+            >
+              <Menu className="h-5 w-5 text-gray-600" />
+            </button>
+            <Link
+              href="/admin"
+              aria-label="SIN Travels home"
+              className="flex items-center"
+            >
+              <Image
+                src="/images/img_logo.jpeg"
+                alt="SIN Travels logo"
+                width={32}
+                height={32}
+                className="h-8 w-8 flex-shrink-0 rounded object-cover"
+              />
+            </Link>
+            {open && (
+              <span className="font-medium">Admin Portal</span>
+            )}
+          </div>
         </div>
 
         <nav className="flex-1 p-2">
@@ -104,15 +147,11 @@ export default function AdminSidebar() {
                 const Icon = it.icon;
 
                 // active calculation based on normalizedPath
+                // prefer the most specific match using precomputed scores
                 let active = false;
-                if (it.href === "/admin") {
-                  active =
-                    normalizedPath === "/admin" || normalizedPath === "/admin/";
-                } else {
-                  active =
-                    normalizedPath === it.href ||
-                    normalizedPath.startsWith(it.href + "/");
-                }
+                const idx = items.findIndex((x) => x.key === it.key);
+                const myScore = scores[idx] || 0;
+                active = myScore > 0 && myScore === bestScore;
 
                 // render Settings parent specially to allow collapsing
                 if (it.href === "/admin/settings") {

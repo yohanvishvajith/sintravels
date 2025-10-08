@@ -410,6 +410,18 @@ export default function LocaleAdminJobs() {
     }
   }
 
+  // Compute visible (non-expired) jobs for display
+  const visibleJobs = React.useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return jobs.filter((job) => {
+      if (!job.closingDate) return true;
+      const cd = new Date(String(job.closingDate));
+      cd.setHours(0, 0, 0, 0);
+      return cd >= today;
+    });
+  }, [jobs]);
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -836,6 +848,7 @@ export default function LocaleAdminJobs() {
               <TableHead>Title</TableHead>
               <TableHead>Company</TableHead>
               <TableHead>Country</TableHead>
+              <TableHead>Closing Date</TableHead>
               {/*<TableHead>Working Hours</TableHead>
               <TableHead>Salary</TableHead>
               <TableHead>Contract</TableHead>
@@ -844,21 +857,26 @@ export default function LocaleAdminJobs() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {jobs.length === 0 ? (
+            {visibleJobs.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={8}
                   className="text-center py-8 text-gray-500"
                 >
-                  No jobs posted yet
+                  No active jobs found
                 </TableCell>
               </TableRow>
             ) : (
-              jobs.map((job) => (
+              visibleJobs.map((job) => (
                 <TableRow key={job.id} className="hover:bg-gray-50">
                   <TableCell className="font-medium">{job.title}</TableCell>
                   <TableCell>{job.company}</TableCell>
                   <TableCell>{job.country || job.location}</TableCell>
+                  <TableCell>
+                    {job.closingDate
+                      ? new Date(String(job.closingDate)).toLocaleDateString()
+                      : "-"}
+                  </TableCell>
                   {/* <TableCell>{job.type}</TableCell> */}
                   {/* <TableCell>
                     {(() => {
