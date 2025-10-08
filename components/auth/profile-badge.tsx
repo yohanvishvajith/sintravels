@@ -222,12 +222,23 @@ export default function ProfileBadge() {
               <label className="text-sm">Profile photo</label>
               {previewUrl ? (
                 <div className="mb-2">
-                  {/* preview — small square */}
-                  <img
-                    src={previewUrl}
-                    alt="profile preview"
-                    className="h-20 w-20 rounded-full object-cover mb-2"
-                  />
+                  {/* preview — small square. Use next/image for external URLs and fallback to <img> for blob/object URLs (createObjectURL) */}
+                  {previewUrl.startsWith("blob:") ? (
+                    // object URLs are not supported by next/image; use a background-image div instead of <img>
+                    <div
+                      aria-hidden
+                      className="h-20 w-20 rounded-full object-cover mb-2 bg-center bg-cover"
+                      style={{ backgroundImage: `url(${previewUrl})` }}
+                    />
+                  ) : (
+                    <Image
+                      src={previewUrl}
+                      alt="profile preview"
+                      width={80}
+                      height={80}
+                      className="h-20 w-20 rounded-full object-cover mb-2"
+                    />
+                  )}
                 </div>
               ) : null}
               <input
