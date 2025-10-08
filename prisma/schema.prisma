@@ -16,7 +16,7 @@ model User {
   address   String?
   role      Role     @default(USER)
   createdAt DateTime @default(now())
-
+ applicants Applicant[]
 }
 
 enum Role {
