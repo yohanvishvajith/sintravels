@@ -1,7 +1,4 @@
 {
-  "Home": {
-    "title": "Hello world!"
-  },
   "Navbar": {
     "home": "Home",
     "jobs": "Jobs",
@@ -14,12 +11,12 @@
     "connect": "Connect Your",
     "career": "Career",
     "withGlobalOpportunities": "with Global Opportunities",
-    "description": "Leading job placement agency with over 12 years of experience connecting talented professionals with top employers across 6+ countries worldwide.",
+    "description": "Leading job placement agency with over 5 years of experience connecting talented professionals with top employers across 6+ countries worldwide.",
     "browseJobs": "Browse Jobs",
     "watchOurStory": "Watch Our Story",
-    "placementsCount": "15K+",
+    "placementsCount": "700+",
     "successfulPlacements": "Successful Placements",
-    "countriesCount": "25+",
+    "countriesCount": "6+",
     "countriesWorldwide": "Countries Worldwide",
     "successRate": "98%",
     "successRateLabel": "Success Rate",
@@ -53,9 +50,9 @@
     "skillsTrainingTitle": "Skills Training",
     "skillsTrainingDescription": "Professional development programs to enhance your career prospects.",
     "skillsTrainingFeatures": [
-      "Technical skills",
       "Soft skills",
-      "Industry certifications"
+      "Language Training(Currently Japanese,English)",
+      "Industry and government certifications and training"
     ],
     "internationalPlacementTitle": "International Placement",
     "internationalPlacementDescription": "Global job opportunities with visa and relocation assistance.",
@@ -111,6 +108,26 @@
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service"
   },
+  "Privacy": {
+    "title": "Privacy Policy",
+    "intro": "This Privacy Policy explains how we collect, use, and protect your information.",
+    "dataCollectionTitle": "Data Collection",
+    "dataCollection": "We collect only the information necessary to provide our services and improve your experience.",
+    "cookiesTitle": "Cookies",
+    "cookies": "We use cookies to enhance site functionality and analytics.",
+    "contactTitle": "Contact",
+    "contact": "If you have privacy questions, contact us at sintravelsandmanpower@gmail.com."
+  },
+  "Terms": {
+    "title": "Terms of Service",
+    "intro": "These Terms of Service govern your use of our website and services.",
+    "usageTitle": "Use of Service",
+    "usage": "You agree to use our services for lawful purposes only.",
+    "limitationTitle": "Limitations of Liability",
+    "limitation": "We are not liable for indirect damages arising from use of the site.",
+    "contactTitle": "Contact",
+    "contact": "For questions about these terms, email sintravelsandmanpower@gmail.com."
+  },
   "ServicesPage": {
     "home": "Home",
     "services": "Services",
@@ -152,12 +169,13 @@
     "aboutTitle": "About Us",
     "aboutSubtitle": "Your trusted partner in international recruitment and career development",
     "heroTitle": "Connecting Talent with Global Opportunities",
-    "heroParagraph1": "Since 2009, SIN Manpower has been at the forefront of international recruitment, helping thousands of professionals find their dream careers while assisting organizations in building world-class teams.",
+    "heroParagraph1": "Our journey is marked by a relentless pursuit of global outreach. With strategic office in Kochchikade, Negambo, we have established a strong international presence. Expanding our horizons further, we are on the verge of opening new offices in Dubai, Oman, reinforcing our commitment to connecting talent with opportunities on a global scale. Our founder, P. C. Gayan Fernando, is an innovative and forward-thinking businessman, constantly exploring new avenues to elevate our industry. His vision goes beyond business success; it encompasses the prosperity of young lives in Sri Lanka. We aim to achieve this by providing them with not just jobs but meaningful careers that contribute to personal and professional growth.",
     "heroParagraph2": "We specialize in connecting talented professionals with leading organizations across 25+ countries, ensuring perfect matches that benefit both parties. Our comprehensive approach covers everything from initial consultation to post-placement support.",
     "yearsOfExperience": "Years of Experience",
     "partnerCountries": "Partner Countries",
     "successfulPlacements": "Successful Placements",
     "clientSatisfaction": "Client Satisfaction",
+    "missionHeader": "Our Mission, Vision & Values",
     "missionTitle": "Our Mission",
     "missionText": "To bridge the gap between talent and opportunity by providing world-class recruitment services that transform careers and businesses globally. We are committed to excellence, integrity, and creating lasting value for all stakeholders in the recruitment ecosystem.",
     "visionTitle": "Our Vision",

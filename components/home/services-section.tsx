@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
   Search,
   Users,
@@ -19,7 +18,7 @@ import {
   Building,
   Globe,
   FileText,
-  ArrowRight,
+
 } from "lucide-react";
 
 const services = [
@@ -156,10 +155,7 @@ export function ServicesSection() {
                           </li>
                         ))}
                   </ul>
-                  <Button variant="ghost" className="w-full group/btn">
-                    {t("learnMore")}
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                  </Button>
+           
                 </CardContent>
               </Card>
             </motion.div>

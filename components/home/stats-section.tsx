@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 const stats = [
   {
     icon: Users,
-    value: 5000,
+    value: 700,
     labelKey: 'jobPlacements',
     suffix: '+',
     color: 'text-blue-600',
@@ -30,7 +30,7 @@ const stats = [
   },
   {
     icon: TrendingUp,
-    value: 12,
+    value: 5,
     labelKey: 'yearsExperience',
     suffix: '+',
     color: 'text-purple-600',

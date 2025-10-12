@@ -4,51 +4,68 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+const DEFAULT_AVATAR = "/images/default-avatar-profile-icon-social.webp";
+
 const testimonials = [
   {
-    name: "Sarah Johnson",
-    role: "Software Engineer",
-    company: "Tech Corp",
-    location: "Singapore",
-    image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg",
+    name: "Shasheen Rathnayaka",
+    location: "Rumeniya",
+    countryCode: "ro",
+    image: DEFAULT_AVATAR,
     rating: 5,
     testimonial:
-      "SIN Manpower helped me secure my dream job in Singapore. Their team was incredibly supportive throughout the entire process, from initial consultation to final placement.",
+      "SIN Manpower guided me from application to arrival. I appreciated their attention to detail and timely communication.",
   },
   {
-    name: "Michael Chen",
-    role: "Project Manager",
-    company: "Global Solutions",
-    location: "Canada",
-    image: "https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg",
+    name: "Sameera Madushanka",
+    location: "Dubai",
+    countryCode: "ae",
+    image: DEFAULT_AVATAR,
     rating: 5,
     testimonial:
-      "Outstanding service! They not only found me a great position but also helped with visa processing and relocation. Truly professional and reliable.",
+      "Great support throughout the visa and placement process. I now have a stable job in Dubai thanks to their team.",
   },
   {
-    name: "Emily Rodriguez",
-    role: "Marketing Director",
-    company: "Innovation Ltd",
-    location: "Australia",
-    image: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg",
+    name: "J Priya",
+    location: "Kuwet",
+    countryCode: "kw",
+    image: DEFAULT_AVATAR,
     rating: 5,
     testimonial:
-      "The international placement service exceeded my expectations. From the first interview to settling in Australia, they were with me every step of the way.",
+      "Professional agency that helped me find a role quickly. The staff were very supportive and responsive.",
   },
   {
-    name: "David Kumar",
-    role: "Data Scientist",
-    company: "Analytics Pro",
-    location: "UAE",
-    image: "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg",
+    name: "Indika Roshan",
+    location: "Moldius",
+    countryCode: "md",
+    image: DEFAULT_AVATAR,
     rating: 5,
     testimonial:
-      "Professional, efficient, and results-driven. SIN Manpower transformed my career by connecting me with opportunities I never thought possible.",
+      "Excellent placement service and helpful guidance on paperwork and travel arrangements.",
+  },
+  {
+    name: "Dinesh Bandara",
+    location: "Japan",
+    countryCode: "jp",
+    image: DEFAULT_AVATAR,
+    rating: 5,
+    testimonial:
+      "They matched me to a role that fit my skills and helped me settle in quickly. Highly recommended.",
+  },
+  {
+    name: "Prabashani Subashingha",
+    location: "Oman",
+    countryCode: "om",
+    image: DEFAULT_AVATAR,
+    rating: 5,
+    testimonial:
+      "I received excellent support from start to finish. The team made the relocation process smooth and stress-free.",
   },
 ];
 
@@ -134,12 +151,17 @@ export function TestimonialSection() {
                         <h4 className="font-semibold text-lg">
                           {testimonials[currentIndex].name}
                         </h4>
-                        <p className="text-gray-300">
-                          {testimonials[currentIndex].role} at{" "}
-                          {testimonials[currentIndex].company}
-                        </p>
-                        <p className="text-blue-400 text-sm">
-                          📍 {testimonials[currentIndex].location}
+                        <p className="text-gray-300 flex items-center gap-2">
+                          <Image
+                            src={`https://flagcdn.com/24x18/${testimonials[currentIndex].countryCode}.png`}
+                            alt={testimonials[currentIndex].location}
+                            width={24}
+                            height={18}
+                            className="rounded-sm"
+                          />
+                          <span className="text-blue-400 text-sm">
+                            {testimonials[currentIndex].location}
+                          </span>
                         </p>
                       </div>
 

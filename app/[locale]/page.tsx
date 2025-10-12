@@ -10,11 +10,10 @@ import { GoogleReview } from "@/components/home/google-review";
 import YoutubeTravelSection from "@/components/home/youtube";
 import WhatsappButton from "@/components/home/whatsapp";
 export default function Home() {
-  const t = useTranslations('Home');
   return (
     <div className="flex flex-col">
       <HeroSection />
-      <h1>{t('title')}</h1>
+   
       <StatsSection />
       <ServicesSection />
 

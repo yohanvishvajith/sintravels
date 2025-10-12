@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useTranslations } from "next-intl";
 import {
   Breadcrumb,
@@ -37,94 +36,53 @@ import Link from "next/link";
 
 const services = [
   {
-    icon: Search,
-    title: "Job Placement Services",
-    description:
-      "Connect with top employers across various industries and secure your dream job with our personalized matching system.",
+    icon: Users,
+    title: "RECRUITMENT AND PLACEMENT",
     features: [
-      "Personalized job matching based on skills and preferences",
-      "Interview preparation and coaching sessions",
-      "Salary negotiation support and guidance",
-      "Career transition assistance",
-      "Industry-specific expertise and insights",
+      "Sourcing candidates for various industries.",
+      "Screening, interviewing, and shortlisting candidates.",
+      "Matching candidates with suitable job openings abroad.",
     ],
-    pricing: "Free for job seekers",
     color: "blue",
   },
   {
-    icon: Users,
-    title: "Recruitment Solutions",
-    description:
-      "Comprehensive recruitment services for businesses seeking top talent across all levels and industries.",
+    icon: FileText,
+    title: "VISA PROCESSING ASSISTANCE",
     features: [
-      "Executive search and headhunting services",
-      "Bulk hiring and mass recruitment campaigns",
-      "Talent sourcing and candidate screening",
-      "Background verification and reference checks",
-      "Onboarding support and integration assistance",
+      "Guiding candidates through the visa application process.",
+      "Assistance with documentation and embassy appointments.",
+      "Updates on visa status and timelines.",
     ],
-    pricing: "Custom packages available",
     color: "teal",
   },
   {
     icon: GraduationCap,
-    title: "Skills Training & Development",
-    description:
-      "Professional development programs designed to enhance your career prospects and marketability.",
+    title: "TRAINING AND SKILL DEVELOPMENT",
     features: [
-      "Technical skills training in high-demand areas",
-      "Soft skills development workshops",
-      "Industry certifications and credentials",
-      "Leadership and management training",
-      "Digital literacy and technology skills",
+      "Pre-departure training (language, culture, and work ethics specific to the destination country).",
+      "Professional certifications and vocational training to meet foreign employer requirements.",
     ],
-    pricing: "Starting from $299",
     color: "orange",
   },
   {
-    icon: Globe,
-    title: "International Placement",
-    description:
-      "Global job opportunities with comprehensive visa and relocation assistance for international careers.",
+    icon: FileText,
+    title: "COMPLIANCE AND DOCUMENTATION",
     features: [
-      "Visa processing and documentation support",
-      "Relocation assistance and logistics",
-      "Cultural orientation and adaptation programs",
-      "International job market insights",
-      "Post-placement support and follow-up",
+      "Assistance with legal paperwork and contracts.",
+      "Ensuring compliance with both local and international labor laws.",
+      "Verification of candidate qualifications and experience.",
     ],
-    pricing: "Consultation required",
     color: "purple",
   },
   {
-    icon: FileText,
-    title: "Career Counseling",
-    description:
-      "Expert guidance to help you make informed career decisions and achieve your professional goals.",
-    features: [
-      "Comprehensive career assessment and analysis",
-      "Goal setting and action planning",
-      "Resume and LinkedIn profile optimization",
-      "Personal branding and professional image",
-      "Career change strategy and planning",
-    ],
-    pricing: "Starting from $149",
-    color: "green",
-  },
-  {
     icon: Building,
-    title: "Corporate Solutions",
-    description:
-      "Tailored workforce solutions for enterprises and organizations of all sizes.",
+    title: "EMPLOYER SERVICES",
     features: [
-      "Workforce planning and strategy consulting",
-      "Contract staffing and temporary placements",
-      "HR consulting and process optimization",
-      "Talent management and retention strategies",
-      "Organizational development and restructuring",
+      "Partnering with foreign employers to fulfill staffing needs.",
+      "Tailoring recruitment solutions based on specific job requirements.",
+      "Ongoing support for employers, such as performance tracking and workforce management.",
     ],
-    pricing: "Enterprise pricing",
-    color: "red",
+    color: "green",
   },
 ];
 
@@ -258,108 +216,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8 }}
-            >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                {t("aboutTitle")}
-              </h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                {t("aboutParagraph1")}
-              </p>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                {t("aboutParagraph2")}
-              </p>
-
-              <div className="grid grid-cols-2 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600 mb-2">
-                    15+
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    {t("yearsOfExperience")}
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-teal-600 mb-2">
-                    6+
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    {t("partnerCountries")}
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-orange-600 mb-2">
-                    15K+
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    {t("successfulPlacements")}
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-600 mb-2">
-                    98%
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    {t("clientSatisfaction")}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="space-y-6"
-            >
-              <div className="bg-gradient-to-br from-blue-50 to-teal-50 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  {t("missionTitle")}
-                </h3>
-                <p className="text-gray-600">{t("missionText")}</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-teal-50 to-blue-50 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  {t("visionTitle")}
-                </h3>
-                <p className="text-gray-600">{t("visionText")}</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-orange-50 to-yellow-50 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  {t("valuesTitle")}
-                </h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    {t("valueProfessionalExcellence")}
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    {t("valueIntegrityTransparency")}
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    {t("valueClientCentric")}
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    {t("valueGlobalPerspective")}
-                  </li>
-                </ul>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Services Grid */}
       <section className="py-20 bg-gray-50">
@@ -406,9 +263,6 @@ export default function ServicesPage() {
                       />
                     </div>
                     <CardTitle className="text-xl">{service.title}</CardTitle>
-                    <CardDescription className="text-gray-600">
-                      {service.description}
-                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <ul className="space-y-2">
@@ -423,15 +277,7 @@ export default function ServicesPage() {
                       ))}
                     </ul>
                     <div className="pt-4 border-t">
-                      <div className="flex items-center justify-between mb-4">
-                        <Badge variant="outline" className="text-sm">
-                          {service.pricing}
-                        </Badge>
-                      </div>
-                      <Button variant="outline" className="w-full group/btn">
-                        {t("learnMore")}
-                        <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                      </Button>
+                  
                     </div>
                   </CardContent>
                 </Card>
@@ -480,54 +326,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              {t("testimonialsTitle")}
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {t("testimonialsSubtitle")}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-              >
-                <Card className="h-full">
-                  <CardContent className="p-6">
-                    <div className="flex items-center mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="h-5 w-5 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
-                    </div>
-                    <blockquote className="text-gray-600 mb-4">
-                      &quot;{testimonial.testimonial}&quot;
-                    </blockquote>
-                    <div>
-                      <p className="font-semibold text-gray-900">
-                        {testimonial.name}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        {testimonial.role} at {testimonial.company}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+  
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-teal-600 text-white">

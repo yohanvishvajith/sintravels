@@ -1,7 +1,5 @@
 {
-  "Home": {
-    "title": "Hello world!"
-  },
+
   "Navbar": {
     "home": "මුල් පිටුව",
     "jobs": "රැකියා",
@@ -14,12 +12,12 @@
     "connect": "විදෙස් රැකියාවකින් ඔබේ හෙට දවස",
     "career": "සාර්ථක",
     "withGlobalOpportunities": "කරගන්න, අපි ඔබට මග පෙන්වමු!",
-    "description": "15 වසරකට වැඩි අත්දැකීම් සහිත, ලොව පුරා රටවල් 25කට වැඩි ගණනක ඉහළම සේවායෝජකයින් සමඟ දක්ෂ වෘත්තිකයන් සම්බන්ධ කරන ශ්‍රී ලංකාවේ ප්‍රමුඛතම රැකියා ඒජන්සිය",
+    "description": "5 වසරකට වැඩි අත්දැකීම් සහිත, ලොව පුරා රටවල් 25කට වැඩි ගණනක ඉහළම සේවායෝජකයින් සමඟ දක්ෂ වෘත්තිකයන් සම්බන්ධ කරන ශ්‍රී ලංකාවේ ප්‍රමුඛතම රැකියා ඒජන්සිය",
     "browseJobs": "රැකියා සොයන්න",
     "watchOurStory": "අප ගැන",
-    "placementsCount": "15K+",
+    "placementsCount": "700+",
     "successfulPlacements": "සාර්තක සේවා ලාභීන්",
-    "countriesCount": "25+",
+    "countriesCount": "6+",
     "countriesWorldwide": "ලොවපුරා රටවල්",
     "successRate": "98%",
     "successRateLabel": "සාර්තකත්වයක්",
