@@ -11,6 +11,7 @@ import {
   Gift,
   ChevronDown,
   Hourglass,
+  UserPlus,
 } from "lucide-react";
 import Image from "next/image";
 export default function AdminSidebar() {
@@ -78,6 +79,12 @@ export default function AdminSidebar() {
       href: "/admin/settings/manage-industries",
       icon: Menu,
     },
+    {
+      key: "settings-manage-users",
+      label: "Add Users",
+      href: "/admin/settings/manage-users",
+      icon: UserPlus,
+    },
   ];
 
   // compute specificity score for each item so we can prefer the most specific
@@ -128,9 +135,7 @@ export default function AdminSidebar() {
                 className="h-8 w-8 flex-shrink-0 rounded object-cover"
               />
             </Link>
-            {open && (
-              <span className="font-medium">Admin Portal</span>
-            )}
+            {open && <span className="font-medium">Admin Portal</span>}
           </div>
         </div>
 

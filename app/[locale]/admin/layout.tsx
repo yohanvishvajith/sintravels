@@ -7,6 +7,7 @@ import AdminLogin from "@/components/admin/admin-login";
 import { Building2, Users, Menu } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import ProfileBadge from "@/components/auth/profile-badge";
+import SessionTimeout from "@/components/admin/session-timeout";
 
 export default function LocaleAdminLayout({
   children,
@@ -69,6 +70,7 @@ export default function LocaleAdminLayout({
         )
       ) : (
         <div className={`${sidebarOpen ? "ml-64" : "ml-16"} transition-margin`}>
+          <SessionTimeout timeoutMinutes={30} />
           <div className="bg-white shadow-sm border-b z-20 relative">
             <div className="max-w-7xl mx-auto mr-5">
               <div className="flex items-center justify-between h-16">

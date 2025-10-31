@@ -81,7 +81,6 @@ const contactInfo = [
 
 const services = [
   "Job Placement Services",
-  "International Recruitment",
   "Career Counseling",
   "Skills Training",
   "Visa Assistance",

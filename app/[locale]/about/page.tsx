@@ -105,21 +105,20 @@ const values = [
 
 const milestones = [
   {
-    year: "2009",
-    title: "Company Founded",
+    year: "2021",
+    title: "Launched Air Ticketing & Tourist Visa Services",
     description:
-      "SIN Manpower was established with a vision to transform international recruitment.",
+      "We launched air ticketing and tourist visa services and expanded partnerships across countries",
   },
   {
-    year: "2014",
-    title: "Regional Expansion",
-    description:
-      "Expanded operations to partner countries across the Middle East and Asia",
+    year: "2023",
+    title: "Registered with the Sri Lanka Bureau of Foreign Employment",
+    description: "The company was officially registered with the Sri Lanka Bureau of Foreign Employment (SLBFE)",
   },
-  {
-    year: "2019",
-    title: "5,000 Placements",
-    description: "Surpassed 5,000 successful placements globally",
+    {
+    year: "2023",
+    title: "Changed to Sin Travels and Manpower",
+    description: "The business rebranded as Sin Travels and Manpower to reflect its expanded services and strategic direction under the new director.",
   },
 ];
 
@@ -141,30 +140,30 @@ export default function AboutPage() {
       role: "Director (Licen)",
       img: "/images/team/team2.jpg",
     },
-    { name: "Yasith Gimhan", role: "Secretary", img: "/images/team/team3.jpg" },
+    { name: "Ms.Anjali ", role: "Marketing", img: "/images/team/team3.jpg" },
     {
-      name: "Kalani Hansika",
+      name: "Ms.Kalani Hansika",
       role: "Marketing",
       img: "/images/team/team4.jpg",
     },
     {
-      name: "Swetha Abesinghe",
+      name: "Ms.Swetha Abesinghe",
       role: "Marketing",
       img: "/images/team/team5.jpg",
     },
     {
-      name: "Sugandi Navarathne",
+      name: "Ms.Sugandi Navarathne",
       role: "Marketing",
       img: "/images/team/team6.jpg",
     },
     {
-      name: "Gayan Sameera",
-      role: "Coordinator",
+      name: "Mr.Sheron fernando",
+      role: "Marketing",
       img: "/images/team/team7.jpg",
     },
     {
-      name: "Dilini Fernando",
-      role: "Japan Coordinator",
+      name: "Mr.Chamila",
+      role: "Manager",
       img: "/images/team/team8.jpg",
     },
   ];
@@ -557,7 +556,7 @@ export default function AboutPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
-                className="bg-white text-blue-600 hover:bg-gray-100"
+                className="bg-white text-blue-500 hover:text-blue-800 hover:bg-white"
                 asChild
               >
                 <Link href="/jobs">
@@ -568,7 +567,7 @@ export default function AboutPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-blue-600"
+                className="border-white text-blue-500 hover:bg-white hover:text-blue-800"
                 asChild
               >
                 <Link href="/contact">

@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/navbar";
 import MaybeFooter from "@/components/layout/maybe-footer";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/providers/query-provider";
+import WhatsappWrapper from "@/components/home/whatsapp-wrapper";
 
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -47,6 +48,7 @@ export default async function LocaleLayout({
               <main className="flex-1">{children}</main>
               <MaybeFooter />
             </div>
+            <WhatsappWrapper />
             <Toaster />
           </QueryProvider>
         </NextIntlClientProvider>

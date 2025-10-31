@@ -128,7 +128,7 @@ export function Navbar() {
                 className="rounded border px-2 py-1"
               >
                 <option value="en">EN</option>
-                <option value="si">SI</option>
+                {/* <option value="si">SI</option> */}
               </select>
               <div className="flex items-center space-x-2">
                 {/* Sign in / Sign up buttons intentionally removed from header */}

@@ -5,6 +5,7 @@ import { useRef, useEffect, useState } from "react";
 import { useInView } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import Link from "next/link";
 
 // Declare Leaflet types
 declare global {
@@ -13,113 +14,12 @@ declare global {
   }
 }
 
-const countries = [
-  {
-    name: "Dubai",
-    jobs: 100,
-    flag: "��",
-    flagImg: "https://flagcdn.com/w40/ae.png",
-  },
-  {
-    name: "Kuwait",
-    jobs: 80,
-    flag: "��",
-    flagImg: "https://flagcdn.com/w40/kw.png",
-  },
-  {
-    name: "Japan",
-    jobs: 75,
-    flag: "🇯🇵",
-    flagImg: "https://flagcdn.com/w40/jp.png",
-  },
-  {
-    name: "Saudi",
-    jobs: 80,
-    flag: "�🇦",
-    flagImg: "https://flagcdn.com/w40/sa.png",
-  },
-  {
-    name: "Rumania",
-    jobs: 100,
-    flag: "��",
-    flagImg: "https://flagcdn.com/w40/ro.png",
-  },
-  {
-    name: "Maldives",
-    jobs: 100,
-    flag: "��",
-    flagImg: "https://flagcdn.com/w40/mv.png",
-  },
-];
-
-const countryData = {
-  India: {
-    capital: "New Delhi",
-    population: "1.4B",
-    info: "India is the largest democracy in the world and known for its rich culture.",
-    jobs: 2500,
-  },
-  "United States": {
-    capital: "Washington D.C.",
-    population: "331M",
-    info: "USA is the third largest country by land area and has the world's largest economy.",
-    jobs: 3200,
-  },
-  "Sri Lanka": {
-    capital: "Colombo",
-    population: "22M",
-    info: "Sri Lanka is an island nation in South Asia known for its tea, beaches, and history.",
-    jobs: 450,
-  },
-  Maldives: {
-    capital: "Malé",
-    population: "540K",
-    info: "Maldives is known for its luxury resorts and crystal-clear waters.",
-    jobs: 100,
-  },
-  "United Arab Emirates": {
-    capital: "Abu Dhabi",
-    population: "9.9M",
-    info: "UAE is a major business hub in the Middle East with diverse opportunities.",
-    jobs: 900,
-  },
-  Japan: {
-    capital: "Tokyo",
-    population: "125M",
-    info: "Japan offers excellent opportunities in technology and manufacturing sectors.",
-    jobs: 800,
-  },
-  Canada: {
-    capital: "Ottawa",
-    population: "38M",
-    info: "Canada provides great work-life balance and immigration opportunities.",
-    jobs: 1800,
-  },
-  "United Kingdom": {
-    capital: "London",
-    population: "67M",
-    info: "UK offers diverse career opportunities across various industries.",
-    jobs: 1500,
-  },
-  Australia: {
-    capital: "Canberra",
-    population: "25M",
-    info: "Australia is known for its high quality of life and job opportunities.",
-    jobs: 1200,
-  },
-  Germany: {
-    capital: "Berlin",
-    population: "83M",
-    info: "Germany is Europe's economic powerhouse with strong engineering sector.",
-    jobs: 1100,
-  },
-  Singapore: {
-    capital: "Singapore",
-    population: "5.9M",
-    info: "Singapore is a global financial hub with excellent career prospects.",
-    jobs: 950,
-  },
-};
+// Country type for database fetched data
+interface CountryData {
+  name: string;
+  flagImg: string | null;
+  jobs: number;
+}
 
 export function WorldMapSection() {
   const ref = useRef(null);
@@ -128,6 +28,24 @@ export function WorldMapSection() {
   const isInView = useInView(ref, { once: true });
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [countries, setCountries] = useState<CountryData[]>([]);
+
+  // Fetch country data and job statistics from database
+  useEffect(() => {
+    const fetchCountryStats = async () => {
+      try {
+        const response = await fetch("/api/countries/stats");
+        if (response.ok) {
+          const stats: CountryData[] = await response.json();
+          setCountries(stats);
+        }
+      } catch (error) {
+        console.error("Error fetching country stats:", error);
+      }
+    };
+
+    fetchCountryStats();
+  }, []);
 
   useEffect(() => {
     // Load Leaflet CSS and JS
@@ -209,10 +127,11 @@ export function WorldMapSection() {
             layer.on("mouseover", function () {
               if (!mapInstanceRef.current) return;
               layer.setStyle({ fillColor: "#0d6efd" });
-              const countryInfo = countryData[name as keyof typeof countryData];
-              const info = countryInfo
-                ? `${name}: ${countryInfo.jobs} jobs available`
-                : `${name}: Click for more info`;
+              const jobCount = getJobCount(name);
+              const info =
+                jobCount > 0
+                  ? `${name}: ${jobCount} jobs available`
+                  : `${name}: Click for more info`;
               layer.bindTooltip(info, { sticky: true }).openTooltip();
             });
 
@@ -241,9 +160,22 @@ export function WorldMapSection() {
     };
   }, [mapLoaded]);
 
-  const selectedCountryInfo = selectedCountry
-    ? countryData[selectedCountry as keyof typeof countryData]
-    : null;
+  const selectedCountryInfo = countries.find((c) => c.name === selectedCountry);
+
+  const getFlagImg = (name: string | null) => {
+    if (!name) return null;
+    const found = countries.find(
+      (c) => c.name.toLowerCase() === name.toLowerCase()
+    );
+    return found ? found.flagImg : null;
+  };
+
+  const getJobCount = (countryName: string) => {
+    const found = countries.find(
+      (c) => c.name.toLowerCase() === countryName.toLowerCase()
+    );
+    return found ? found.jobs : 0;
+  };
 
   return (
     <section className="py-20 bg-gradient-to-br from-blue-50 to-teal-50">
@@ -296,30 +228,39 @@ export function WorldMapSection() {
               <div className="flex-1 bg-gray-50 p-6 flex flex-col justify-center border-l-2 border-gray-200 lg:min-w-[300px]">
                 {selectedCountryInfo ? (
                   <div>
-                    <h3 className="text-xl font-bold text-blue-600 mb-3">
-                      {selectedCountry}
-                    </h3>
+                    <div className="flex items-center gap-4 mb-3">
+                      {getFlagImg(selectedCountry) ? (
+                        <Image
+                          src={getFlagImg(selectedCountry) as string}
+                          alt={`${selectedCountry} flag`}
+                          width={48}
+                          height={32}
+                          className="rounded"
+                        />
+                      ) : (
+                        <span className="text-2xl">{selectedCountry}</span>
+                      )}
+                      <h3 className="text-xl font-bold text-blue-600">
+                        {selectedCountry}
+                      </h3>
+                    </div>
                     <div className="space-y-2 text-sm">
                       <p>
-                        <strong>Capital:</strong> {selectedCountryInfo.capital}
-                      </p>
-                      <p>
-                        <strong>Population:</strong>{" "}
-                        {selectedCountryInfo.population}
-                      </p>
-                      <p>
                         <strong>Available Jobs:</strong>{" "}
-                        <span className="text-blue-600 font-semibold">
-                          {selectedCountryInfo.jobs}
+                        <span className="text-blue-600 font-semibold text-lg">
+                          {selectedCountryInfo?.jobs || 0}
                         </span>
                       </p>
-                      <p className="text-gray-700 mt-3">
-                        {selectedCountryInfo.info}
-                      </p>
+                      <p className="text-gray-700 mt-3">Active opportunities</p>
                     </div>
-                    <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                      View Jobs
-                    </button>
+                    <Link
+                      href={`/jobs?country=${encodeURIComponent(
+                        selectedCountry as string
+                      )}`}
+                      className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      Explore Jobs
+                    </Link>
                   </div>
                 ) : (
                   <div className="text-center">
@@ -349,7 +290,7 @@ export function WorldMapSection() {
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-2xl">
-                    {country.flagImg ? (
+                    {country.flagImg && (
                       <Image
                         src={country.flagImg}
                         alt={`${country.name} flag`}
@@ -357,8 +298,6 @@ export function WorldMapSection() {
                         height={24}
                         className="inline-block rounded object-cover"
                       />
-                    ) : (
-                      country.flag
                     )}
                   </span>
                   <Badge

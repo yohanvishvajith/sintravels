@@ -30,7 +30,7 @@ export async function POST(req: Request) {
       process.env.RESEND_FROM ||
       "SIN Travels <onboarding@inquery.sintravelsandmanpower.com>";
     // Per request: all contact form submissions go to this address
-    const to = ["yohanvishvajith@gmail.com"];
+    const to = ["sintravelsandmanpower@gmail.com"];
     const subject = `New contact request from ${name || email || "website"}`;
 
     // Create a simple plain-text fallback containing the submitted values
