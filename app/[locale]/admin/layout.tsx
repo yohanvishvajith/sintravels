@@ -70,7 +70,7 @@ export default function LocaleAdminLayout({
         )
       ) : (
         <div className={`${sidebarOpen ? "ml-64" : "ml-16"} transition-margin`}>
-          <SessionTimeout timeoutMinutes={30} />
+          <SessionTimeout timeoutMinutes={1440} />
           <div className="bg-white shadow-sm border-b z-20 relative">
             <div className="max-w-7xl mx-auto mr-5">
               <div className="flex items-center justify-between h-16">
