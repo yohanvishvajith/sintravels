@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import Image from "next/image";
 
 const stats = [
   { icon: Calendar, value: "5+", labelKey: "yearsOfExperience", color: "blue" },
@@ -113,12 +114,14 @@ const milestones = [
   {
     year: "2023",
     title: "Registered with the Sri Lanka Bureau of Foreign Employment",
-    description: "The company was officially registered with the Sri Lanka Bureau of Foreign Employment (SLBFE)",
+    description:
+      "The company was officially registered with the Sri Lanka Bureau of Foreign Employment (SLBFE)",
   },
-    {
+  {
     year: "2023",
     title: "Changed to Sin Travels and Manpower",
-    description: "The business rebranded as Sin Travels and Manpower to reflect its expanded services and strategic direction under the new director.",
+    description:
+      "The business rebranded as Sin Travels and Manpower to reflect its expanded services and strategic direction under the new director.",
   },
 ];
 
@@ -277,7 +280,6 @@ export default function AboutPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               {t("missionHeader")}
             </h2>
-         
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -334,7 +336,6 @@ export default function AboutPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               {t("valuesTitle")}
             </h2>
-    
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -427,14 +428,14 @@ export default function AboutPage() {
             </p>
           </div>
 
-          
           <div className="relative max-w-3xl mx-auto">
             <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-              <div className="mx-auto mb-6 w-72 h-72 md:w-96 md:h-96 bg-gray-100 rounded-lg overflow-hidden">
-                <img
+              <div className="mx-auto mb-6 w-72 h-72 md:w-96 md:h-96 bg-gray-100 rounded-lg overflow-hidden relative">
+                <Image
                   src={team[currentTeamIndex].img}
                   alt={team[currentTeamIndex].name}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               </div>
               <h3 className="text-2xl font-semibold">
@@ -484,7 +485,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              FOUNDER'S MESSAGE
+              FOUNDER&apos;S MESSAGE
             </h2>
           </div>
 
@@ -492,10 +493,10 @@ export default function AboutPage() {
             <p>
               As the founder of the SIN Travels & Manpower Agency, I take
               immense pride in the role our agency has playing in shaping the
-              future of Sri Lankan's overseas employment. From our inception,
-              our primary goal has been to safeguard the rights and welfare of
-              our workforce while creating opportunities for growth and
-              development across the global job market.
+              future of Sri Lankan&apos;s overseas employment. From our
+              inception, our primary goal has been to safeguard the rights and
+              welfare of our workforce while creating opportunities for growth
+              and development across the global job market.
             </p>
 
             <p>

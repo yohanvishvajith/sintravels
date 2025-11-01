@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function Gallery() {
   const images = [
@@ -36,11 +37,13 @@ export default function Gallery() {
         </div>
 
         <div className="max-w-6xl mx-auto">
-          <div className="relative bg-gray-100 rounded-lg overflow-clip">
-            <img
+          <div className="relative bg-gray-100 rounded-lg overflow-clip h-[520px] md:h-[720px]">
+            <Image
               src={images[index]}
               alt={`gallery-${index}`}
-              className="w-full h-[520px] md:h-[720px] object-contain"
+              fill
+              className="object-contain"
+              priority
             />
 
             <button

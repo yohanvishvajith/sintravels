@@ -158,6 +158,7 @@ export function WorldMapSection() {
         mapInstanceRef.current = null;
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapLoaded]);
 
   const selectedCountryInfo = countries.find((c) => c.name === selectedCountry);

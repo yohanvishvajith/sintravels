@@ -125,6 +125,7 @@ export default function SessionTimeout({
         window.removeEventListener(event, throttledReset);
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   // Check session validity periodically
@@ -144,6 +145,7 @@ export default function SessionTimeout({
     const interval = setInterval(checkSession, 60000);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null; // This component doesn't render anything
