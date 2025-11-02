@@ -166,6 +166,7 @@ export default function LocaleAdminManageCountries() {
                       width={24}
                       height={16}
                       className="h-6"
+                      unoptimized
                     />
                   ) : (
                     <span className="text-sm text-gray-500">-</span>
@@ -233,6 +234,7 @@ export default function LocaleAdminManageCountries() {
                     width={32}
                     height={24}
                     className="h-8"
+                    unoptimized
                   />
                 </div>
               ) : null}
