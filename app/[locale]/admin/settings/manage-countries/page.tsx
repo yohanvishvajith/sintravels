@@ -160,7 +160,7 @@ export default function LocaleAdminManageCountries() {
                 <TableCell>{b.name}</TableCell>
                 <TableCell>
                   {b.flagimg ? (
-                    <img
+                    <Image
                       src={b.flagimg}
                       alt={`${b.name} flag`}
                       width={24}
@@ -227,7 +227,7 @@ export default function LocaleAdminManageCountries() {
               </div>
               {preview ? (
                 <div className="mt-2">
-                  <img
+                  <Image
                     src={preview}
                     alt="flag preview"
                     width={32}
