@@ -16,6 +16,7 @@ export default function LocaleAdminLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(true);
   const [user, setUser] = React.useState<any | null>(null);
+  const [loading, setLoading] = React.useState(true);
   const pathname = usePathname();
   const isLoginRoute =
     pathname?.endsWith("/admin/login") || pathname === "/admin/login";
@@ -33,6 +34,8 @@ export default function LocaleAdminLayout({
       setUser(raw ? JSON.parse(raw) : null);
     } catch (e) {
       setUser(null);
+    } finally {
+      setLoading(false);
     }
 
     const h = () => {
@@ -46,6 +49,55 @@ export default function LocaleAdminLayout({
     window.addEventListener("authChanged", h as EventListener);
     return () => window.removeEventListener("authChanged", h as EventListener);
   }, []);
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="flex">
+          {/* Sidebar Skeleton */}
+          <div className="w-64 bg-white border-r h-screen fixed">
+            <div className="p-4 border-b">
+              <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+            <div className="p-4 space-y-3">
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={i}
+                  className="h-10 bg-gray-200 rounded animate-pulse"
+                ></div>
+              ))}
+            </div>
+          </div>
+
+          {/* Main Content Skeleton */}
+          <div className="ml-64 flex-1">
+            {/* Header Skeleton */}
+            <div className="bg-white shadow-sm border-b h-16 flex items-center justify-between px-6">
+              <div className="flex items-center space-x-3">
+                <div className="h-8 w-8 bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-6 w-48 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+              <div className="h-10 w-32 bg-gray-200 rounded-full animate-pulse"></div>
+            </div>
+
+            {/* Page Content Skeleton */}
+            <div className="p-6 space-y-4">
+              <div className="h-8 w-64 bg-gray-200 rounded animate-pulse"></div>
+              <div className="bg-white rounded-lg shadow p-6 space-y-4">
+                {[...Array(5)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-16 bg-gray-100 rounded animate-pulse"
+                  ></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
