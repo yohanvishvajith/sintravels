@@ -1,5 +1,42 @@
 import prisma from "@/lib/prisma";
+// GET - Fetch job statistics
+import { NextRequest, NextResponse } from "next/server";
 
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const stats = searchParams.get("stats");
+
+    if (stats === "true") {
+      // Get jobs count for this month
+      const now = new Date();
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+      const jobsThisMonth = await prisma.job.count({
+        where: {
+          createdAt: {
+            gte: monthStart,
+          },
+        },
+      });
+
+      return NextResponse.json({ jobsThisMonth }, { status: 200 });
+    }
+
+    // Default: return all jobs
+    const jobs = await prisma.job.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+
+    return NextResponse.json({ jobs }, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch jobs" },
+      { status: 500 }
+    );
+  }
+}
 export async function POST(req: Request) {
   try {
     const body = await req.json();
