@@ -33,10 +33,9 @@ export default function AdminLogin({
           setLoading(false);
           return;
         }
-        try {
-          localStorage.setItem("user", JSON.stringify(data.user));
-          window.dispatchEvent(new CustomEvent("authChanged"));
-        } catch (e) {}
+        // Token is set in httpOnly cookie by the server
+        // Just dispatch auth change event
+        window.dispatchEvent(new CustomEvent("authChanged"));
         onSuccess(data.user);
         toast.success("Signed in as admin");
 

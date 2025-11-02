@@ -7,7 +7,6 @@ import AdminLogin from "@/components/admin/admin-login";
 import { Building2, Users, Menu } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import ProfileBadge from "@/components/auth/profile-badge";
-import SessionTimeout from "@/components/admin/session-timeout";
 
 export default function LocaleAdminLayout({
   children,
@@ -28,23 +27,31 @@ export default function LocaleAdminLayout({
       window.removeEventListener("sidebarState", handler as EventListener);
   }, []);
 
+  // Fetch user from JWT token
   React.useEffect(() => {
-    try {
-      const raw = localStorage.getItem("user");
-      setUser(raw ? JSON.parse(raw) : null);
-    } catch (e) {
-      setUser(null);
-    } finally {
-      setLoading(false);
-    }
-
-    const h = () => {
+    const fetchUser = async () => {
       try {
-        const raw = localStorage.getItem("user");
-        setUser(raw ? JSON.parse(raw) : null);
+        const response = await fetch("/api/user/me");
+        const data = await response.json();
+
+        if (data.ok && data.user) {
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
       } catch (e) {
+        console.error("Failed to fetch user:", e);
         setUser(null);
+      } finally {
+        setLoading(false);
       }
+    };
+
+    fetchUser();
+
+    // Listen for auth changes
+    const h = async () => {
+      await fetchUser();
     };
     window.addEventListener("authChanged", h as EventListener);
     return () => window.removeEventListener("authChanged", h as EventListener);
@@ -122,7 +129,6 @@ export default function LocaleAdminLayout({
         )
       ) : (
         <div className={`${sidebarOpen ? "ml-64" : "ml-16"} transition-margin`}>
-          <SessionTimeout timeoutMinutes={1440} />
           <div className="bg-white shadow-sm border-b z-20 relative">
             <div className="max-w-7xl mx-auto mr-5">
               <div className="flex items-center justify-between h-16">

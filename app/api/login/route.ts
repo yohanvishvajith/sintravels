@@ -1,5 +1,7 @@
 import prisma from "../../../lib/prisma";
 import bcrypt from "bcryptjs";
+import { createToken } from "@/lib/jwt";
+import { cookies } from "next/headers";
 
 export const runtime = "nodejs";
 
@@ -30,9 +32,28 @@ export async function POST(req: Request) {
         { status: 401 }
       );
 
-    // For now, return user object (no session) — integrate next-auth or real sessions later
+    // Create JWT token
+    const token = await createToken({
+      userId: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      profileImg: user.profilePhoto || undefined,
+    });
+
+    // Set token in httpOnly cookie
+    const cookieStore = await cookies();
+    cookieStore.set("auth-token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24, // 24 hours
+      path: "/",
+    });
+
+    // Return user info (without password)
     const { password: _p, ...safeUser } = user as any;
-    return new Response(JSON.stringify({ ok: true, user: safeUser }), {
+    return new Response(JSON.stringify({ ok: true, user: safeUser, token }), {
       status: 200,
     });
   } catch (err) {

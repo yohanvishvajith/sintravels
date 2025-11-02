@@ -25,10 +25,15 @@ export default function ProfileBadge() {
   // permanently show name first and avatar second
 
   useEffect(() => {
-    const load = () => {
+    const load = async () => {
       try {
-        const raw = localStorage.getItem("user");
-        setUser(raw ? JSON.parse(raw) : null);
+        const response = await fetch("/api/user/me");
+        const data = await response.json();
+        if (data.ok && data.user) {
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
       } catch (e) {
         setUser(null);
       }
@@ -42,13 +47,7 @@ export default function ProfileBadge() {
   // When settings modal opens, initialize preview to current profile photo
   useEffect(() => {
     if (openSettings) {
-      try {
-        const raw = localStorage.getItem("user");
-        const u = raw ? JSON.parse(raw) : null;
-        setPreviewUrl(u?.profilePhoto || null);
-      } catch (e) {
-        setPreviewUrl(null);
-      }
+      setPreviewUrl(user?.profilePhoto || null);
     } else {
       // revoke any object URL when closing (if we created one)
       if (previewUrl && previewUrl.startsWith("blob:")) {
@@ -61,10 +60,17 @@ export default function ProfileBadge() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openSettings]);
 
-  const logout = () => {
-    localStorage.removeItem("user");
-    window.dispatchEvent(new CustomEvent("authChanged"));
-    toast.success("Logged out");
+  const logout = async () => {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+      window.dispatchEvent(new CustomEvent("authChanged"));
+      toast.success("Logged out");
+      // Redirect to login page
+      window.location.href = "/admin/login";
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to logout");
+    }
   };
 
   if (!user) return null;
