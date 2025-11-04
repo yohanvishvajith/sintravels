@@ -7,6 +7,7 @@ import AdminLogin from "@/components/admin/admin-login";
 import { Building2, Users, Menu } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import ProfileBadge from "@/components/auth/profile-badge";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function LocaleAdminLayout({
   children,
@@ -150,6 +151,7 @@ export default function LocaleAdminLayout({
           <main className="p-6">{children}</main>
         </div>
       )}
+      <Toaster />
     </div>
   );
 }

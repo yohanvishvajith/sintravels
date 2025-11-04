@@ -83,7 +83,6 @@ export default function AdminJobsPage() {
   const [benefitsLoading, setBenefitsLoading] = useState(false);
   const [benefitsError, setBenefitsError] = useState<string | null>(null);
   const [selectedBenefits, setSelectedBenefits] = useState<number[]>([]);
-  const [benefitsAddc, setBenefitsAddc] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 5; // Number of jobs per page
@@ -120,7 +119,6 @@ export default function AdminJobsPage() {
           description: newJob.description,
           closingDate: new Date().toISOString(),
           benefits: selectedBenefits,
-          benefitsAddc,
         };
         const res = await fetch("/api/admin/jobs", {
           method: "POST",
@@ -141,7 +139,6 @@ export default function AdminJobsPage() {
           ]);
           setNewJob({ title: "", description: "" });
           setSelectedBenefits([]);
-          setBenefitsAddc("");
           setIsDialogOpen(false);
         } else {
           console.error("Failed to create job", data.error);
@@ -260,206 +257,207 @@ export default function AdminJobsPage() {
         </div>
         {/* Jobs List Section */}
         <Card>
-            <CardHeader>
+          <CardHeader>
             <div className="flex items-center justify-between w-full">
               <div>
-              <h3 className="text-sm font-medium">Total Visitors</h3>
-              <p className="text-xs text-muted-foreground">
-                Visits over the last 7 days
-              </p>
+                <h3 className="text-sm font-medium">Total Visitors</h3>
+                <p className="text-xs text-muted-foreground">
+                  Visits over the last 7 days
+                </p>
               </div>
               <div className="flex items-center gap-4">
-              <Badge variant="secondary" className="text-sm">
-                Live
-              </Badge>
+                <Badge variant="secondary" className="text-sm">
+                  Live
+                </Badge>
               </div>
             </div>
-            </CardHeader>
-            <CardContent>
+          </CardHeader>
+          <CardContent>
             {/* Inline visitors graph component */}
             {(() => {
               const VisitorsGraph: React.FC = () => {
-              const [visitors, setVisitors] = React.useState<number[] | null>(
-                null
-              );
-              const [loading, setLoading] = React.useState(true);
-              const [error, setError] = React.useState<string | null>(null);
+                const [visitors, setVisitors] = React.useState<number[] | null>(
+                  null
+                );
+                const [loading, setLoading] = React.useState(true);
+                const [error, setError] = React.useState<string | null>(null);
 
-              React.useEffect(() => {
-                let mounted = true;
-                setLoading(true);
-                setError(null);
+                React.useEffect(() => {
+                  let mounted = true;
+                  setLoading(true);
+                  setError(null);
 
-                // try to fetch real data; fallback to sample data on error
-                fetch("/api/admin/visitors")
-                .then(async (r) => {
-                  const text = await r.text();
-                  try {
-                  const json = JSON.parse(text);
-                  return json;
-                  } catch {
-                  // may be direct array
-                  try {
-                    return JSON.parse(JSON.stringify(text));
-                  } catch {
-                    return text;
-                  }
-                  }
-                })
-                .then((data) => {
-                  if (!mounted) return;
-                  // expect shape: { data: number[] } or number[]
-                  if (Array.isArray(data)) {
-                  setVisitors(data as number[]);
-                  } else if (Array.isArray((data as any).data)) {
-                  setVisitors((data as any).data);
-                  } else if (Array.isArray((data as any).visitors)) {
-                  setVisitors((data as any).visitors);
-                  } else {
-                  // fallback sample
-                  setVisitors([12, 18, 24, 20, 30, 28, 35]);
-                  }
-                })
-                .catch(() => {
-                  if (!mounted) return;
-                  setVisitors([12, 18, 24, 20, 30, 28, 35]);
-                  setError("Failed to load visitors");
-                })
-                .finally(() => {
-                  if (!mounted) return;
-                  setLoading(false);
+                  // try to fetch real data; fallback to sample data on error
+                  fetch("/api/admin/visitors")
+                    .then(async (r) => {
+                      const text = await r.text();
+                      try {
+                        const json = JSON.parse(text);
+                        return json;
+                      } catch {
+                        // may be direct array
+                        try {
+                          return JSON.parse(JSON.stringify(text));
+                        } catch {
+                          return text;
+                        }
+                      }
+                    })
+                    .then((data) => {
+                      if (!mounted) return;
+                      // expect shape: { data: number[] } or number[]
+                      if (Array.isArray(data)) {
+                        setVisitors(data as number[]);
+                      } else if (Array.isArray((data as any).data)) {
+                        setVisitors((data as any).data);
+                      } else if (Array.isArray((data as any).visitors)) {
+                        setVisitors((data as any).visitors);
+                      } else {
+                        // fallback sample
+                        setVisitors([12, 18, 24, 20, 30, 28, 35]);
+                      }
+                    })
+                    .catch(() => {
+                      if (!mounted) return;
+                      setVisitors([12, 18, 24, 20, 30, 28, 35]);
+                      setError("Failed to load visitors");
+                    })
+                    .finally(() => {
+                      if (!mounted) return;
+                      setLoading(false);
+                    });
+
+                  return () => {
+                    mounted = false;
+                  };
+                }, []);
+
+                if (loading || !visitors) {
+                  return (
+                    <div className="h-40 flex items-center justify-center text-sm text-muted-foreground">
+                      Loading visitors...
+                    </div>
+                  );
+                }
+
+                const width = 600;
+                const height = 160;
+                const padding = 16;
+                const max = Math.max(...visitors, 1);
+                const stepX =
+                  visitors.length > 1
+                    ? (width - padding * 2) / (visitors.length - 1)
+                    : 0;
+
+                const points = visitors.map((v, i) => {
+                  const x = padding + i * stepX;
+                  const y = padding + (1 - v / max) * (height - padding * 2); // invert
+                  return { x, y, v };
                 });
 
-                return () => {
-                mounted = false;
-                };
-              }, []);
+                const pathD = points
+                  .map((p, i) =>
+                    i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`
+                  )
+                  .join(" ");
 
-              if (loading || !visitors) {
+                const areaD =
+                  points.length > 0
+                    ? `${pathD} L ${padding + (points.length - 1) * stepX} ${
+                        height - padding
+                      } L ${padding} ${height - padding} Z`
+                    : "";
+
+                const total = visitors.reduce((a, b) => a + b, 0);
+
                 return (
-                <div className="h-40 flex items-center justify-center text-sm text-muted-foreground">
-                  Loading visitors...
-                </div>
+                  <div className="w-full">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <div className="text-2xl font-semibold">{total}</div>
+                        <div className="text-xs text-muted-foreground">
+                          total visits
+                        </div>
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {new Date().toLocaleDateString()}
+                      </div>
+                    </div>
+
+                    <div className="w-full overflow-hidden">
+                      <svg
+                        viewBox={`0 0 ${width} ${height}`}
+                        width="100%"
+                        height={height}
+                        preserveAspectRatio="xMidYMid meet"
+                        className="block"
+                      >
+                        {/* area */}
+                        <path
+                          d={areaD}
+                          fill="rgba(99,102,241,0.12)"
+                          stroke="none"
+                        />
+                        {/* line */}
+                        <path
+                          d={pathD}
+                          fill="none"
+                          stroke="rgb(99,102,241)"
+                          strokeWidth={2}
+                          strokeLinejoin="round"
+                          strokeLinecap="round"
+                        />
+                        {/* points */}
+                        {points.map((p, idx) => (
+                          <circle
+                            key={idx}
+                            cx={p.x}
+                            cy={p.y}
+                            r={3.5}
+                            fill="white"
+                            stroke="rgb(99,102,241)"
+                            strokeWidth={1.5}
+                          />
+                        ))}
+                        {/* subtle grid lines */}
+                        {[0, 0.25, 0.5, 0.75, 1].map((t, i) => {
+                          const y = padding + t * (height - padding * 2);
+                          return (
+                            <line
+                              key={i}
+                              x1={padding}
+                              x2={width - padding}
+                              y1={y}
+                              y2={y}
+                              stroke="rgba(15,23,42,0.04)"
+                              strokeWidth={1}
+                            />
+                          );
+                        })}
+                      </svg>
+                    </div>
+
+                    <div className="mt-2 text-xs text-muted-foreground flex gap-4">
+                      {visitors.map((v, i) => (
+                        <div key={i} className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-slate-400/60" />
+                          <div>{v}</div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {error && (
+                      <div className="mt-2 text-xs text-destructive">
+                        {error}
+                      </div>
+                    )}
+                  </div>
                 );
-              }
-
-              const width = 600;
-              const height = 160;
-              const padding = 16;
-              const max = Math.max(...visitors, 1);
-              const stepX =
-                visitors.length > 1
-                ? (width - padding * 2) / (visitors.length - 1)
-                : 0;
-
-              const points = visitors.map((v, i) => {
-                const x = padding + i * stepX;
-                const y =
-                padding + (1 - v / max) * (height - padding * 2); // invert
-                return { x, y, v };
-              });
-
-              const pathD = points
-                .map((p, i) =>
-                i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`
-                )
-                .join(" ");
-
-              const areaD =
-                points.length > 0
-                ? `${pathD} L ${padding + (points.length - 1) * stepX} ${
-                  height - padding
-                  } L ${padding} ${height - padding} Z`
-                : "";
-
-              const total = visitors.reduce((a, b) => a + b, 0);
-
-              return (
-                <div className="w-full">
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                  <div className="text-2xl font-semibold">{total}</div>
-                  <div className="text-xs text-muted-foreground">
-                    total visits
-                  </div>
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                  {new Date().toLocaleDateString()}
-                  </div>
-                </div>
-
-                <div className="w-full overflow-hidden">
-                  <svg
-                  viewBox={`0 0 ${width} ${height}`}
-                  width="100%"
-                  height={height}
-                  preserveAspectRatio="xMidYMid meet"
-                  className="block"
-                  >
-                  {/* area */}
-                  <path
-                    d={areaD}
-                    fill="rgba(99,102,241,0.12)"
-                    stroke="none"
-                  />
-                  {/* line */}
-                  <path
-                    d={pathD}
-                    fill="none"
-                    stroke="rgb(99,102,241)"
-                    strokeWidth={2}
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                  />
-                  {/* points */}
-                  {points.map((p, idx) => (
-                    <circle
-                    key={idx}
-                    cx={p.x}
-                    cy={p.y}
-                    r={3.5}
-                    fill="white"
-                    stroke="rgb(99,102,241)"
-                    strokeWidth={1.5}
-                    />
-                  ))}
-                  {/* subtle grid lines */}
-                  {[0, 0.25, 0.5, 0.75, 1].map((t, i) => {
-                    const y = padding + t * (height - padding * 2);
-                    return (
-                    <line
-                      key={i}
-                      x1={padding}
-                      x2={width - padding}
-                      y1={y}
-                      y2={y}
-                      stroke="rgba(15,23,42,0.04)"
-                      strokeWidth={1}
-                    />
-                    );
-                  })}
-                  </svg>
-                </div>
-
-                <div className="mt-2 text-xs text-muted-foreground flex gap-4">
-                  {visitors.map((v, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-slate-400/60" />
-                    <div>{v}</div>
-                  </div>
-                  ))}
-                </div>
-
-                {error && (
-                  <div className="mt-2 text-xs text-destructive">{error}</div>
-                )}
-                </div>
-              );
               };
 
               return <VisitorsGraph />;
             })()}
-            </CardContent>
+          </CardContent>
         </Card>
       </div>
     </div>

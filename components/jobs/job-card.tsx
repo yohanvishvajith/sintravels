@@ -20,13 +20,13 @@ interface JobCardProps {
     currency?: string;
     vacancies?: number;
     type: string;
+    workTime?: string;
     industry: string;
     experience: string;
     postedDate: string;
     description: string;
     requirements: string[];
     benefits?: string[];
-    benefitsAddc?: string;
     remote: boolean;
     ageMin?: number;
     ageMax?: number;
@@ -148,7 +148,8 @@ export function JobCard({ job }: JobCardProps) {
               })()}
             </span>
             <span className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full hover:scale-105 transition-transform">
-              <i className="fas fa-clock mr-1"></i> {job.type} hour
+              <i className="fas fa-clock mr-1"></i>{" "}
+              {job.workTime || job.type || "-"}
             </span>
           </div>
 
@@ -301,7 +302,14 @@ export function JobCard({ job }: JobCardProps) {
                       <span className="mr-2">📃</span>
                       <div>
                         <strong>Contract Period:</strong>{" "}
-                        {job.contractPeriod + " years" || "-"}
+                        {job.contractPeriod}
+                      </div>
+                    </div>
+                      <div className="flex items-center">
+                      <span className="mr-2">🏷️</span>
+                      <div>
+                        <strong>Type:</strong>{" "}
+                        {job.type || "-"}
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -327,9 +335,7 @@ export function JobCard({ job }: JobCardProps) {
                       <span className="mr-2">⏰</span>
                       <div>
                         <strong>Working Hours:</strong>{" "}
-                        {job.type
-                          ? `${job.type} hours per day`
-                          : "8 hours per day"}
+                        {job.workTime ?? "8 hours per day"}
                       </div>
                     </div>
 
@@ -361,16 +367,13 @@ export function JobCard({ job }: JobCardProps) {
                   </div>
                 </div>
               </div>
-              {((job.benefits && job.benefits.length > 0) ||
-                job.benefitsAddc) && (
+              {job.benefits && job.benefits.length > 0 && (
                 <div>
                   <h4 className="font-semibold mb-2">🎁 Benefits:</h4>
                   <ul className="list-none pl-5 space-y-1">
-                    {job.benefits && job.benefits.length > 0 ? (
-                      job.benefits.map((b, i) => <li key={i}> 😍 {b}</li>)
-                    ) : job.benefitsAddc ? (
-                      <li>🎁 {job.benefitsAddc}</li>
-                    ) : null}
+                    {job.benefits.map((b, i) => (
+                      <li key={i}> 😍 {b}</li>
+                    ))}
                   </ul>
                 </div>
               )}

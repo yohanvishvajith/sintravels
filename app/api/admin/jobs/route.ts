@@ -128,7 +128,6 @@ export async function POST(req: Request) {
       company: String(body.company),
       location: body.location ? String(body.location) : "",
       country: body.country ? String(body.country) : "",
-      flag: body.flag ? String(body.flag) : null,
       salaryMin,
       salaryMax,
       ageMin,
@@ -136,30 +135,56 @@ export async function POST(req: Request) {
       holidays: normalizeHoliday(body.holidays),
       currency: String(body.currency),
       type: String(body.type),
+      // optional working hours field
+      workTime: body.workTime ? String(body.workTime) : null,
       industry: body.industry ? String(body.industry) : null,
       experience: body.experience ? String(body.experience) : null,
-      benefitsAddc: body.benefitsAddc ? String(body.benefitsAddc) : null,
-      visaCategory: body.visaCategory ? String(body.visaCategory) : null,
-      contractPeriod: body.contractPeriod ? String(body.contractPeriod) : null,
+      // visaCategory and contractPeriod will be optionally added below
       description: String(body.description),
       requirements: requirements as any,
       vacancies: body.vacancies ? parseInt(body.vacancies, 10) : 1,
       closingDate: new Date(body.closingDate),
     };
 
+    // only set optional string fields when a non-empty value was provided
+    if (
+      body.gender !== undefined &&
+      body.gender !== null &&
+      String(body.gender).trim() !== ""
+    ) {
+      createData.gender = String(body.gender);
+    }
+    if (
+      body.visaCategory !== undefined &&
+      body.visaCategory !== null &&
+      String(body.visaCategory).trim() !== ""
+    ) {
+      createData.visaCategory = String(body.visaCategory);
+    }
+    if (
+      body.contractPeriod !== undefined &&
+      body.contractPeriod !== null &&
+      String(body.contractPeriod).trim() !== ""
+    ) {
+      createData.contractPeriod = String(body.contractPeriod);
+    }
+
     let job;
     try {
       job = await prisma.job.create({ data: createData as any });
     } catch (err: any) {
       const msg = String(err?.message || err);
-      // If Prisma client hasn't been regenerated it may reject unknown fields like `vacancies`.
+      // If Prisma client hasn't been regenerated it may reject unknown fields like `vacancies` or `gender`.
       if (
         msg.includes("Unknown argument `vacancies`") ||
         msg.includes("Unknown arg `vacancies`") ||
-        msg.includes("Unknown argument 'vacancies'")
+        msg.includes("Unknown argument 'vacancies'") ||
+        msg.includes("Unknown argument `gender`") ||
+        msg.includes("Unknown arg `gender`") ||
+        msg.includes("Unknown argument 'gender'")
       ) {
-        // retry without vacancies
-        const { vacancies, ...rest } = createData;
+        // retry without vacancies and/or gender
+        const { vacancies, gender, ...rest } = createData;
         job = await prisma.job.create({ data: rest as any });
       } else {
         throw err;
@@ -213,7 +238,7 @@ export async function PUT(req: Request) {
       "company",
       "location",
       "country",
-      "flag",
+      "gender",
       "holidays",
       "salaryMin",
       "salaryMax",
@@ -223,7 +248,7 @@ export async function PUT(req: Request) {
       "type",
       "industry",
       "experience",
-      "benefitsAddc",
+      "workTime",
       "visaCategory",
       "contractPeriod",
       "description",
@@ -285,6 +310,21 @@ export async function PUT(req: Request) {
           data[key] = parsed;
         } else if (key === "closingDate") {
           data[key] = body[key] ? new Date(body[key]) : null;
+        } else if (
+          key === "gender" ||
+          key === "visaCategory" ||
+          key === "contractPeriod" ||
+          key === "workTime"
+        ) {
+          // only set these optional string fields on update when a non-empty value provided
+          if (
+            body[key] === undefined ||
+            body[key] === null ||
+            String(body[key]).trim() === ""
+          ) {
+            continue;
+          }
+          data[key] = String(body[key]);
         } else {
           data[key] = body[key];
         }
@@ -296,7 +336,26 @@ export async function PUT(req: Request) {
       "[api/admin/jobs PUT] update data payload:",
       JSON.stringify(data, null, 2)
     );
-    const job = await prisma.job.update({ where: { id: jobId }, data });
+    let job;
+    try {
+      job = await prisma.job.update({ where: { id: jobId }, data });
+    } catch (err: any) {
+      const msg = String(err?.message || err);
+      // Retry without gender or vacancies if Prisma client is out-of-date
+      if (
+        msg.includes("Unknown argument `gender`") ||
+        msg.includes("Unknown arg `gender`") ||
+        msg.includes("Unknown argument 'gender'") ||
+        msg.includes("Unknown argument `vacancies`") ||
+        msg.includes("Unknown arg `vacancies`") ||
+        msg.includes("Unknown argument 'vacancies'")
+      ) {
+        const { gender, vacancies, ...rest } = data as any;
+        job = await prisma.job.update({ where: { id: jobId }, data: rest });
+      } else {
+        throw err;
+      }
+    }
 
     // update benefit relations if provided
     if (body.selectedBenefits !== undefined) {

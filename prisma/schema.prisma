@@ -36,14 +36,15 @@ model Job {
   vacancies   Int      @default(1)
   ageMin   Int
   ageMax   Int
+  gender   String?
   holidays    String      @default("sunday")
   currency    String
   type        String
+  workTime    String?
   industry    String?
   experience  String?
   visaCategory String?
   contractPeriod String?
-  benefitsAddc String?
   description String
   requirements Json
   applicantsCount  Int      @default(0)

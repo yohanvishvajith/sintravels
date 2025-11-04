@@ -6,6 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { useToast } from "@/hooks/use-toast";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -31,6 +38,7 @@ type Job = {
   company?: string;
   location?: string;
   type?: string;
+  workTime?: string;
   salaryMin?: string;
   salaryMax?: string;
   basicSalary?: string | number;
@@ -49,13 +57,13 @@ type Job = {
   experience?: string | null;
   requirements?: string[] | any;
   benefits?: string[] | any;
-  benefitsAddc?: string;
   holidays?: string;
 };
 
 const STORAGE_KEY = "admin_jobs";
 
 export default function LocaleAdminJobs() {
+  const { toast } = useToast();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | number | null>(null);
@@ -72,14 +80,12 @@ export default function LocaleAdminJobs() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   // Benefits state
   const [availableBenefits, setAvailableBenefits] = useState<
     { id: number; name: string }[]
   >([]);
   const [selectedBenefits, setSelectedBenefits] = useState<number[]>([]);
-  const [benefitsAddc, setBenefitsAddc] = useState<string>("");
   // Countries and industries for dropdowns
   const [countries, setCountries] = useState<{ id: number; name: string }[]>(
     []
@@ -116,8 +122,10 @@ export default function LocaleAdminJobs() {
     let mounted = true;
     (async () => {
       try {
-        const res = await fetch("/api/admin/benefits");
-        const data = await res.json();
+        const res = await fetch("/api/admin/benefits", {
+          credentials: "same-origin",
+        });
+        const data = await res.json().catch(() => null);
         if (mounted && data?.ok) {
           setAvailableBenefits(data.benefits || []);
         }
@@ -135,8 +143,10 @@ export default function LocaleAdminJobs() {
     let mounted = true;
     (async () => {
       try {
-        const res = await fetch("/api/admin/countries");
-        const data = await res.json();
+        const res = await fetch("/api/admin/countries", {
+          credentials: "same-origin",
+        });
+        const data = await res.json().catch(() => null);
         if (mounted && data?.ok) setCountries(data.countries || []);
       } catch (e) {
         console.error("Failed to fetch countries", e);
@@ -152,8 +162,10 @@ export default function LocaleAdminJobs() {
     let mounted = true;
     (async () => {
       try {
-        const res = await fetch("/api/admin/industries");
-        const data = await res.json();
+        const res = await fetch("/api/admin/industries", {
+          credentials: "same-origin",
+        });
+        const data = await res.json().catch(() => null);
         if (mounted && data?.ok) setIndustriesList(data.industries || []);
       } catch (e) {
         console.error("Failed to fetch industries", e);
@@ -180,21 +192,41 @@ export default function LocaleAdminJobs() {
       currency: "Qatar riyal",
     });
     setSelectedBenefits([]);
-    setBenefitsAddc("");
     setRequirements([]);
     setEditingId(null);
   }
 
   async function handleAdd(e?: React.FormEvent) {
     e?.preventDefault();
-    if (!form.title || form.title.trim() === "") return;
+
+    // Only submit when on step 2
+    if (step !== 2) {
+      return;
+    }
+
+    // Validate required fields
+    if (!form.title || form.title.trim() === "") {
+      setError("Job title is required");
+      return;
+    }
+    if (!form.type || form.type.trim() === "") {
+      setError("Job type is required");
+      return;
+    }
+    if (!form.description || form.description.trim() === "") {
+      setError("Job description is required");
+      return;
+    }
+    if (!form.salaryMin) {
+      setError("Minimum salary is required");
+      return;
+    }
 
     if (editingId) {
       // update existing via API to persist changes
       try {
         setLoading(true);
         setError(null);
-        setSuccess(null);
 
         // parse salary min and max separately. If max is empty or 0, send null.
         const parseNumber = (v: any) => {
@@ -221,40 +253,46 @@ export default function LocaleAdminJobs() {
           company: form.company ?? "",
           location: form.location ?? "",
           country: form.country ?? "",
-          flag: form.flag ?? null,
+          gender: form.gender ?? null,
           salaryMin: salaryMinParsed,
           salaryMax: salaryMaxParsed,
           holidays: form.holidays ? String(form.holidays) : "sunday",
           ageMin: form.ageMin ? parseInt(String(form.ageMin), 10) : 0,
           ageMax: form.ageMax ? parseInt(String(form.ageMax), 10) : 0,
-          gender: form.gender ?? null,
           vacancies: form.vacancies ? parseInt(String(form.vacancies), 10) : 1,
           currency: form.currency || "Qatar riyal",
           type: form.type ?? "",
+          workTime: (form as any).workTime ?? null,
           industry: form.industry ?? null,
           experience: form.experience ?? null,
-          contractTime: form.contractTime ?? null,
           // visa and contract info
           visaCategory: (form as any).visaCategory ?? null,
           contractPeriod: (form as any).contractPeriod ?? null,
           description: form.description ?? "",
           // use the dedicated requirements state (array of strings)
           requirements: requirements ?? [],
-          benefitsAddc: benefitsAddc || null,
           selectedBenefits: selectedBenefits,
           closingDate: form.closingDate
             ? String(form.closingDate)
             : new Date().toISOString(),
         };
 
+        // debug log payload so we can inspect what is being sent when troubleshooting
+        console.debug("[admin/jobs] update payload:", payload);
         const res = await fetch("/api/admin/jobs", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
+          // ensure cookies (auth token) are sent for auth middleware
+          credentials: "same-origin",
           body: JSON.stringify(payload),
         });
         const data = await res.json().catch(() => null);
         if (res.ok && data?.ok) {
-          setSuccess("Job updated successfully");
+          toast({
+            title: "Success",
+            description: "Job updated successfully",
+            variant: "default",
+          });
           // update local list from returned job when available
           if (data.job) {
             setJobs((s) =>
@@ -288,7 +326,6 @@ export default function LocaleAdminJobs() {
       try {
         setLoading(true);
         setError(null);
-        setSuccess(null);
 
         // parse salary min and max separately for creation as well
         const parseNumber = (v: any) => {
@@ -313,23 +350,21 @@ export default function LocaleAdminJobs() {
           company: form.company ?? "",
           location: form.location ?? "",
           country: form.country ?? "",
-          flag: form.flag ?? null,
+          gender: form.gender ?? null,
           salaryMin: salaryMinParsed,
           salaryMax: salaryMaxParsed,
           holidays: form.holidays ? String(form.holidays) : "sunday",
           ageMin: form.ageMin ? parseInt(String(form.ageMin), 10) : 0,
           ageMax: form.ageMax ? parseInt(String(form.ageMax), 10) : 0,
-          gender: form.gender ?? null,
           vacancies: form.vacancies ? parseInt(String(form.vacancies), 10) : 1,
           currency: form.currency || "Qatar riyal",
           type: form.type ?? "",
+          workTime: (form as any).workTime ?? null,
           industry: form.industry ?? null,
           experience: form.experience ?? null,
-          contractTime: form.contractTime ?? null,
           description: form.description ?? "",
           // persist the dynamic requirements array
           requirements: requirements ?? [],
-          benefitsAddc: benefitsAddc || null,
           visaCategory: (form as any).visaCategory ?? null,
           contractPeriod: (form as any).contractPeriod ?? null,
           selectedBenefits: selectedBenefits,
@@ -338,14 +373,22 @@ export default function LocaleAdminJobs() {
             : new Date().toISOString(),
         };
 
+        // debug payload before creating a job
+        console.debug("[admin/jobs] create payload:", payload);
         const res = await fetch("/api/admin/jobs", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          // include same-origin credentials so middleware can validate the cookie
+          credentials: "same-origin",
           body: JSON.stringify(payload),
         });
         const data = await res.json().catch(() => null);
         if (res.ok && data?.ok) {
-          setSuccess("Job created successfully");
+          toast({
+            title: "Success",
+            description: "Job created successfully",
+            variant: "default",
+          });
           if (data.job) {
             setJobs((s) => [data.job, ...s]);
           } else {
@@ -386,17 +429,22 @@ export default function LocaleAdminJobs() {
     try {
       setLoading(true);
       setError(null);
-      setSuccess(null);
 
+      console.debug("[admin/jobs] delete payload:", { id });
       const res = await fetch(`/api/admin/jobs`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify({ id }),
       });
       const data = await res.json().catch(() => null);
       if (res.ok && data?.ok) {
         setJobs((s) => s.filter((j) => j.id !== id));
-        setSuccess("Job deleted");
+        toast({
+          title: "Success",
+          description: "Job deleted successfully",
+          variant: "default",
+        });
         setDeleteOpen(false);
         setDeleteTarget(null);
       } else {
@@ -434,6 +482,7 @@ export default function LocaleAdminJobs() {
             if (!isOpen) {
               resetForm();
               setStep(1);
+              setError(null);
             }
           }}
         >
@@ -451,6 +500,12 @@ export default function LocaleAdminJobs() {
                 </span>
               </DialogTitle>
             </DialogHeader>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                {error}
+              </div>
+            )}
 
             <form onSubmit={handleAdd} className="space-y-4">
               {step === 1 && (
@@ -478,6 +533,26 @@ export default function LocaleAdminJobs() {
                     </div>
 
                     <div>
+                      <Label htmlFor="type">Job Type</Label>
+                      <select
+                        id="type"
+                        name="type"
+                        value={form.type || ""}
+                        onChange={handleChange}
+                        className="w-full rounded border px-2 py-1"
+                        required
+                      >
+                        <option value="">Select type</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Temporary">Temporary</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
                       <Label htmlFor="country">Country</Label>
                       <select
                         id="country"
@@ -500,13 +575,13 @@ export default function LocaleAdminJobs() {
                         <select
                           id="industry"
                           name="industry"
-                          value={(form as any).industry || ""}
+                          value={(form as any).industry ?? ""}
                           onChange={handleChange}
                           className="w-full rounded border px-2 py-1"
                         >
                           <option value="">Select industry</option>
                           {industriesList.map((i) => (
-                            <option key={i.id} value={i.name}>
+                            <option key={i.id} value={String(i.id)}>
                               {i.name}
                             </option>
                           ))}
@@ -514,13 +589,37 @@ export default function LocaleAdminJobs() {
                       </div>
                       <div>
                         <Label htmlFor="closingDate">Closing Date</Label>
-                        <Input
-                          id="closingDate"
-                          name="closingDate"
-                          type="date"
-                          value={form.closingDate || ""}
-                          onChange={handleChange}
-                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className="w-full text-left"
+                            >
+                              {form.closingDate
+                                ? new Date(
+                                    String(form.closingDate)
+                                  ).toLocaleDateString()
+                                : "Select date"}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0">
+                            <Calendar
+                              mode="single"
+                              selected={
+                                form.closingDate
+                                  ? new Date(String(form.closingDate))
+                                  : undefined
+                              }
+                              onSelect={(date: Date | undefined) => {
+                                if (date)
+                                  setForm((s) => ({
+                                    ...s,
+                                    closingDate: date.toISOString(),
+                                  }));
+                              }}
+                            />
+                          </PopoverContent>
+                        </Popover>
                       </div>
                     </div>
                   </div>
@@ -551,12 +650,12 @@ export default function LocaleAdminJobs() {
                       </select>
                     </div>
                     <div>
-                      <Label htmlFor="type">Working Hours</Label>
+                      <Label htmlFor="workTime">Working Hours</Label>
                       <Input
-                        id="type"
-                        name="type"
-                        placeholder="e.g. Full-time / Part-time"
-                        value={form.type || ""}
+                        id="workTime"
+                        name="workTime"
+                        placeholder="e.g. 8 hours / shift"
+                        value={(form as any).workTime || ""}
                         onChange={handleChange}
                       />
                     </div>
@@ -675,6 +774,7 @@ export default function LocaleAdminJobs() {
                         value={form.salaryMin ?? ""}
                         onChange={handleChange}
                         placeholder="e.g. 30000"
+                        required
                       />
                     </div>
                     <div>
@@ -730,6 +830,7 @@ export default function LocaleAdminJobs() {
                         ))
                       )}
                     </div>
+                    {/* Additional benefits field removed */}
                   </div>
                 </>
               )}
@@ -783,6 +884,8 @@ export default function LocaleAdminJobs() {
                     value={form.description || ""}
                     onChange={handleChange}
                     className="min-h-[120px]"
+                    required
+                    placeholder="Enter job description..."
                   />
                 </div>
               )}
@@ -830,8 +933,13 @@ export default function LocaleAdminJobs() {
                     <Button
                       type="submit"
                       className="bg-blue-600 hover:bg-blue-700"
+                      disabled={loading}
                     >
-                      {editingId ? "Update Job" : "Post Job"}
+                      {loading
+                        ? "Saving..."
+                        : editingId
+                        ? "Update Job"
+                        : "Post Job"}
                     </Button>
                   </>
                 )}
@@ -929,18 +1037,22 @@ export default function LocaleAdminJobs() {
                             setRequirements([]);
                           }
                           setEditingId(job.id);
-                          setBenefitsAddc(job.benefitsAddc || "");
 
                           // Load existing benefits for this job
                           try {
-                            const res = await fetch(
-                              `/api/admin/jobs/${job.id}/benefits`
-                            );
-                            const data = await res.json();
-                            if (data?.ok && data.benefits) {
-                              setSelectedBenefits(
-                                data.benefits.map((b: any) => b.id)
+                            try {
+                              const res = await fetch(
+                                `/api/admin/jobs/${job.id}/benefits`,
+                                { credentials: "same-origin" }
                               );
+                              const data = await res.json().catch(() => null);
+                              if (data?.ok && data.benefits) {
+                                setSelectedBenefits(
+                                  data.benefits.map((b: any) => b.id)
+                                );
+                              }
+                            } catch (e) {
+                              console.error("Failed to load job benefits", e);
                             }
                           } catch (e) {
                             console.error("Failed to load job benefits", e);
@@ -1009,12 +1121,15 @@ export default function LocaleAdminJobs() {
                     {viewJob.country || viewJob.location || "-"}
                   </div>
                   <div>
-                    <strong>Working Hours:</strong> {viewJob.type || "-"}
+                    <strong>Working Hours:</strong> {viewJob.workTime || "-"}
                   </div>
                   <div>
                     <strong>Basic Salary:</strong>{" "}
                     {viewJob.basicSalary ?? viewJob.salaryMin ?? "-"}{" "}
                     {viewJob.currency || ""}
+                  </div>
+                  <div>
+                    <strong>Gender:</strong> {viewJob.gender || "-"}
                   </div>
                   <div>
                     <strong>Contract:</strong> {viewJob.contractTime || "-"}
@@ -1023,9 +1138,7 @@ export default function LocaleAdminJobs() {
                     <strong>Age:</strong> {viewJob.ageMin ?? "-"} -{" "}
                     {viewJob.ageMax ?? "-"}
                   </div>
-                  <div>
-                    <strong>Gender:</strong> {viewJob.gender || "-"}
-                  </div>
+                  {/* gender removed from job model */}
                   <div>
                     <strong>Experience:</strong> {viewJob.experience || "-"}
                   </div>
@@ -1033,7 +1146,15 @@ export default function LocaleAdminJobs() {
                     <strong>Holidays:</strong> {viewJob.holidays ?? "-"}
                   </div>
                   <div>
-                    <strong>Industry:</strong> {viewJob.industry || "-"}
+                    <strong>Industry:</strong>{" "}
+                    {(() => {
+                      const id = viewJob.industry;
+                      if (!id) return "-";
+                      const found = industriesList.find(
+                        (it) => String(it.id) === String(id)
+                      );
+                      return found ? found.name : String(id);
+                    })()}
                   </div>
                   <div>
                     <strong>Closing:</strong> {viewJob.closingDate || "-"}

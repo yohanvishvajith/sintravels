@@ -22,7 +22,7 @@ export async function GET() {
         return {
           ...j,
           benefits: normalized,
-          benefitsAddc: j.benefitsAddc ?? null,
+          workTime: j.workTime ?? null,
         };
       });
 
@@ -42,7 +42,7 @@ export async function GET() {
         );
         // Raw fallback: select explicit columns and merge job_benifits
         const rawJobs: any[] = await prisma.$queryRawUnsafe(`
-          SELECT id, title, company, location, country, flag, salaryMin, salaryMax, vacancies, ageMin, ageMax, holidays, currency, type, industry, experience, benefitsAddc, description, requirements, closingDate, createdAt, updatedAt
+          SELECT id, title, company, location, country, flag, salaryMin, salaryMax, vacancies, ageMin, ageMax, holidays, currency, type, workTime, industry, experience, description, requirements, closingDate, createdAt, updatedAt
           FROM Job
           ORDER BY createdAt DESC
           LIMIT 100
@@ -72,7 +72,7 @@ export async function GET() {
         const out = rawJobs.map((r: any) => ({
           ...r,
           benefits: jbMap[r.id] || [],
-          benefitsAddc: r.benefitsAddc ?? null,
+          workTime: r.workTime ?? null,
         }));
 
         return new Response(JSON.stringify({ ok: true, jobs: out }), {
