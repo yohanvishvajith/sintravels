@@ -31,6 +31,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Trash, Edit, Eye } from "lucide-react";
+import { JobCard } from "@/components/jobs/job-card";
 
 type Job = {
   id: string | number;
@@ -1103,76 +1104,148 @@ export default function LocaleAdminJobs() {
         </DialogContent>
       </Dialog>
 
-      {/* View job dialog */}
-      <Dialog open={viewOpen} onOpenChange={setViewOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Job details</DialogTitle>
-            <DialogDescription>View job information</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-3 mt-2">
-            {viewJob ? (
+      {/* View job dialog - shows full job details (user detail view only) */}
+      {viewOpen && viewJob && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setViewOpen(false);
+          }}
+        >
+          <div className="bg-white rounded-lg p-4 max-w-md w-full max-h-[90vh] overflow-y-auto relative animate-fadeIn text-sm">
+            <button
+              onClick={() => setViewOpen(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl"
+            >
+              &times;
+            </button>
+            <h2 className="text-xl font-bold mb-4">
+              {viewJob.title} - {viewJob.country}
+            </h2>
+            <div className="space-y-4 text-gray-700">
               <div>
-                <h3 className="text-lg font-semibold">{viewJob.title}</h3>
-                <p className="text-sm text-gray-600">{viewJob.company}</p>
-                <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                  <div>
-                    <strong>Country:</strong>{" "}
-                    {viewJob.country || viewJob.location || "-"}
+                <h4 className="font-semibold mb-2">Job Description:</h4>
+              </div>
+              <div>
+                <div className="text-sm text-gray-700">
+                  <div className="grid grid-cols-1 gap-2">
+                    <div className="flex items-center">
+                      <span className="mr-2">🌎</span>
+                      <div>
+                        <strong>Country:</strong>{" "}
+                        {viewJob.country || viewJob.location || "-"}
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="mr-2">🛂</span>
+                      <div>
+                        <strong>Visa:</strong>{" "}
+                        {((viewJob as any).visaCategory || "-") + " visa"}
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="mr-2">📃</span>
+                      <div>
+                        <strong>Contract Period:</strong>{" "}
+                        {(viewJob as any).contractPeriod || "-"}
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="mr-2">🏷️</span>
+                      <div>
+                        <strong>Type:</strong> {viewJob.type || "-"}
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="mr-2">🏢</span>
+                      <div>
+                        <strong>Company:</strong> {viewJob.company || "Unknown"}
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="mr-2">🎂</span>
+                      <div>
+                        <strong>Age:</strong> {viewJob.ageMin ?? 25}–
+                        {viewJob.ageMax ?? 45}
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="mr-2">♂️</span>
+                      <div>
+                        <strong>Gender:</strong> {viewJob.gender ?? "Male"}
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="mr-2">⏰</span>
+                      <div>
+                        <strong>Working Hours:</strong>{" "}
+                        {viewJob.workTime ?? "8 hours per day"}
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="mr-2">🗓️</span>
+                      <div>
+                        <strong>Holiday:</strong>{" "}
+                        {viewJob.holidays ??
+                          "Public holidays as per company policy"}
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="mr-2">💰</span>
+                      <div>
+                        <strong>Basic Salary:</strong>{" "}
+                        {(() => {
+                          const minRaw = viewJob.salaryMin ?? 250;
+                          const maxRaw = viewJob.salaryMax ?? null;
+                          const min =
+                            typeof minRaw === "number"
+                              ? minRaw
+                              : parseInt(String(minRaw), 10);
+                          const max =
+                            maxRaw == null
+                              ? null
+                              : typeof maxRaw === "number"
+                              ? maxRaw
+                              : parseInt(String(maxRaw), 10);
+                          const curr = viewJob.currency ?? "$";
+                          const fmt = (n: number) => n.toLocaleString();
+                          if (max == null || max === 0) {
+                            return `${curr} ${fmt(min)} + OT`;
+                          }
+                          return `${curr} ${fmt(min)} – ${curr} ${fmt(max)}`;
+                        })()}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <strong>Working Hours:</strong> {viewJob.workTime || "-"}
-                  </div>
-                  <div>
-                    <strong>Basic Salary:</strong>{" "}
-                    {viewJob.basicSalary ?? viewJob.salaryMin ?? "-"}{" "}
-                    {viewJob.currency || ""}
-                  </div>
-                  <div>
-                    <strong>Gender:</strong> {viewJob.gender || "-"}
-                  </div>
-                  <div>
-                    <strong>Contract:</strong> {viewJob.contractTime || "-"}
-                  </div>
-                  <div>
-                    <strong>Age:</strong> {viewJob.ageMin ?? "-"} -{" "}
-                    {viewJob.ageMax ?? "-"}
-                  </div>
-                  {/* gender removed from job model */}
-                  <div>
-                    <strong>Experience:</strong> {viewJob.experience || "-"}
-                  </div>
-                  <div>
-                    <strong>Holidays:</strong> {viewJob.holidays ?? "-"}
-                  </div>
-                  <div>
-                    <strong>Industry:</strong>{" "}
-                    {(() => {
-                      const id = viewJob.industry;
-                      if (!id) return "-";
-                      const found = industriesList.find(
-                        (it) => String(it.id) === String(id)
-                      );
-                      return found ? found.name : String(id);
-                    })()}
-                  </div>
-                  <div>
-                    <strong>Closing:</strong> {viewJob.closingDate || "-"}
-                  </div>
-                </div>
-                <div className="mt-4 text-sm">
-                  <strong>Description</strong>
-                  <p className="mt-1 text-gray-700 whitespace-pre-wrap">
-                    {viewJob.description || "-"}
-                  </p>
                 </div>
               </div>
-            ) : (
-              <p className="text-gray-500">No job selected</p>
-            )}
+              {Array.isArray((viewJob as any).benefits) &&
+                (viewJob as any).benefits.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold mb-2">🎁 Benefits:</h4>
+                    <ul className="list-none pl-5 space-y-1">
+                      {(viewJob as any).benefits.map((b: string, i: number) => (
+                        <li key={i}> 😍 {b}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              <div>
+                <h4 className="font-semibold mb-2">✅ Requirements:</h4>
+                <ul className="list-disc pl-5 space-y-1">
+                  {Array.isArray((viewJob as any).requirements) ? (
+                    (viewJob as any).requirements.map(
+                      (r: string, i: number) => <li key={i}>{r}</li>
+                    )
+                  ) : (
+                    <li>No specific requirements listed</li>
+                  )}
+                </ul>
+              </div>
+            </div>
           </div>
-        </DialogContent>
-      </Dialog>
+        </div>
+      )}
     </div>
   );
 }

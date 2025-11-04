@@ -14,6 +14,18 @@ export async function GET() {
         },
       });
 
+      // Resolve country flags from the Country table (jobs store country name only)
+      const countryNames = Array.from(
+        new Set(jobs.map((jj: any) => String(jj.country || "")).filter(Boolean))
+      );
+      const countries = countryNames.length
+        ? await prisma.country.findMany({
+            where: { name: { in: countryNames } },
+          })
+        : [];
+      const countryMap: Record<string, string | null> = {};
+      for (const c of countries) countryMap[c.name] = c.flagimg ?? null;
+
       // map benefits to a simple array of names derived from the normalized relation
       const out = jobs.map((j: any) => {
         const normalized = Array.isArray(j.jobBenefits)
@@ -23,6 +35,8 @@ export async function GET() {
           ...j,
           benefits: normalized,
           workTime: j.workTime ?? null,
+          // attach flag from Country table when available
+          flag: (j.country && countryMap[String(j.country)]) || null,
         };
       });
 
@@ -42,8 +56,9 @@ export async function GET() {
         );
         // Raw fallback: select explicit columns and merge job_benifits
         const rawJobs: any[] = await prisma.$queryRawUnsafe(`
-          SELECT id, title, company, location, country, flag, salaryMin, salaryMax, vacancies, ageMin, ageMax, holidays, currency, type, workTime, industry, experience, description, requirements, closingDate, createdAt, updatedAt
-          FROM Job
+          SELECT j.id, j.title, j.company, j.location, j.country, c.flagimg as flag, j.salaryMin, j.salaryMax, j.vacancies, j.ageMin, j.ageMax, j.holidays, j.currency, j.type, j.workTime, j.industry, j.experience, j.description, j.requirements, j.closingDate, j.createdAt, j.updatedAt
+          FROM Job j
+          LEFT JOIN Country c ON c.name = j.country
           ORDER BY createdAt DESC
           LIMIT 100
         `);

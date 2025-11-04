@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 interface JobCardProps {
   job: {
     id: string;
@@ -8,7 +7,7 @@ interface JobCardProps {
     company: string;
     location: string;
     country: string;
-    flag: string;
+    flag?: string | null;
     salary?: {
       min: number;
       max: number;
@@ -36,13 +35,23 @@ interface JobCardProps {
     visaCategory?: string | null;
     contractPeriod?: string | null;
   };
+  hideActions?: boolean; // Hide apply/contact buttons (for admin preview)
+  showDetailsModal?: boolean; // Auto-open the details modal (for admin full view)
 }
 
-export function JobCard({ job }: JobCardProps) {
-  const [detailsOpen, setDetailsOpen] = useState(false);
+export function JobCard({
+  job,
+  hideActions = false,
+  showDetailsModal = false,
+}: JobCardProps) {
+  const [detailsOpen, setDetailsOpen] = useState(showDetailsModal);
   const [submitting, setSubmitting] = useState(false);
   const [applied, setApplied] = useState(false);
   const [showContact, setShowContact] = useState(false);
+
+  useEffect(() => {
+    setDetailsOpen(showDetailsModal);
+  }, [showDetailsModal]);
 
   useEffect(() => {
     if (detailsOpen) document.body.classList.add("overflow-hidden");
@@ -95,26 +104,34 @@ export function JobCard({ job }: JobCardProps) {
       <div className="bg-white rounded-xl w-full h-full overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
         <div className="bg-blue-600 p-4 text-white">
           <div className="flex items-center space-x-3">
-            {job.flag ? (
-              <div className="w-12 h-12 bg-white rounded-lg overflow-hidden flex items-center justify-center">
-                {typeof job.flag === "string" &&
-                (job.flag.startsWith("http") || job.flag.startsWith("/")) ? (
-                  <Image
-                    src={job.flag}
-                    alt={`${job.country || job.location} flag`}
+            <div className="w-12 h-12 bg-white rounded-lg overflow-hidden flex items-center justify-center">
+              {/* Always render an <img> so DOM contains an image element for layout/testing.
+                  Use job.flag when it looks like a URL; otherwise use a local SVG placeholder. */}
+              {(() => {
+                const isUrl =
+                  typeof job.flag === "string" &&
+                  (job.flag.startsWith("http") ||
+                    job.flag.startsWith("//") ||
+                    job.flag.startsWith("/"));
+                const src = isUrl
+                  ? (job.flag as string)
+                  : "/images/flag-placeholder.svg";
+                return (
+                  // plain img avoids next/image domain/domain-config issues and always shows an element
+                  <img
+                    src={src}
+                    alt={
+                      job.flag && !isUrl
+                        ? String(job.flag)
+                        : `${job.country || job.location} flag`
+                    }
                     width={48}
                     height={48}
                     className="w-full h-full object-cover"
                   />
-                ) : (
-                  <span className="text-2xl">{job.flag}</span>
-                )}
-              </div>
-            ) : (
-              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
-                <i className="fas fa-briefcase text-2xl text-blue-600"></i>
-              </div>
-            )}
+                );
+              })()}
+            </div>
             <div>
               <h2 className="text-lg font-bold">{job.title}</h2>
               <p className="text-blue-100 text-sm">{job.company}</p>
@@ -206,42 +223,44 @@ export function JobCard({ job }: JobCardProps) {
 
           <div className="mb-3"></div>
 
-          <div className="mt-auto">
-            <div className="flex flex-col sm:flex-row gap-2">
-              <button
-                onClick={openDetails}
-                className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-medium py-1.5 px-4 rounded-lg flex-1 text-center hover:-translate-y-0.5 hover:shadow-lg transition-all text-sm"
-              >
-                View Job
-              </button>
-              {!applied &&
-                (showContact ? (
-                  <div className="flex gap-2 w-full">
-                    <a
-                      href="tel:0117365476"
-                      className="border border-green-600 text-green-600 font-medium py-1.5 px-4 rounded-lg flex-1 text-center hover:bg-green-50 transition-colors text-sm"
+          {!hideActions && (
+            <div className="mt-auto">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <button
+                  onClick={openDetails}
+                  className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-medium py-1.5 px-4 rounded-lg flex-1 text-center hover:-translate-y-0.5 hover:shadow-lg transition-all text-sm"
+                >
+                  View Job
+                </button>
+                {!applied &&
+                  (showContact ? (
+                    <div className="flex gap-2 w-full">
+                      <a
+                        href="tel:0117365476"
+                        className="border border-green-600 text-green-600 font-medium py-1.5 px-4 rounded-lg flex-1 text-center hover:bg-green-50 transition-colors text-sm"
+                      >
+                        Call 0117365476
+                      </a>
+                      <a
+                        href="https://wa.me/0703145633"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="border border-green-600 bg-green-600 text-white font-medium py-1.5 px-4 rounded-lg flex-1 text-center hover:opacity-95 transition-colors text-sm"
+                      >
+                        WhatsApp 0703145633
+                      </a>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setShowContact(true)}
+                      className="border border-blue-600 text-blue-600 font-medium py-1.5 px-4 rounded-lg flex-1 text-center hover:bg-blue-50 transition-colors text-sm"
                     >
-                      Call 0117365476
-                    </a>
-                    <a
-                      href="https://wa.me/0703145633"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="border border-green-600 bg-green-600 text-white font-medium py-1.5 px-4 rounded-lg flex-1 text-center hover:opacity-95 transition-colors text-sm"
-                    >
-                      WhatsApp 0703145633
-                    </a>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setShowContact(true)}
-                    className="border border-blue-600 text-blue-600 font-medium py-1.5 px-4 rounded-lg flex-1 text-center hover:bg-blue-50 transition-colors text-sm"
-                  >
-                    Contact Us to apply
-                  </button>
-                ))}
+                      Contact Us to apply
+                    </button>
+                  ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="bg-gray-50 px-4 py-2 text-[0.65rem] text-gray-500 border-t border-gray-200 mt-auto">
@@ -301,15 +320,13 @@ export function JobCard({ job }: JobCardProps) {
                     <div className="flex items-center">
                       <span className="mr-2">📃</span>
                       <div>
-                        <strong>Contract Period:</strong>{" "}
-                        {job.contractPeriod}
+                        <strong>Contract Period:</strong> {job.contractPeriod}
                       </div>
                     </div>
-                      <div className="flex items-center">
+                    <div className="flex items-center">
                       <span className="mr-2">🏷️</span>
                       <div>
-                        <strong>Type:</strong>{" "}
-                        {job.type || "-"}
+                        <strong>Type:</strong> {job.type || "-"}
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -386,17 +403,19 @@ export function JobCard({ job }: JobCardProps) {
                 </ul>
               </div>
 
-              <div className="pt-4">
-                <button
-                  onClick={() => {
-                    closeDetails();
-                    setShowContact(true);
-                  }}
-                  className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-medium py-2 px-6 rounded-lg w-full text-center"
-                >
-                  Apply Now
-                </button>
-              </div>
+              {!hideActions && (
+                <div className="pt-4">
+                  <button
+                    onClick={() => {
+                      closeDetails();
+                      setShowContact(true);
+                    }}
+                    className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-medium py-2 px-6 rounded-lg w-full text-center"
+                  >
+                    Apply Now
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

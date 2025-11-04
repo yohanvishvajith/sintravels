@@ -61,7 +61,8 @@ export default function JobsPage() {
             company: j.company,
             location: j.location,
             country: j.country,
-            flag: j.flag ?? "🌍",
+            flag: j.flag ?? null,
+
             salary: {
               min: j.salaryMin,
               max: j.salaryMax,

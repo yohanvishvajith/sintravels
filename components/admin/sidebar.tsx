@@ -12,6 +12,8 @@ import {
   ChevronDown,
   Hourglass,
   UserPlus,
+  Globe,
+  Factory,
 } from "lucide-react";
 import Image from "next/image";
 export default function AdminSidebar() {
@@ -71,13 +73,13 @@ export default function AdminSidebar() {
       key: "settings-manage-countries",
       label: "Manage Countries",
       href: "/admin/settings/manage-countries",
-      icon: Menu,
+      icon: Globe,
     },
     {
       key: "settings-manage-industries",
       label: "Manage Industries",
       href: "/admin/settings/manage-industries",
-      icon: Menu,
+      icon: Factory,
     },
     {
       key: "settings-manage-users",
